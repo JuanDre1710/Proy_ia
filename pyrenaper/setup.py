@@ -28,7 +28,7 @@ setuptools.setup(
                       "py==1.10.0",
                       "pyparsing==2.4.7",
                       "pytest==6.2.4",
-                      "requests==2.25.1",
+                      "requests==2.32.3",
                       "toml==0.10.2",
                       "urllib3==1.26.5",
                       "coverage",
