@@ -1,5 +1,5 @@
 import requests
-from coso_ale.pyrenaper.renaper import Renaper
+from pyrenaper.pyrenaper.renaper import Renaper
 from modelo_ia import procesar_datos_renaper  # Asegúrate de tener este módulo
 
 # Configuración
