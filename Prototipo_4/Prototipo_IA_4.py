@@ -1,6 +1,6 @@
 import requests
 from pyrenaper.pyrenaper.renaper import Renaper
-from modelo_ia import procesar_datos_renaper  # Asegúrate de tener este módulo
+from Prototipo_4.modelo_fraude import procesar_datos_renaper  # Asegúrate de tener este módulo
 
 # Configuración
 API_RENAPER_KEY = "TU_API_KEY"

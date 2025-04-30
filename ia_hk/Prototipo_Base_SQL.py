@@ -67,3 +67,18 @@ cliente.verificar_cliente(conn)  # Llamar al método verificar_cliente para comp
 
 # Cerrar la conexión a la base de datos
 conn.close()
+
+
+
+
+
+
+
+
+#from Prototipo_4.modelo_fraude import es_fraude
+
+#if es_fraude(cliente):
+ #   print("⚠️ FRAUDE DETECTADO.")
+#else:
+ #   print("✅ Cliente legítimo.")
+
