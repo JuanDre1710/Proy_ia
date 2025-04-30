@@ -34,7 +34,7 @@ setuptools.setup(
                       "coverage",
                       "zxing"],
     include_package_data=True,
-    packages=['pyrenaper'],
+    packages=setuptools.find_packages(),
     python_requires=">=3.8",
 )
 

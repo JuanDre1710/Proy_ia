@@ -1,12 +1,12 @@
-﻿from pyrenaper.pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
-from pyrenaper.pyrenaper.environments import ONBOARDING  # O el entorno que uses
+﻿from pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
+from pyrenaper.environments import ONBOARDING  # O el entorno que uses
 from Llamada_Base_SQL import Cliente 
 import logging
 
 # Instanciar la clase Renaper
-renaper = Renaper(environment=renaper_env, package1_apikey="TU_APIKEY_1", package2_apikey="TU_APIKEY_2", package3_apikey="TU_APIKEY_3")
+renaper = Renaper(environment=ONBOARDING, package1_apikey="TU_APIKEY_1", package2_apikey="TU_APIKEY_2", package3_apikey="TU_APIKEY_3")
 
-def procesar_cliente(cliente: Cliente):
+def Procesar_cliente(cliente: Cliente):
     # Validar si se puede hacer new_operation
     if cliente.dni and cliente.nombre and cliente.apellido:
         print("Intentando buscar datos completos con person_data...")
