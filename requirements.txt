@@ -1,6 +1,6 @@
-# requirements.txt (en la raíz)
+# requirements.txt (en la raï¿½z)
 -r conn_sql/requirements.txt
 -r ia_hk/requirements.txt
 -r Prototipo_4/requirements.txt
 -e ./pyrenaper
-
+kaggle = 1.7.4.2
