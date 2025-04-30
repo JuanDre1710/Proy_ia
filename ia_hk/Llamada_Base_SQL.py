@@ -74,7 +74,7 @@ def Prueba():
     return cliente
 
 
-if __init__ == '__main__':
+if '__init__' == '__main__':
     Prueba()
 
 

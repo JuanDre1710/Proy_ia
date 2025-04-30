@@ -1,11 +1,11 @@
-﻿from renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
-from environment import ENV_PROD  # O el entorno que uses
+﻿from pyrenaper.pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
+from pyrenaper.pyrenaper.environments import ONBOARDING  # O el entorno que uses
 import logging
 
 # Crear la instancia del cliente RENAPER
-cliente = Renaper(environment=ENV_PROD, package1_apikey="tu_api_key_p1", package2_apikey="tu_api_key_p2", package3_apikey="tu_api_key_p3")
+cliente = Renaper(environment=ONBOARDING, package1_apikey="tu_api_key_p1", package2_apikey="tu_api_key_p2", package3_apikey="tu_api_key_p3")
 
-def procesar_cliente(info: dict):
+def Procesar_cliente(info: dict):
     """
     Recibe un diccionario con datos del cliente e invoca la función de Renaper correspondiente.
     """
@@ -37,7 +37,7 @@ def procesar_cliente(info: dict):
         return {"error": str(e)}
 
 
-if __init__ == "__main__":
+if "__init__" == "__main__":
     info_cliente = {
         "number": 12345678,
         "gender": "M",
@@ -46,5 +46,5 @@ if __init__ == "__main__":
         # "fingerprint": "abc123"
     }
 
-    resultado = procesar_cliente(info_cliente)
+    resultado = Procesar_cliente(info_cliente)
     print(resultado)
