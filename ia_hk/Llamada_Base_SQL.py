@@ -55,30 +55,27 @@ class Cliente:
 
 
 # Conexión a la base de datos SQL Server
-conn = pyodbc.connect(
-    "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=vm2022SQL2022;DATABASE=Innovacion;"
-    "UID=innovacion;PWD=innovacion;"
-)
+def Prueba():
+    conn = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=vm2022SQL2022;DATABASE=Innovacion;"
+        "UID=innovacion;PWD=innovacion;"
+    )
 
-# Ejemplo de uso
-cliente = Cliente.cargar_datos()  # Crear un objeto Cliente con los datos ingresados por teclado
-cliente.verificar_cliente(conn)  # Llamar al método verificar_cliente para comprobar si el cliente existe
+    # Ejemplo de uso
+    cliente = Cliente.cargar_datos()  # Crear un objeto Cliente con los datos ingresados por teclado
+    cliente.verificar_cliente(conn)  # Llamar al método verificar_cliente para comprobar si el cliente existe
 
-# Cerrar la conexión a la base de datos
-conn.close()
-
-
-
-
+    # Cerrar la conexión a la base de datos
+    conn.close()
+    return cliente
 
 
 
 
-#from Prototipo_4.modelo_fraude import es_fraude
 
-#if es_fraude(cliente):
- #   print("⚠️ FRAUDE DETECTADO.")
-#else:
- #   print("✅ Cliente legítimo.")
+
+
+
+
 
