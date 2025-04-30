@@ -1,8 +1,7 @@
 #ENTRADAS
 #from Llamada_Base_SQL import Cliente
-from Llamada_Base_SQL import Prueba
-from Llamada_API_renaper import Procesar_cliente
-from Prototipo_4.Prototipo_IA_4 import 
+from ia_hk.Llamada_Base_SQL import Prueba
+from ia_hk.Llamada_API_renaper import Procesar_cliente
 
 cliente=Prueba()
 # Procesar_cliente(cliente)
