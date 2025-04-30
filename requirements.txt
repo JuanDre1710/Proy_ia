@@ -3,4 +3,6 @@
 -r ia_hk/requirements.txt
 -r Prototipo_4/requirements.txt
 -e ./pyrenaper
-kaggle
+
+kaggle==1.7.4.2
+
