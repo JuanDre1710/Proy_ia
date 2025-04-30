@@ -1,33 +1,71 @@
-# entrenar_modelo_fraude.py
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+import os
+import zipfile
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
 import joblib
 
-# Paso 1: Crear datos simulados para entrenamiento
-data = {
-    'dni': [12345678, 87654321, 11223344, 99887766],
-    'nacionalidad': ['Argentina', 'Brasil', 'Argentina', 'Chile'],
-    'sexo': ['M', 'F', 'F', 'M'],
-    'edad': [25, 40, 35, 22],
-    'es_fraude': [0, 1, 0, 1]  # Etiqueta: 1=fraude, 0=no fraude
-}
+# === 1. Extraer y leer Excel ===
 
-df = pd.DataFrame(data)
+# Ruta al ZIP y a carpeta de extracción
+zip_path = r"C:\Users\Jdre\source\Proy_ia\archive.zip"
+extract_path = r"C:\Users\Jdre\source\Proy_ia\datasets"
 
-# Paso 2: Preparar datos para el modelo
-X = pd.get_dummies(df.drop('es_fraude', axis=1))  # variables independientes
-y = df['es_fraude']  # lo que queremos predecir
 
-# Guardar columnas para uso futuro
-joblib.dump(X.columns.tolist(), 'modelo_fraude_columns.pkl')
+# Extraer ZIP si no está ya descomprimido
+if not os.path.exists(extract_path):
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_path)
 
-# Paso 3: Entrenar el modelo
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-modelo = RandomForestClassifier()
-modelo.fit(X_train, y_train)
+# Buscar archivo Excel
+archivos = os.listdir(extract_path)
+excel_files = [f for f in archivos if f.endswith(('.xlsx', '.xls'))]
+if not excel_files:
+    raise FileNotFoundError("No se encontró un archivo Excel en la carpeta extraída.")
 
-# Paso 4: Guardar el modelo entrenado
-joblib.dump(modelo, 'modelo_fraude.pkl')
+# Leer Excel
+excel_path = os.path.join(extract_path, excel_files[0])
+df = pd.read_excel(excel_path)
 
-print("✅ Modelo entrenado y guardado como 'modelo_fraude.pkl'.")
+print("Primeras filas del dataset:")
+print(df.head())
+
+# === 2. Preprocesamiento básico ===
+
+# Opcional: revisar nombres de columnas
+print("\nColumnas disponibles:", df.columns)
+
+# Elimina columnas que no aportan (ajustar según dataset)
+if 'policy_number' in df.columns:
+    df.drop(columns=['policy_number'], inplace=True)
+
+# Codificación de variables categóricas
+label_encoders = {}
+for column in df.select_dtypes(include='object').columns:
+    le = LabelEncoder()
+    df[column] = le.fit_transform(df[column])
+    label_encoders[column] = le
+
+# === 3. Entrenamiento del modelo ===
+
+# Separar variables independientes (X) y dependiente (y)
+X = df.drop('fraud_reported', axis=1)
+y = df['fraud_reported']
+
+# Dividir en entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Modelo
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_train, y_train)
+
+# Evaluación
+y_pred = clf.predict(X_test)
+print("\nReporte de clasificación:")
+print(classification_report(y_test, y_pred))
+
+# === 4. Guardar el modelo entrenado ===
+joblib.dump(clf, "modelo_fraude.pkl")
+print("\n✅ Modelo guardado como 'modelo_fraude.pkl'")
