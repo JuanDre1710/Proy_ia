@@ -10,8 +10,8 @@ import joblib
 # === 1. Extraer y leer Excel ===
 
 # Ruta al ZIP y a carpeta de extracción
-zip_path = r"C:\Users\Jdre\source\Proy_ia\archive.zip"
-extract_path = r"C:\Users\Jdre\source\Proy_ia\datasets"
+zip_path     = r"c:\Users\Jdre\source\Proy_ia\Prototipo_4"
+extract_path = r"c:\Users\Jdre\source\Proy_ia\Prototipo_4"
 
 
 # Extraer ZIP si no está ya descomprimido
