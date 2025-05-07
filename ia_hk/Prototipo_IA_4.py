@@ -1,6 +1,6 @@
 import requests
 from pyrenaper.pyrenaper.renaper import Renaper
-from Prototipo_4.modelo_fraude import procesar_datos_renaper  # Asegúrate de tener este módulo
+from Prototipo_4.modelo_fraude import es_fraude  # Asegúrate de tener este módulo
 
 # Configuración
 API_RENAPER_KEY = "TU_API_KEY"
@@ -24,7 +24,7 @@ def obtener_datos_renaper(dni, genero):
 def ejecutar_proceso_ia(dni, genero):
     datos = obtener_datos_renaper(dni, genero)
     if datos:
-        resultado_ia = procesar_datos_renaper(datos)
+        resultado_ia = es_fraude(datos)
         print("Resultado del modelo IA:", resultado_ia)
         # Aquí puedes guardar en base de datos o enviar a otro endpoint
     else:
