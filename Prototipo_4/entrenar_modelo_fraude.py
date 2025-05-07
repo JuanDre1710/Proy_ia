@@ -10,6 +10,7 @@ import numpy as np
 # === 1. Extraer y leer Excel ===
 
 # Ruta al ZIP y a carpeta de extracción
+
 #zip_path = r"C:\Users\Jdre\source\Proy_ia\archive.zip"
 excel_path = os.path.join(os.path.dirname(__file__), 'archive', 'datasets.xlsx')
 

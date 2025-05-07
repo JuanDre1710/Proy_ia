@@ -1,5 +1,5 @@
-﻿from pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
-from pyrenaper.environments import ONBOARDING  # O el entorno que uses
+﻿from pyrenaper.pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
+from pyrenaper.pyrenaper.environments import ONBOARDING  # O el entorno que uses
 from ia_hk.Llamada_Base_SQL import Cliente 
 import logging
 
