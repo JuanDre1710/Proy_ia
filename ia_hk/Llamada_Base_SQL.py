@@ -26,7 +26,6 @@ class Cliente:
     def verificar_cliente(self, conn):
         # Conexión a la base de datos
         cursor = conn.cursor()
-        band = False
         
         # Crear la consulta SQL para verificar si el cliente existe
         query = """
@@ -47,13 +46,13 @@ class Cliente:
         if cliente:
             # Si se encuentra el cliente, imprimir los datos
             print(f"Cliente encontrado: {cliente}")
-            band = True
         else:
             # Si no se encuentra, imprimir que no es cliente
             print("No es cliente")
         
         # Cerrar el cursor
         cursor.close()
+        return cliente
         
 
 
