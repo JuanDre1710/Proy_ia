@@ -78,7 +78,14 @@ def Prueba():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD:ia_hk/SQL_cli.py
     Prueba()
+=======
+    print("Ejecutando el script directamente")
+    cli = Prueba()
+    print(cli)
+
+>>>>>>> e43bbd1ffa64e7b595a207375962a1b26f9da36b:ia_hk/Llamada_Base_SQL.py
 
 
 
