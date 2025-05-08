@@ -1,26 +1,15 @@
 # detector_fraude.py
 
 from ia_hk.Llamada_Base_SQL import Cliente
+from ia_hk.Llamada_Base_SQL import Prueba
 from ia_hk.Llamada_API_renaper import Procesar_cliente
 from Prototipo_4.modelo_fraude import es_fraude
 
 def main():
-    dni = input("Ingrese el DNI de la persona: ")
-
-    # Paso 1: Consultar base de datos propia
-
-    cliente = Cliente()
-    
-    datos_cliente = Cliente.verificar_cliente(dni)
-    if not datos_cliente:
-        print("La persona no es cliente registrado.")
-        return
-
-    else:
-        print("Datos obtenidos de la base:", datos_cliente)
+    cliente = Prueba()
 
     # Paso 2: Verificar y actualizar datos con RENAPER
-    datos_verificados = Procesar_cliente(dni)
+    datos_verificados = Procesar_cliente(cliente.dni)
     print("Datos verificados con RENAPER:", datos_verificados)
 
     # Paso 3: Ejecutar modelo de fraude
