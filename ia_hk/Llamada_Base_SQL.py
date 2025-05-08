@@ -49,6 +49,7 @@ class Cliente:
         else:
             # Si no se encuentra, imprimir que no es cliente
             print("No es cliente")
+        return band
         
         # Cerrar el cursor
         cursor.close()
