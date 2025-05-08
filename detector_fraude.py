@@ -16,7 +16,8 @@ def main():
         print("La persona no es cliente registrado.")
         return
 
-    print("Datos obtenidos de la base:", datos_cliente)
+    else:
+        print("Datos obtenidos de la base:", datos_cliente)
 
     # Paso 2: Verificar y actualizar datos con RENAPER
     datos_verificados = Procesar_cliente(dni)
