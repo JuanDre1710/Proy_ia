@@ -1,4 +1,5 @@
 import pyodbc
+from Llamada_API_renaper import Procesar_cliente
 
 class Cliente:
     def __init__(self, nombre=None, apellido=None, dni=None, nacionalidad=None):
@@ -76,7 +77,7 @@ def Prueba():
     return cliente
 
 
-if '__init__' == '__main__':
+if __name__ == '__main__':
     Prueba()
 
 

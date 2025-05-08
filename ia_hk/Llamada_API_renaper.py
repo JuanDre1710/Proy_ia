@@ -1,6 +1,6 @@
 ﻿from pyrenaper.pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
 from pyrenaper.pyrenaper.environments import ONBOARDING  # O el entorno que uses
-from ia_hk.Llamada_Base_SQL import Cliente 
+from ia_hk.SQL_cli import Cliente 
 import logging
 
 # Instanciar la clase Renaper
@@ -35,7 +35,7 @@ def Procesar_cliente(cliente: Cliente):
 if "__init__" == "__main__":
     info_cliente = {
         "number": 12345678,
-        "gender": "M",
+        "gender": "M" or "F",
         "order": 1
         # "ip": "192.168.0.1",
         # "fingerprint": "abc123"
