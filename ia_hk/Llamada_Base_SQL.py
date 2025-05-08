@@ -76,8 +76,11 @@ def Prueba():
     return cliente
 
 
-if '__init__' == '__main__':
-    Prueba()
+if __name__ == '__main__':
+    print("Ejecutando el script directamente")
+    cli = Prueba()
+    print(cli)
+
 
 
 
