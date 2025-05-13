@@ -1,9 +1,9 @@
 # detector_fraude.py
 
-from ia_hk.SQL_cli import Cliente, Prueba
-from ia_hk.Llamada_API_renaper import Procesar_cliente
-from Prototipo_4.modelo_fraude import es_fraude
-from Prototipo_4.fraude_identidad import evaluar_identidad
+from llamadas.SQL_cli import Cliente, Prueba
+from llamadas.Llamada_API_renaper import Procesar_cliente
+from fraudes.modelo_fraude import es_fraude
+from fraudes.fraude_identidad import evaluar_identidad
 import logging
 import time
 
