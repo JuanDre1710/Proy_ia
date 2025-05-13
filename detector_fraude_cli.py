@@ -1,7 +1,7 @@
 # detector_fraude.py
 
-from llamadas.SQL_cli import Cliente, Prueba
-from llamadas.Llamada_API_renaper import Procesar_cliente
+from llamadas_api.SQL_cli import Cliente, Prueba
+from llamadas_api.Llamada_API_renaper import Procesar_cliente
 from fraudes.modelo_fraude import es_fraude
 from fraudes.fraude_identidad import evaluar_identidad
 import logging
