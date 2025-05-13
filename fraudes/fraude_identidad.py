@@ -26,7 +26,7 @@ def evaluar_identidad(datos):
     edad = datos.get("edad") or calcular_edad(datos.get("fecha_nacimiento"))
     if edad is not None:
         if edad < 18:
-            score += 40
+            score += 100
             motivos.append(f"Edad reportada menor a 18 años ({edad})")
     else:
         score += 20
