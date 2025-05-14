@@ -1,99 +1,73 @@
 import pandas as pd
+import numpy as np
+import joblib
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
-import joblib
-import numpy as np
+from sklearn.metrics import classification_report
 
-# === 1. Extraer y leer Excel ===
-
-# Ruta al ZIP y a carpeta de extracción
-
-#zip_path = r"C:\Users\Jdre\source\Proy_ia\archive.zip"
-excel_path = os.path.join(os.path.dirname(__file__), 'archive', 'datasets.xlsx')
-
-
-# Extraer ZIP si no está ya descomprimido
-#if not os.path.exists(extract_path):
-#    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-#        zip_ref.extractall(extract_path)
-
-# Buscar archivo Excel
-#archivos = os.listdir(extract_path)
-#excel_files = [f for f in archivos if f.endswith(('.xlsx', '.xls'))]
-#if not excel_files:
-#    raise FileNotFoundError("No se encontró un archivo Excel en la carpeta extraída.")
-
-# Leer Excel
-#excel_path = os.path.join(extract_path, excel_files[0])
+# === 1. Cargar dataset ===
+excel_path = "Worksheet in Case Study question 2.xlsx"
 df = pd.read_excel(excel_path)
 
-print("Primeras filas del dataset:")
-print(df.head())
+print(f"Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
 
-# === 2. Preprocesamiento básico ===
+# === 2. Preprocesamiento ===
 
-# Opcional: revisar nombres de columnas
-print("\nColumnas disponibles:", df.columns)
+# Eliminar columnas irrelevantes
+cols_to_drop = ['policy_number']
+df.drop(columns=[c for c in cols_to_drop if c in df.columns], inplace=True)
 
-# Elimina columnas que no aportan (ajustar según dataset)
-if 'policy_number' in df.columns:
-    df.drop(columns=['policy_number'], inplace=True)
-
-# Conversión de dataTipo porque randomforest no lo puede procesar
-df['fecha'] = pd.to_datetime(df['incident_date'])  # Convierte la columna a datetime
-df['anio'] = df['fecha'].dt.year
-df['mes'] = df['fecha'].dt.month
-df['dia'] = df['fecha'].dt.day
-df['dia_semana'] = df['fecha'].dt.weekday
-df.drop(columns=['fecha'], inplace=True)  # Elimina la columna original
-
+# Convertir fechas
+if 'incident_date' in df.columns:
+    df['fecha'] = pd.to_datetime(df['incident_date'], errors='coerce')
+    df['anio'] = df['fecha'].dt.year
+    df['mes'] = df['fecha'].dt.month
+    df['dia'] = df['fecha'].dt.day
+    df['dia_semana'] = df['fecha'].dt.weekday
+    df.drop(columns=['incident_date', 'fecha'], inplace=True)
 
 # Codificación de variables categóricas
 label_encoders = {}
-for column in df.select_dtypes(include='object').columns:
-    #Convertir valores nulos ilegibles
-    df[column].fillna('Desconocido', inplace=True)
-
-    #revisar tipo de datos de la columna
-    print(f"Columna: {column} - Tipo de datos: {df[column].dtype}")
-    print(f"Valores únicos: {df[column].unique()}")
-
-    # Asegurar que todos los valores sean cadenas
-    df[column] = df[column].astype(str)
-
+for col in df.select_dtypes(include='object').columns:
+    df[col] = df[col].fillna("Desconocido").astype(str)
     le = LabelEncoder()
-    df[column] = le.fit_transform(df[column])
-    label_encoders[column] = le
+    df[col] = le.fit_transform(df[col])
+    label_encoders[col] = le
 
-# Asegura que todas las columnas de tipo fecha sean convertidas a numéricas
-for col in df.select_dtypes(include='datetime64').columns:
-    df[col + '_anio'] = df[col].dt.year
-    df[col + '_mes'] = df[col].dt.month
-    df[col + '_dia'] = df[col].dt.day
-    df.drop(columns=[col], inplace=True)
+# Rellenar nulos en numéricas
+for col in df.select_dtypes(include=np.number).columns:
+    df[col].fillna(df[col].median(), inplace=True)
 
+# Procesar la variable objetivo
+if 'fraud_reported' in df.columns:
+    df['fraud_reported'] = df['fraud_reported'].map({'Y': 1, 'N': 0})
+    y = df['fraud_reported']
+    X = df.drop(columns=['fraud_reported'])
+else:
+    raise ValueError("No se encontró la columna 'fraud_reported' en el dataset.")
 
-# === 3. Entrenamiento del modelo ===
+# === 3. Entrenamiento ===
 
-# Separar variables independientes (X) y dependiente (y)
-X = df.drop('fraud_reported', axis=1)
-y = df['fraud_reported']
-
-# Dividir en entrenamiento y prueba
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Modelo
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(X_train, y_train)
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_train, y_train)
 
-# Evaluación
-y_pred = clf.predict(X_test)
-print("\nReporte de clasificación:")
+# === 4. Evaluación ===
+
+y_pred = modelo.predict(X_test)
+print("\n--- Reporte de clasificación ---")
 print(classification_report(y_test, y_pred))
 
-# === 4. Guardar el modelo entrenado ===
-joblib.dump(clf, "modelo_fraude.pkl")
-print("\n✅ Modelo guardado como 'modelo_fraude.pkl'")
+# === 5. Guardado ===
+
+# Crear carpeta si no existe
+os.makedirs("modelo", exist_ok=True)
+
+joblib.dump(modelo, "modelo/modelo_fraude.pkl")
+joblib.dump(label_encoders, "modelo/label_encoders.pkl")
+
+print("\n✅ Modelo y encoders guardados en carpeta 'modelo/'")
+

@@ -1,6 +1,6 @@
 ﻿from pyrenaper.pyrenaper.renaper import Renaper  # Suponiendo que tu archivo se llama renaper.py
 from pyrenaper.pyrenaper.environments import ONBOARDING  # O el entorno que uses
-from llamadas_api.SQL_cli import Cliente 
+from aaa.SQL_cli import Cliente 
 import logging
 
 # Instanciar la clase Renaper

@@ -1,32 +1,42 @@
-# modelo_fraude.py
 import joblib
+import numpy as np
 import pandas as pd
 
-def cargar_modelo():
-    modelo = joblib.load('modelo_fraude.pkl')
-    columnas = joblib.load('modelo_fraude_columns.pkl')
-    return modelo, columnas
+# Cargar modelo y encoders
+modelo = joblib.load("modelo_fraude.pkl")
+encoders = joblib.load("label_encoders.pkl")
 
-def es_fraude(cliente):
-    modelo, columnas_modelo = cargar_modelo()
+# Umbrales de clasificación
+def clasificar_fraude(prob):
+    if prob < 0.33:
+        return "Normal"
+    elif prob < 0.66:
+        return "Requiere revisión"
+    else:
+        return "Sospechoso de fraude"
 
-    # Preparar datos del cliente
-    datos_cliente = {
-        'dni': [int(cliente.dni)],
-        'nacionalidad': [cliente.nacionalidad],
-        'sexo': [getattr(cliente, 'sexo', None)],
-        'edad': [getattr(cliente, 'edad', None)],
+# Función principal de predicción
+def evaluar_caso(input_dict):
+    df = pd.DataFrame([input_dict])
+
+    # Aplicar los mismos encoders que en el entrenamiento
+    for col, encoder in encoders.items():
+        if col in df.columns:
+            df[col] = df[col].fillna("Desconocido").astype(str)
+            df[col] = encoder.transform(df[col])
+
+    # Predecir
+    prob_fraude = modelo.predict_proba(df)[0][1]
+    score = int(prob_fraude * 100)
+    clasificacion = clasificar_fraude(prob_fraude)
+
+    # Importancia de variables
+    importancias = modelo.feature_importances_
+    top_vars = sorted(zip(df.columns, importancias), key=lambda x: x[1], reverse=True)[:3]
+    explicacion = [{"variable": v, "impacto": round(i, 3)} for v, i in top_vars]
+
+    return {
+        "score": score,
+        "clasificacion": clasificacion,
+        "explicacion": explicacion
     }
-
-    df_cliente = pd.DataFrame(datos_cliente)
-    df_cliente = pd.get_dummies(df_cliente)
-
-    # Alinear con columnas del modelo
-    for col in columnas_modelo:
-        if col not in df_cliente:
-            df_cliente[col] = 0
-    df_cliente = df_cliente[columnas_modelo]
-
-    # Predicción
-    pred = modelo.predict(df_cliente)
-    return pred[0] == 1
