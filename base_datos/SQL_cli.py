@@ -1,5 +1,5 @@
 import pyodbc
-from Llamada_API_renaper import Procesar_cliente
+from apis.Llamada_API_renaper import Procesar_cliente
 
 class Cliente:
     def __init__(self, nombre=None, apellido=None, dni=None, nacionalidad=None):
