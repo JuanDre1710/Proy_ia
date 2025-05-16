@@ -8,9 +8,9 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 
 # === 1. Cargar dataset ===
-excel_path = "Worksheet in Case Study question 2.xlsx"
-df = pd.read_excel(excel_path)
+excel_path = r"C:\Users\Jdre\source\Proy_ia\ia_fraudes\modelos\entrenar_reentrenar\Worksheet in Case Study question 2.xlsx"
 
+df = pd.read_excel(excel_path)
 print(f"Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
 
 # === 2. Preprocesamiento ===
@@ -36,13 +36,21 @@ for col in df.select_dtypes(include='object').columns:
     df[col] = le.fit_transform(df[col])
     label_encoders[col] = le
 
-# Rellenar nulos en numéricas
+# Rellenar nulos en columnas numéricas (sin inplace)
 for col in df.select_dtypes(include=np.number).columns:
-    df[col].fillna(df[col].median(), inplace=True)
+    df[col] = df[col].fillna(df[col].median())
+
+# Asegurar que no haya columnas datetime restantes
+df = df.drop(columns=df.select_dtypes(include=["datetime64[ns]"]).columns)
 
 # Procesar la variable objetivo
 if 'fraud_reported' in df.columns:
-    df['fraud_reported'] = df['fraud_reported'].map({'Y': 1, 'N': 0})
+    print("\nValores únicos en 'fraud_reported':")
+    print(df['fraud_reported'].unique())
+
+    # Validar que sean solo 0 y 1
+    df = df[df['fraud_reported'].isin([0, 1])]
+
     y = df['fraud_reported']
     X = df.drop(columns=['fraud_reported'])
 else:
@@ -50,24 +58,23 @@ else:
 
 # === 3. Entrenamiento ===
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+try:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-modelo = RandomForestClassifier(n_estimators=100, random_state=42)
-modelo.fit(X_train, y_train)
+    modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+    modelo.fit(X_train, y_train)
 
-# === 4. Evaluación ===
+    # === 4. Evaluación ===
+    y_pred = modelo.predict(X_test)
+    print("\n--- Reporte de clasificación ---")
+    print(classification_report(y_test, y_pred))
 
-y_pred = modelo.predict(X_test)
-print("\n--- Reporte de clasificación ---")
-print(classification_report(y_test, y_pred))
+    # === 5. Guardado ===
+    os.makedirs("modelo", exist_ok=True)
+    joblib.dump(modelo, "modelo/modelo_fraude.pkl")
+    joblib.dump(label_encoders, "modelo/label_encoders.pkl")
+    print("\n✅ Modelo y encoders guardados en carpeta 'modelo/'")
 
-# === 5. Guardado ===
-
-# Crear carpeta si no existe
-os.makedirs("modelo", exist_ok=True)
-
-joblib.dump(modelo, "modelo/modelo_fraude.pkl")
-joblib.dump(label_encoders, "modelo/label_encoders.pkl")
-
-print("\n✅ Modelo y encoders guardados en carpeta 'modelo/'")
+except Exception as e:
+    print(f"❌ Error durante el entrenamiento: {e}")
 
