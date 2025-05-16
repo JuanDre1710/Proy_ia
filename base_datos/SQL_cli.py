@@ -1,5 +1,6 @@
 import pyodbc
-from apis.Llamada_API_renaper import Procesar_cliente
+from dotenv import load_dotenv
+import os
 
 class Cliente:
     def __init__(self, nombre=None, apellido=None, dni=None, nacionalidad=None):
@@ -62,10 +63,21 @@ class Cliente:
 
 # Conexión a la base de datos SQL Server
 def Prueba():
+
+    # Cargar variables del .env
+    load_dotenv()
+
+    # Leer las variables (deben estar definidas en el .env))
+    server = os.getenv("SQL_SERVER")
+    database = os.getenv("SQL_DATABASE")
+    username = os.getenv("SQL_USERNAME")
+    password = os.getenv("SQL_PASSWORD")
+
+    # Conexion
     conn = pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};"
-        "SERVER=vm2022SQL2022;DATABASE=Innovacion;"
-        "UID=innovacion;PWD=innovacion;"
+    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+    f"SERVER={server};DATABASE={database};UID={username};PWD={password};"
+    "Encrypt=yes;TrustServerCertificate=yes;"
     )
 
     # Ejemplo de uso
