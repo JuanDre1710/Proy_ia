@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from modelos.predictor_fraude import evaluar_caso
+from modelos.modelo_watcher import iniciar_watcher
 import uvicorn
 
 app = FastAPI(title="ERS - Motor IA Antifraude")
@@ -11,4 +12,9 @@ async def evaluar(request: Request):
     return resultado
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    observer = iniciar_watcher()
+    try:
+        uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
+    except KeyboardInterrupt:
+        observer.stop()
+        observer.join()

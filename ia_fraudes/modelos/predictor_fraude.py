@@ -10,6 +10,13 @@ ruta_encoders = os.path.join(os.path.dirname(__file__), "../../modelo/label_enco
 modelo = joblib.load(ruta_modelo)
 encoders = joblib.load(ruta_encoders)
 
+# Funcion para reentrenar modelo
+def recargar_modelo():
+    global modelo, encoders
+    modelo = joblib.load(ruta_modelo)
+    encoders = joblib.load(ruta_encoders)
+    print("🔄 Modelo recargado exitosamente.")
+
 # Función auxiliar para extender LabelEncoder de forma segura
 def agregar_clase_faltante(encoder, clase):
     """Agrega una clase al encoder si no existe"""
