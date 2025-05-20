@@ -1,6 +1,4 @@
-import pyodbc
-from dotenv import load_dotenv
-import os
+from utiles.carga import cargar_bd
 
 class Cliente:
     def __init__(self, nombre=None, apellido=None, dni=None, nacionalidad=None):
@@ -64,21 +62,7 @@ class Cliente:
 # Conexión a la base de datos SQL Server
 def Prueba():
 
-    # Cargar variables del .env
-    load_dotenv()
-
-    # Leer las variables (deben estar definidas en el .env))
-    server = os.getenv("SQL_SERVER")
-    database = os.getenv("SQL_DATABASE")
-    username = os.getenv("SQL_USERNAME")
-    password = os.getenv("SQL_PASSWORD")
-
-    # Conexion
-    conn = pyodbc.connect(
-    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-    f"SERVER={server};DATABASE={database};UID={username};PWD={password};"
-    "Encrypt=yes;TrustServerCertificate=yes;"
-    )
+    conn = cargar_bd()
 
     # Ejemplo de uso
     cliente = Cliente.cargar_datos()  # Crear un objeto Cliente con los datos ingresados por teclado
