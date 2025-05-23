@@ -1,80 +1,68 @@
+# === entrenar_modelo_river.py ===
+# Entrena un modelo inicial con RIVER desde Excel
+
 import pandas as pd
-import numpy as np
-import joblib
 import os
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report
+import json
+from river import ensemble, metrics, tree
 
-# === 1. Cargar dataset ===
+# 1. Cargar dataset Excel
 excel_path = r"C:\Users\Jdre\source\Proy_ia\ia_fraudes\modelos\entrenar_reentrenar\Worksheet in Case Study question 2.xlsx"
-
 df = pd.read_excel(excel_path)
-print(f"Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
 
-# === 2. Preprocesamiento ===
-
-# Eliminar columnas irrelevantes
-cols_to_drop = ['policy_number']
-df.drop(columns=[c for c in cols_to_drop if c in df.columns], inplace=True)
-
-# Convertir fechas
+# 2. Preprocesamiento
 if 'incident_date' in df.columns:
-    df['fecha'] = pd.to_datetime(df['incident_date'], errors='coerce')
-    df['anio'] = df['fecha'].dt.year
-    df['mes'] = df['fecha'].dt.month
-    df['dia'] = df['fecha'].dt.day
-    df['dia_semana'] = df['fecha'].dt.weekday
-    df.drop(columns=['incident_date', 'fecha'], inplace=True)
+    df['incident_date'] = pd.to_datetime(df['incident_date'], errors='coerce')
+    df['anio'] = df['incident_date'].dt.year
+    df['mes'] = df['incident_date'].dt.month
+    df['dia'] = df['incident_date'].dt.day
+    df['dia_semana'] = df['incident_date'].dt.weekday
+    df.drop(columns=['incident_date'], inplace=True)
 
-# Codificación de variables categóricas
-label_encoders = {}
-for col in df.select_dtypes(include='object').columns:
-    df[col] = df[col].fillna("Desconocido").astype(str)
-    le = LabelEncoder()
-    df[col] = le.fit_transform(df[col])
-    label_encoders[col] = le
+# Convertir a binario
+df = df[df['fraud_reported'].isin(['Y', 'N'])]
+df['fraud_reported'] = df['fraud_reported'].map({'Y': 1, 'N': 0})
+df.drop(columns=['policy_number'], errors='ignore', inplace=True)
 
-# Rellenar nulos en columnas numéricas (sin inplace)
-for col in df.select_dtypes(include=np.number).columns:
-    df[col] = df[col].fillna(df[col].median())
+# Detectar columnas numéricas vs categóricas
+X = df.drop(columns=['fraud_reported'])
+y = df['fraud_reported']
 
-# Asegurar que no haya columnas datetime restantes
-df = df.drop(columns=df.select_dtypes(include=["datetime64[ns]"]).columns)
+numeric_cols = X.select_dtypes(include=['number']).columns.tolist()
+categorical_cols = X.select_dtypes(exclude=['number']).columns.tolist()
 
-# Procesar la variable objetivo
-if 'fraud_reported' in df.columns:
-    print("\nValores únicos en 'fraud_reported':")
-    print(df['fraud_reported'].unique())
+X[numeric_cols] = X[numeric_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+X[categorical_cols] = X[categorical_cols].fillna("Desconocido").astype(str)
 
-    # Validar que sean solo 0 y 1
-    df = df[df['fraud_reported'].isin([0, 1])]
+# 3. Inicializar modelo incremental
+modelo = ensemble.BaggingClassifier(model=tree.HoeffdingTreeClassifier(), n_models=10, seed=42)
+metric = metrics.Accuracy()
 
-    y = df['fraud_reported']
-    X = df.drop(columns=['fraud_reported'])
-else:
-    raise ValueError("No se encontró la columna 'fraud_reported' en el dataset.")
+# 4. Entrenamiento
+for xi, yi in zip(X.to_dict(orient='records'), y):
+    pred = modelo.predict_one(xi)
+    if pred is not None:
+        metric.update(yi, pred)
+    modelo.learn_one(xi, yi)
 
-# === 3. Entrenamiento ===
+print(f"\n✅ Entrenamiento completo. Accuracy: {metric.get():.4f}")
 
-try:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# 5. Guardar modelo
+output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../modelo"))
+os.makedirs(output_path, exist_ok=True)
 
-    modelo = RandomForestClassifier(n_estimators=100, random_state=42)
-    modelo.fit(X_train, y_train)
+# Guardar el nombre del modelo y la clase para trazabilidad
+modelo_dict = {
+    "modelo_class": modelo.__class__.__name__,
+    "params": {},
+    "metadata": {
+        "accuracy": metric.get(),
+        "n_models": len(modelo.models),
+        "descripcion": "Modelo River Bagging + HoeffdingTree"
+    }
+}
 
-    # === 4. Evaluación ===
-    y_pred = modelo.predict(X_test)
-    print("\n--- Reporte de clasificación ---")
-    print(classification_report(y_test, y_pred))
+with open(os.path.join(output_path, "modelo_fraude_river.json"), "w") as f:
+    json.dump(modelo_dict, f, indent=2)
 
-    # === 5. Guardado ===
-    os.makedirs("modelo", exist_ok=True)
-    joblib.dump(modelo, "modelo/modelo_fraude.pkl")
-    joblib.dump(label_encoders, "modelo/label_encoders.pkl")
-    print("\n✅ Modelo y encoders guardados en carpeta 'modelo/'")
-
-except Exception as e:
-    print(f"❌ Error durante el entrenamiento: {e}")
-
+print("📦 Modelo guardado en /modelo/modelo_fraude_river.json")
