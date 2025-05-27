@@ -8,7 +8,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 
 # === 1. Cargar dataset ===
-excel_path = r"C:\Users\Jdre\source\Proy_ia\ia_fraudes\modelos\entrenar_reentrenar\Worksheet in Case Study question 2.xlsx"
+excel_path = r".\ia_fraudes\modelos\entrenar_reentrenar\Worksheet in Case Study question 2.xlsx"
 
 df = pd.read_excel(excel_path)
 print(f"Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
