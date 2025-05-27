@@ -1,0 +1,45 @@
+from pydantic import BaseModel
+from typing import Optional
+
+class EvaluacionInput(BaseModel):
+    months_as_customer: Optional[int] = None
+    age: Optional[int] = None
+    policy_number: Optional[str] = None
+    policy_bind_date: Optional[str] = None
+    policy_state: Optional[str] = None
+    policy_csl: Optional[str] = None
+    policy_deductable: Optional[int] = None
+    policy_annual_premium: Optional[float] = None
+    umbrella_limit: Optional[int] = None
+    insured_zip: Optional[str] = None
+    insured_sex: Optional[str] = None
+    insured_education_level: Optional[str] = None
+    insured_occupation: Optional[str] = None
+    insured_hobbies: Optional[str] = None
+    insured_relationship: Optional[str] = None
+    capital_gains: Optional[int] = None
+    capital_loss: Optional[int] = None
+    incident_date: Optional[str] = None
+    incident_type: Optional[str] = None
+    collision_type: Optional[str] = None
+    incident_severity: Optional[str] = None
+    authorities_contacted: Optional[str] = None
+    incident_state: Optional[str] = None
+    incident_city: Optional[str] = None
+    incident_location: Optional[str] = None
+    incident_hour_of_the_day: Optional[int] = None
+    number_of_vehicles_involved: Optional[int] = None
+    property_damage: Optional[str] = None
+    bodily_injuries: Optional[int] = None
+    witnesses: Optional[int] = None
+    police_report_available: Optional[str] = None
+    total_claim_amount: Optional[float] = None
+    injury_claim: Optional[float] = None
+    property_claim: Optional[float] = None
+    vehicle_claim: Optional[float] = None
+    auto_make: Optional[str] = None
+    auto_model: Optional[str] = None
+    auto_year: Optional[int] = None
+    fraude_confirmado: Optional[int] = None
+    cantidad_siniestros_ultimos_3_meses: Optional[int] = None  
+
