@@ -9,7 +9,9 @@ ruta_json = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../model
 
 def entrenar_caso(input_dict):
     # Sacar la etiqueta de la entrada
-    y = input_dict.pop("fraude_confirmado")
+    y = input_dict.pop("fraude_confirmado", None)
+    if y is None:
+        y = input_dict.pop("es_fraude", 0)  
 
     # Aprender con el caso nuevo
     modelo.learn_one(input_dict, y)

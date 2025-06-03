@@ -2,44 +2,60 @@ from pydantic import BaseModel
 from typing import Optional
 
 class EvaluacionInput(BaseModel):
-    months_as_customer: Optional[int] = None
-    age: Optional[int] = None
-    policy_number: Optional[str] = None
-    policy_bind_date: Optional[str] = None
-    policy_state: Optional[str] = None
-    policy_csl: Optional[str] = None
-    policy_deductable: Optional[int] = None
-    policy_annual_premium: Optional[float] = None
-    umbrella_limit: Optional[int] = None
-    insured_zip: Optional[str] = None
-    insured_sex: Optional[str] = None
-    insured_education_level: Optional[str] = None
-    insured_occupation: Optional[str] = None
-    insured_hobbies: Optional[str] = None
-    insured_relationship: Optional[str] = None
-    capital_gains: Optional[int] = None
-    capital_loss: Optional[int] = None
-    incident_date: Optional[str] = None
-    incident_type: Optional[str] = None
-    collision_type: Optional[str] = None
-    incident_severity: Optional[str] = None
-    authorities_contacted: Optional[str] = None
-    incident_state: Optional[str] = None
-    incident_city: Optional[str] = None
-    incident_location: Optional[str] = None
-    incident_hour_of_the_day: Optional[int] = None
-    number_of_vehicles_involved: Optional[int] = None
-    property_damage: Optional[str] = None
-    bodily_injuries: Optional[int] = None
-    witnesses: Optional[int] = None
-    police_report_available: Optional[str] = None
-    total_claim_amount: Optional[float] = None
-    injury_claim: Optional[float] = None
-    property_claim: Optional[float] = None
-    vehicle_claim: Optional[float] = None
-    auto_make: Optional[str] = None
-    auto_model: Optional[str] = None
-    auto_year: Optional[int] = None
-    fraude_confirmado: Optional[int] = None
-    cantidad_siniestros_ultimos_3_meses: Optional[int] = None  
+    # Variables numéricas
+    cliente_id: Optional[int] = None
+    dias_entre_siniestro_y_denuncia: Optional[int] = None
+    dias_desde_inicio_poliza: Optional[int] = None
+    dias_hasta_fin_poliza: Optional[int] = None
+    monto_reclamado: Optional[float] = None
+    monto_pagado: Optional[float] = None
+    valor_asegurado: Optional[float] = None
+    valor_comercial: Optional[float] = None
+    valor_factura: Optional[float] = None
+    antiguedad_bien_en_anios: Optional[int] = None
+    cantidad_siniestros_previos: Optional[int] = None
+    cantidad_siniestros_mismo_tipo: Optional[int] = None
+    dias_desde_ultimo_siniestro: Optional[int] = None
+    cantidad_cambios_aseguradora: Optional[int] = None
+    antiguedad_como_cliente_meses: Optional[int] = None
 
+    # Variables categóricas (codificadas como números)
+    tipo_bien: Optional[int] = None
+    estado_bien: Optional[int] = None
+    uso_bien: Optional[int] = None
+    tipo_siniestro: Optional[int] = None
+    estado_siniestro: Optional[int] = None
+    provincia_id: Optional[int] = None
+    tipo_proveedor: Optional[int] = None
+    tipo_cliente: Optional[int] = None
+
+    # Variables booleanas
+    es_madrugada_finde: Optional[bool] = None
+    es_siniestro_total: Optional[bool] = None
+    zona_de_riesgo: Optional[bool] = None
+    evento_climatico_registrado: Optional[bool] = None
+    ubicacion_inconsistente_con_destino: Optional[bool] = None
+    peritaje_realizado: Optional[bool] = None
+    peritaje_congruente: Optional[bool] = None
+    presencia_acelerantes: Optional[bool] = None
+    imagenes_adjuntas: Optional[bool] = None
+    imagenes_sospechosas: Optional[bool] = None
+    gps_desactivado: Optional[bool] = None
+    denuncia_policial: Optional[bool] = None
+    hay_testigos: Optional[bool] = None
+    certificado_medico: Optional[bool] = None
+    factura_valida: Optional[bool] = None
+    proveedor_repetido: Optional[bool] = None
+    numero_factura_correlativa: Optional[bool] = None
+    direccion_repetida_con_otro_cliente: Optional[bool] = None
+    telefono_repetido_con_otro_cliente: Optional[bool] = None
+    testigo_repetido: Optional[bool] = None
+    perito_repetido: Optional[bool] = None
+    historial_fraude_confirmado: Optional[bool] = None
+    ocupacion_riesgo_alto: Optional[bool] = None
+    actividad_comercial_declarante: Optional[bool] = None
+    equipaje_reportado_perdido: Optional[bool] = None
+    coincide_con_checkin: Optional[bool] = None
+
+    # Etiqueta para reentrenamiento
+    fraude_confirmado: Optional[int] = None

@@ -1,9 +1,6 @@
 {
   "modelo_class": "BaggingClassifier",
-  "params": {},
   "metadata": {
-    "accuracy": 0.7497497497497497,
-    "n_models": 10,
-    "descripcion": "Modelo River Bagging + HoeffdingTree"
+    "descripcion": "Modelo actualizado en /reentrenar"
   }
 }
