@@ -1,24 +1,20 @@
-# === modelo_watcher.py ===
-# Watchdog para recargar modelo River si cambia el archivo JSON
-
-import time
 import os
-import json
+import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from modelos.modelo_memoria import cargar_modelo_json
+
+# Ruta al modelo real (pkl)
+modelo_path = os.path.join(os.path.dirname(__file__), "../../modelo/modelo_fraude_river.pkl")
 
 class ModeloEventHandler(FileSystemEventHandler):
     def on_modified(self, event):
-        if event.src_path.endswith("modelo_fraude_river.json"):
-            print(f"📁 Modelo modificado: {event.src_path}")
-            cargar_modelo_json()
+        if event.src_path.endswith("modelo_fraude_river.pkl"):
+            print("\n🔄 ¡Atención! El modelo ha sido modificado externamente.")
+            print("   (Podés recargarlo manualmente si querés usarlo ahora mismo)")
 
 def iniciar_watcher():
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../modelo"))
-    event_handler = ModeloEventHandler()
     observer = Observer()
-    observer.schedule(event_handler, path=path, recursive=False)
+    observer.schedule(ModeloEventHandler(), path=os.path.dirname(modelo_path), recursive=False)
     observer.start()
-    print(f"👀 Watchdog iniciado en: {path}")
+    print("👀 Watcher iniciado para detectar cambios en el modelo")
     return observer

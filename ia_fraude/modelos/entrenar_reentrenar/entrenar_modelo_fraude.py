@@ -1,12 +1,14 @@
-# === entrenar_modelo_fraude.py ===
 import pandas as pd
 import os
 import json
+import pickle
 from river import ensemble, metrics, tree
 
 # 1. Cargar dataset
 excel_path = r"C:\Users\Jdre\source\Proy_ia\ia_fraude\modelos\entrenar_reentrenar\dataset_entrenamiento_corregido.xlsx"
 df = pd.read_excel(excel_path)
+
+df = df.fillna(0)
 
 # 2. Convertir columnas booleanas "True"/"False" en string a booleanos reales
 bool_cols = [
@@ -19,7 +21,6 @@ bool_cols = [
     "historial_fraude_confirmado", "ocupacion_riesgo_alto", "actividad_comercial_declarante",
     "equipaje_reportado_perdido", "coincide_con_checkin"
 ]
-
 for col in bool_cols:
     df[col] = df[col].map({"True": True, "False": False})
 
@@ -33,7 +34,6 @@ int_cols = [
     "dias_desde_ultimo_siniestro", "cantidad_cambios_aseguradora",
     "tipo_cliente", "antiguedad_como_cliente_meses"
 ]
-
 for col in int_cols:
     df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
 
@@ -54,10 +54,16 @@ for xi, yi in zip(X.to_dict(orient="records"), y):
 
 print(f"\n✅ Entrenamiento completo. Accuracy: {metric.get():.4f}")
 
-# 7. Guardar modelo (solo metadatos y configuración)
+# 7. Guardar modelo real con Pickle
 output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../modelo"))
 os.makedirs(output_path, exist_ok=True)
 
+with open(os.path.join(output_path, "modelo_fraude_river.pkl"), "wb") as f:
+    pickle.dump(modelo, f)
+
+print("✅ Modelo real guardado como /modelo/modelo_fraude_river.pkl")
+
+# 8. Guardar metadatos en JSON (opcional)
 modelo_dict = {
     "modelo_class": modelo.__class__.__name__,
     "metadata": {
@@ -66,8 +72,7 @@ modelo_dict = {
         "descripcion": "Modelo entrenado con dataset de 1000 filas (columnas convertidas)"
     }
 }
-
 with open(os.path.join(output_path, "modelo_fraude_river.json"), "w") as f:
     json.dump(modelo_dict, f, indent=2)
 
-print("📦 Modelo guardado en /modelo/modelo_fraude_river.json")
+print("📦 Metadatos guardados en /modelo/modelo_fraude_river.json")

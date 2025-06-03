@@ -1,6 +1,8 @@
 {
   "modelo_class": "BaggingClassifier",
   "metadata": {
-    "descripcion": "Modelo actualizado en /reentrenar"
+    "accuracy": 0.7144948755490483,
+    "n_models": 10,
+    "descripcion": "Modelo entrenado con dataset de 1000 filas (columnas convertidas)"
   }
 }
