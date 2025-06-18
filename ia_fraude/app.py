@@ -6,8 +6,18 @@ from modelos.modelo_watcher import iniciar_watcher
 from utils.schema import EvaluacionInput
 from utils.validadores import validar_input
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(title="ERS - IA Microservicio River", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],  # O ["*"] para pruebas
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite POST, GET, OPTIONS, etc.
+    allow_headers=["*"]   # Permite cualquier header como Content-Type
+)
 
 @app.post("/evaluar")
 async def evaluar(input_data: EvaluacionInput):

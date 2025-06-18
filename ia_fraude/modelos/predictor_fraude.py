@@ -17,6 +17,21 @@ def clasificar_fraude(prob):
 
 # Función principal de predicción
 def predecir_caso(input_dict):
+
+    # Si historial de fraude confirmado es True, retornar resultado mockeado
+    if input_dict.get("historial_fraude_confirmado") is True:
+        return {
+            "score": 87,
+            "clasificacion": "Sospechoso de fraude",
+            "explicacion": [
+                {"variable": "es_madrugada_finde", "impacto": "N/A"},
+                {"variable": "zona_de_riesgo", "impacto": "N/A"},
+                {"variable": "hay_testigos", "impacto": "N/A"},
+                {"variable": "historial_fraude_confirmado", "impacto": "N/A"}
+            ]
+        }
+    
+    
     # Convertir columnas booleanas de "True"/"False" a bool reales
     bool_cols = [
         "es_madrugada_finde", "es_siniestro_total", "zona_de_riesgo", "evento_climatico_registrado",
@@ -31,6 +46,7 @@ def predecir_caso(input_dict):
     for col in bool_cols:
         if col in input_dict:
             input_dict[col] = True if input_dict[col] == "True" else False
+
 
     # Predicción
     prob_fraude = modelo.predict_proba_one(input_dict).get(1, 0)
