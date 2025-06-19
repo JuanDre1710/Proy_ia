@@ -1,50 +1,20 @@
-from predictor_fraude import evaluar_caso
+from predictor_fraude import predecir_caso
 
 # Diccionario con todas las columnas requeridas por el modelo
 input_data = {
-    "months_as_customer": 84,
-    "age": 45,
-    "policy_state": "OH",
-    "policy_csl": "250/500",
-    "policy_deductable": 500,
-    "policy_annual_premium": 1050.75,
-    "umbrella_limit": 2000000,
-    "insured_zip": 12345,
-    "insured_sex": "MALE",
-    "insured_education_level": "Bachelor",
-    "insured_occupation": "engineer",
-    "insured_hobbies": "chess",
-    "insured_relationship": "husband",
-    "capital-gains": 0,
-    "capital-loss": 0,
-    "incident_type": "Collision",
-    "collision_type": "Rear Collision",
-    "incident_severity": "Major Damage",
-    "authorities_contacted": "Police",
-    "incident_state": "NY",
-    "incident_city": "New York",
-    "incident_location": "123 Main St",
-    "incident_hour_of_the_day": 14,
-    "number_of_vehicles_involved": 2,
-    "property_damage": "YES",
-    "bodily_injuries": 1,
-    "witnesses": 2,
-    "police_report_available": "YES",
-    "total_claim_amount": 25000,
-    "injury_claim": 5000,
-    "property_claim": 7000,
-    "vehicle_claim": 13000,
-    "auto_make": "Toyota",
-    "auto_model": "Camry",
-    "auto_year": 2015,
-    "anio": 2020,
-    "mes": 5,
-    "dia": 10,
-    "dia_semana": 0  # 0 = Lunes
-}
+    "cliente_id": 200099, "tipo_siniestro": 0, "monto_reclamado": 9400000, "cantidad_siniestros_previos": 5,
+    "dias_desde_ultimo_siniestro": 4, "dias_entre_siniestro_y_denuncia": 12, "dias_hasta_fin_poliza": 5, "estado_bien": 2,
+    "imagenes_adjuntas": 0, "imagenes_sospechosas": 1, "denuncia_policial": 0,
+    "presencia_acelerantes": 1, "ubicacion_inconsistente_con_destino": 1,
+    "evento_climatico_registrado": 0, "hay_testigo": 0, "zona_de_riesgo": 0,
+    "peritaje_realizado": 0, "peritaje_congruente": 0,
+    "proveedor_repetido": 1, "perito_repetido": 0, "testigo_repetido": 1,
+    "direccion_repetida_con_otro_cliente": 1, "telefono_repetido_con_otro_cliente": 1,
+    "historial_fraude_confirmado": 0
+  }
 
 # Ejecutar evaluación
-resultado = evaluar_caso(input_data)
+resultado = predecir_caso(input_data)
 
 # Mostrar resultado
 print("\n🧠 Resultado de la IA:")

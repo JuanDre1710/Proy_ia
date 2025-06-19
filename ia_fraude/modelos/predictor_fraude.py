@@ -15,9 +15,24 @@ def clasificar_fraude(prob):
     else:
         return "Sospechoso de fraude"
 
-# Función principal de predicción
+# Calcular impacto
+def calcular_impacto(variable, valor):
+    try:
+        for learner in modelo.learners:
+            stats = learner._root.stats
+            if variable in stats and hasattr(stats[variable], 'mean'):
+                media = stats[variable].mean.get()
+                varianza = stats[variable].var.get()
+                if varianza > 0:
+                    distancia = abs(valor - media)
+                    if distancia > 2 * (varianza ** 0.5):
+                        return "Valor inusual"
+        return "Normal"
+    except:
+        return "N/A"
+
 def predecir_caso(input_dict):
-    # Convertir columnas booleanas de "True"/"False" a bool reales
+    # Convertir columnas booleanas de string a bool
     bool_cols = [
         "es_madrugada_finde", "es_siniestro_total", "zona_de_riesgo", "evento_climatico_registrado",
         "ubicacion_inconsistente_con_destino", "peritaje_realizado", "peritaje_congruente",
@@ -37,12 +52,18 @@ def predecir_caso(input_dict):
     score = int(prob_fraude * 100)
     clasificacion = clasificar_fraude(prob_fraude)
 
-    # Explicación simple (River no tiene feature_importances_)
-    top_vars = list(input_dict.keys())[:3]
-    explicacion = [{"variable": v, "impacto": "N/A"} for v in top_vars]
+    # Explicación con impacto heurístico
+    explicacion = []
+    for variable, valor in input_dict.items():
+        impacto = calcular_impacto(variable, valor)
+        explicacion.append({"variable": variable, "impacto": impacto})
+
+    explicacion_filtrada = [e for e in explicacion if e["impacto"] != "N/A"][:3]
+    if not explicacion_filtrada:
+        explicacion_filtrada = explicacion[:3]
 
     return {
         "score": score,
         "clasificacion": clasificacion,
-        "explicacion": explicacion
+        "explicacion": explicacion_filtrada
     }
