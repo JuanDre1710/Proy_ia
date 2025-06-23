@@ -13,10 +13,10 @@ app = FastAPI(title="ERS - IA Microservicio River", version="1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  # O ["*"] para pruebas
+    allow_origins=["http://localhost:4200"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Permite POST, GET, OPTIONS, etc.
-    allow_headers=["*"]   # Permite cualquier header como Content-Type
+    allow_methods=["*"],  
+    allow_headers=["*"]   
 )
 
 @app.post("/evaluar")

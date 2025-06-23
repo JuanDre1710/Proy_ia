@@ -16,42 +16,31 @@ def clasificar_fraude(prob):
         return "Sospechoso de fraude"
 
 # Calcular impacto
+
+
 def calcular_impacto(variable, valor):
-    try:
-        for learner in modelo.learners:
-            stats = learner._root.stats
-            if variable in stats and hasattr(stats[variable], 'mean'):
-                media = stats[variable].mean.get()
-                varianza = stats[variable].var.get()
-                if varianza > 0:
-                    distancia = abs(valor - media)
-                    if distancia > 2 * (varianza ** 0.5):
-                        return "Valor inusual"
-        return "Normal"
-    except:
-        return "N/A"
+    reglas_alerta = {
+        "zona_de_riesgo": lambda v: "Alerta de riesgo" if v is True else None,
+        "gps_desactivado": lambda v: "Alerta de riesgo" if v is True else None,
+        "imagenes_sospechosas": lambda v: "Alerta de riesgo" if v is True else None,
+        "presencia_acelerantes": lambda v: "Alerta de riesgo" if v is True else None,
+        "antiguedad_como_cliente_meses": lambda v: "Muy reciente" if isinstance(v, int) and v < 3 else None,
+        "antiguedad_bien_en_anios": lambda v: "Bien nuevo" if isinstance(v, int) and v < 1 else None,
+        "monto_reclamado": lambda v: "Monto elevado" if isinstance(v, (int, float)) and v > 100000 else None,
+        "cantidad_siniestros_previos": lambda v: "Reincidencia" if isinstance(v, int) and v > 3 else None,
+    }
+
+    regla = reglas_alerta.get(variable)
+    if regla:
+        resultado = regla(valor)
+        if resultado:
+            return resultado
+
+    return "Normal"
+
 
 def predecir_caso(input_dict):
-#<<<<<<< HEAD
-    # Convertir columnas booleanas de string a bool
-#=======
 
-    # Si historial de fraude confirmado es True, retornar resultado mockeado
-#    if input_dict.get("historial_fraude_confirmado") is True:
-#        return {
-#            "score": 87,
-#            "clasificacion": "Sospechoso de fraude",
-#            "explicacion": [
-#                {"variable": "es_madrugada_finde", "impacto": "N/A"},
-#                {"variable": "zona_de_riesgo", "impacto": "N/A"},
-#                {"variable": "hay_testigos", "impacto": "N/A"},
-#                {"variable": "historial_fraude_confirmado", "impacto": "N/A"}
-#            ]
-#        }
-    
-    
-    # Convertir columnas booleanas de "True"/"False" a bool reales
-#>>>>>>> 465ebbd4d3fbed5fa6b5469ad255d0bc5bdcb4c3
     bool_cols = [
         "es_madrugada_finde", "es_siniestro_total", "zona_de_riesgo", "evento_climatico_registrado",
         "ubicacion_inconsistente_con_destino", "peritaje_realizado", "peritaje_congruente",
@@ -74,7 +63,7 @@ def predecir_caso(input_dict):
 
     # Explicación con impacto heurístico
     explicacion = []
-    for variable, valor in input_dict.items():
+    for variable, valor in sorted(input_dict.items()):
         impacto = calcular_impacto(variable, valor)
         explicacion.append({"variable": variable, "impacto": impacto})
 
