@@ -1,11 +1,11 @@
-#  ERS - Microservicio de IA para Detección de Fraude
+#  ERS - Modulo de IA para Detección de Fraude
 
-Este microservicio implementa una API REST desarrollada en **FastAPI** que utiliza un modelo de aprendizaje incremental (online) basado en **River** para detectar posibles fraudes en siniestros asegurables. Forma parte del sistema ERS (Evaluador de Riesgo de Siniestros).
+Este modulo implementa una API REST desarrollada en **FastAPI** que utiliza un modelo de aprendizaje incremental (online) basado en **River** para detectar posibles fraudes en siniestros asegurables. Forma parte del sistema ERS (Evaluador de Riesgo de Siniestros).
 
 ## Estructura del Proyecto
 
 ia_fraude/
-├── app.py # Microservicio principal (FastAPI)
+├── app.py # Modulo principal (FastAPI)
 ├── modelos/
 │ ├── predictor_fraude.py # Predicción y scoring de fraude
 │ ├── modelo_memoria.py # Carga del modelo desde .pkl
@@ -24,7 +24,7 @@ modelo/
 
 ## ¿Qué hace?
 
-El microservicio proporciona dos endpoints clave:
+El modulo proporciona dos endpoints clave:
 
 ### 1. `/evaluar` → **Predice si un caso es fraudulento**
     - Calcula un **score** de 0 a 100
@@ -54,7 +54,7 @@ Las explicaciones se generan con reglas heurísticas predefinidas (por ejemplo, 
 
 ## Requisitos y Librerías
 
-Este microservicio depende de las siguientes librerías clave:
+Este modulo depende de las siguientes librerías clave:
 
 | Librería       | Función                                                                 |
 |----------------|------------------------------------------------------------------------|
@@ -104,6 +104,50 @@ Para /reentrenar:
   "cantidad_siniestros_previos": 5,
   "fraude_confirmado": 1
 }
+
+---
+
+## ¿Cómo se entrena?
+
+El modelo de IA esta entrenado en un principio con un dataset historico con casos de fraude y patrones ("daatset_entrenamiento_corregido.xlsx") con columnas convertidas en (bool, int, float) que la IA analiza y despues reproduce en el analisis de los arreglos que le pasemos. Este entrenamiento se guarda en el "modelos_fraude_river.pkl" y se actualiza por cada vez que utilizamos la función del endpoint.
+
+A su vez al estar programado con las librerias de River, nos permite un entrenamiento más enfocado a las alertas que la IA deberia interpretar o ponerle el foco de atención, con la función de reentrenar del endpoint podemos pasar arreglos personalizados donde la alerta este bien clara.
+Ej: {
+    "cliente_id": 1000,
+    "tipo_siniestro": 0,
+    "cantidad_siniestros_previos": 10,
+    "fraude_confirmado": 1
+    }
+Este ejemplo busca resaltar una alerta cuando se vea que la cantidad de siniestros previos de este cliente sea muy elevada.
+
+---
+
+## Observaciones
+
+1. El modulo no requiere de una base de datos, es standlone.
+2. Es totalmente compatible con fronteds de Angular, React, etc.
+3. Diseño modular y escalable.
+
+Todas estas observaciones reflejan que el modulo puede trabajar por su cuenta pero con la integracion de un Backend para eficientizar su utilidad, mejora el modulo.
+
+---
+
+## Control
+
+El modulo esta en constante funcionamiento mientras este levantado el host del endopoint y a su vez se reentrena constantemente con arreglos que se le pasa. Por eso la implementación de un backend que automatice todo esto lo hace mucho mas eficiente.
+Para ello el modulo cuenta con una funcion de watchdog, que se mantiene alerta a alguna llamada a la API y de cualquier cambio que surja en el modelo entrenado.
+
+---
+
+## Adicionales
+
+- "modelo_memoria.py": Guarda e importa el modelo de IA entreando para ponerlo en funcionamiento. (No es necesario del todo).
+
+- "test.py": Con predictor_fraude.py como funcion principal del MS este script permite hacer pruebas del analisis que esta haciendo la IA con arreglos en formato JSON.
+
+- "schemas.py": Refiere a los campos de variables que puede o no recibir el proceso de evalución de fraude o reentrenamiento de modelo.
+
+- "validadores.py": verifica que la informacion que se le esta pasando al endpoint sea valida. 
 
 ---
 
