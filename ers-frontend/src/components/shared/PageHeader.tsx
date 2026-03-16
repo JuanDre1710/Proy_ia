@@ -18,7 +18,9 @@ export function PageHeader({ title, subtitle, actions }: PageHeaderProps): JSX.E
       }}
     >
       <Box>
-        <Typography variant="h4">{title}</Typography>
+        <Typography variant="h4" sx={{ letterSpacing: '-0.02em' }}>
+          {title}
+        </Typography>
         <Typography color="text.secondary" sx={{ mt: 0.5 }}>
           {subtitle}
         </Typography>

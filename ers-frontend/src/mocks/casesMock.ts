@@ -88,6 +88,173 @@ export const mockCases: Record<string, CaseEvaluation> = {
       evaluatorRecommendation:
         'No aprobar en linea. Requerir validacion manual integral y contrastar documentacion con fuentes externas.'
     },
+    riskHeatmap: [
+      {
+        key: 'claim-frequency',
+        label: 'Frecuencia de siniestros',
+        value: '3 en 16 meses',
+        impactLevel: 'critical',
+        impactScore: 92,
+        description: 'La frecuencia supera el umbral operativo esperado.'
+      },
+      {
+        key: 'third-party-overlap',
+        label: 'Cruce con terceros',
+        value: 'Taller Delta',
+        impactLevel: 'high',
+        impactScore: 81,
+        description: 'Existe relacion con un proveedor observado en otros expedientes.'
+      },
+      {
+        key: 'debt-ratio',
+        label: 'Debt ratio',
+        value: '48%',
+        impactLevel: 'high',
+        impactScore: 76,
+        description: 'El endeudamiento se ubica cerca del umbral critico.'
+      },
+      {
+        key: 'identity',
+        label: 'Identidad verificada',
+        value: 'OK',
+        impactLevel: 'low',
+        impactScore: 18,
+        description: 'La validacion de identidad reduce incertidumbre base.'
+      }
+    ],
+    relationshipGraph: {
+      nodes: [
+        {
+          id: 'n-3011-persona',
+          label: 'Marina Salvatierra',
+          type: 'Persona',
+          riskLevel: 'high',
+          metadata: {
+            role: 'Titular',
+            x: 120,
+            y: 150,
+            summary: 'Persona evaluada',
+            localidad: 'Caballito'
+          }
+        },
+        {
+          id: 'n-3011-taller',
+          label: 'Taller Delta',
+          type: 'Taller',
+          riskLevel: 'critical',
+          metadata: {
+            recurrencia: 'Alta',
+            x: 360,
+            y: 80,
+            source: 'Red de siniestros'
+          }
+        },
+        {
+          id: 'n-3011-abogado',
+          label: 'Estudio Funes',
+          type: 'Abogado',
+          riskLevel: 'medium',
+          metadata: {
+            coincidencias: 4,
+            x: 410,
+            y: 210,
+            source: 'Patrocinio compartido'
+          }
+        },
+        {
+          id: 'n-3011-claim-current',
+          label: 'SIN-1001',
+          type: 'Siniestro',
+          riskLevel: 'high',
+          metadata: {
+            estado: 'Observado',
+            x: 250,
+            y: 140,
+            monto: '$6.400.000'
+          }
+        },
+        {
+          id: 'n-3011-claim-old',
+          label: 'SIN-0901',
+          type: 'Siniestro',
+          riskLevel: 'medium',
+          metadata: {
+            estado: 'Rechazado',
+            x: 250,
+            y: 250,
+            motivo: 'Documentacion inconsistente'
+          }
+        },
+        {
+          id: 'n-3011-company',
+          label: 'Consultora SAS',
+          type: 'Empresa',
+          riskLevel: 'low',
+          metadata: {
+            vinculo: 'Actividad fiscal',
+            x: 100,
+            y: 285,
+            cuit: '30712345678'
+          }
+        },
+        {
+          id: 'n-3011-family',
+          label: 'Luciano Salvatierra',
+          type: 'Familiar',
+          riskLevel: 'medium',
+          metadata: {
+            relacion: 'Hermano',
+            x: 470,
+            y: 320,
+            actividad: 'Proveedor comercial'
+          }
+        }
+      ],
+      edges: [
+        {
+          id: 'e-3011-1',
+          source: 'n-3011-persona',
+          target: 'n-3011-claim-current',
+          relationshipType: 'Titular del siniestro',
+          severity: 'high'
+        },
+        {
+          id: 'e-3011-2',
+          source: 'n-3011-claim-current',
+          target: 'n-3011-taller',
+          relationshipType: 'Taller repetido',
+          severity: 'critical'
+        },
+        {
+          id: 'e-3011-3',
+          source: 'n-3011-claim-current',
+          target: 'n-3011-abogado',
+          relationshipType: 'Abogado compartido',
+          severity: 'high'
+        },
+        {
+          id: 'e-3011-4',
+          source: 'n-3011-persona',
+          target: 'n-3011-claim-old',
+          relationshipType: 'Siniestro previo sospechoso',
+          severity: 'medium'
+        },
+        {
+          id: 'e-3011-5',
+          source: 'n-3011-persona',
+          target: 'n-3011-company',
+          relationshipType: 'Vinculo societario',
+          severity: 'low'
+        },
+        {
+          id: 'e-3011-6',
+          source: 'n-3011-persona',
+          target: 'n-3011-family',
+          relationshipType: 'Relacion familiar/comercial',
+          severity: 'medium'
+        }
+      ]
+    },
     personalInfo: {
       fullName: 'Marina Veronica Salvatierra',
       document: '30111222',
@@ -206,6 +373,73 @@ export const mockCases: Record<string, CaseEvaluation> = {
       evaluatorRecommendation:
         'El caso puede seguir el circuito operativo normal sin escalamiento antifraude.'
     },
+    riskHeatmap: [
+      {
+        key: 'claim-history',
+        label: 'Historial de siniestros',
+        value: 'Bajo',
+        impactLevel: 'low',
+        impactScore: 21,
+        description: 'La recurrencia de eventos es normal para el segmento.'
+      },
+      {
+        key: 'financial-stability',
+        label: 'Estabilidad financiera',
+        value: 'Alta',
+        impactLevel: 'low',
+        impactScore: 19,
+        description: 'No se detectan tensiones significativas en el perfil financiero.'
+      },
+      {
+        key: 'entity-consistency',
+        label: 'Consistencia societaria',
+        value: 'Validada',
+        impactLevel: 'low',
+        impactScore: 14,
+        description: 'La documentacion societaria y fiscal es consistente.'
+      }
+    ],
+    relationshipGraph: {
+      nodes: [
+        {
+          id: 'n-2033-company',
+          label: 'Transporte Litoral SRL',
+          type: 'Empresa',
+          riskLevel: 'low',
+          metadata: { x: 160, y: 150, role: 'Titular' }
+        },
+        {
+          id: 'n-2033-claim',
+          label: 'SIN-1204',
+          type: 'Siniestro',
+          riskLevel: 'low',
+          metadata: { x: 320, y: 150, estado: 'Aprobado' }
+        },
+        {
+          id: 'n-2033-workshop',
+          label: 'Taller habilitado',
+          type: 'Taller',
+          riskLevel: 'low',
+          metadata: { x: 480, y: 150, status: 'Proveedor validado' }
+        }
+      ],
+      edges: [
+        {
+          id: 'e-2033-1',
+          source: 'n-2033-company',
+          target: 'n-2033-claim',
+          relationshipType: 'Titular del siniestro',
+          severity: 'low'
+        },
+        {
+          id: 'e-2033-2',
+          source: 'n-2033-claim',
+          target: 'n-2033-workshop',
+          relationshipType: 'Proveedor operativo',
+          severity: 'low'
+        }
+      ]
+    },
     personalInfo: {
       fullName: 'Transporte Litoral SRL',
       document: '20333444556',
@@ -317,6 +551,87 @@ export const mockCases: Record<string, CaseEvaluation> = {
       evaluatorRecommendation:
         'Solicitar soportes fiscales y confirmar razonabilidad economica antes de cerrar la decision.'
     },
+    riskHeatmap: [
+      {
+        key: 'income-consistency',
+        label: 'Consistencia ingreso-facturacion',
+        value: 'Media',
+        impactLevel: 'medium',
+        impactScore: 57,
+        description: 'La actividad declarada no explica totalmente el perfil financiero.'
+      },
+      {
+        key: 'income-volatility',
+        label: 'Volatilidad mensual',
+        value: 'Elevada',
+        impactLevel: 'medium',
+        impactScore: 54,
+        description: 'La variacion mensual reduce la confianza automatica.'
+      },
+      {
+        key: 'identity-contact',
+        label: 'Identidad y contacto',
+        value: 'Validados',
+        impactLevel: 'low',
+        impactScore: 24,
+        description: 'La informacion de identidad y contacto es consistente.'
+      }
+    ],
+    relationshipGraph: {
+      nodes: [
+        {
+          id: 'n-2712-persona',
+          label: 'Sandra Perez',
+          type: 'Persona',
+          riskLevel: 'medium',
+          metadata: { x: 120, y: 170, role: 'Titular' }
+        },
+        {
+          id: 'n-2712-claim',
+          label: 'SIN-1301',
+          type: 'Siniestro',
+          riskLevel: 'medium',
+          metadata: { x: 300, y: 170, estado: 'Observado' }
+        },
+        {
+          id: 'n-2712-lawyer',
+          label: 'Estudio Lopez',
+          type: 'Abogado',
+          riskLevel: 'medium',
+          metadata: { x: 470, y: 110, coincidencias: 2 }
+        },
+        {
+          id: 'n-2712-company',
+          label: 'Comercio minorista',
+          type: 'Empresa',
+          riskLevel: 'low',
+          metadata: { x: 470, y: 250, tipo: 'Actividad declarada' }
+        }
+      ],
+      edges: [
+        {
+          id: 'e-2712-1',
+          source: 'n-2712-persona',
+          target: 'n-2712-claim',
+          relationshipType: 'Titular del caso',
+          severity: 'medium'
+        },
+        {
+          id: 'e-2712-2',
+          source: 'n-2712-claim',
+          target: 'n-2712-lawyer',
+          relationshipType: 'Patrocinio compartido',
+          severity: 'medium'
+        },
+        {
+          id: 'e-2712-3',
+          source: 'n-2712-persona',
+          target: 'n-2712-company',
+          relationshipType: 'Relacion comercial',
+          severity: 'low'
+        }
+      ]
+    },
     personalInfo: {
       fullName: 'Sandra Luciana Perez',
       document: '27123456789',
@@ -427,6 +742,87 @@ export const mockCases: Record<string, CaseEvaluation> = {
       evaluatorRecommendation:
         'Tratar el expediente como critico. Congelar el flujo y activar protocolo antifraude con trazabilidad reforzada.'
     },
+    riskHeatmap: [
+      {
+        key: 'renaper-deceased',
+        label: 'Estado fallecido RENAPER',
+        value: 'Si',
+        impactLevel: 'critical',
+        impactScore: 100,
+        description: 'La señal mas severa del caso por identidad en estado fallecido.'
+      },
+      {
+        key: 'post-mortem-activity',
+        label: 'Actividad posterior',
+        value: 'Detectada',
+        impactLevel: 'critical',
+        impactScore: 94,
+        description: 'Existe actividad posterior al fallecimiento informado.'
+      },
+      {
+        key: 'economic-support',
+        label: 'Soporte economico',
+        value: 'Ausente',
+        impactLevel: 'high',
+        impactScore: 72,
+        description: 'No hay soporte laboral o fiscal que legitime el expediente.'
+      }
+    ],
+    relationshipGraph: {
+      nodes: [
+        {
+          id: 'n-2722-persona',
+          label: 'Ruben Molina',
+          type: 'Persona',
+          riskLevel: 'critical',
+          metadata: { x: 130, y: 160, status: 'Fallecido RENAPER' }
+        },
+        {
+          id: 'n-2722-claim',
+          label: 'SIN-1402',
+          type: 'Siniestro',
+          riskLevel: 'critical',
+          metadata: { x: 310, y: 160, estado: 'Observado' }
+        },
+        {
+          id: 'n-2722-third',
+          label: 'Solicitante tercero',
+          type: 'Familiar',
+          riskLevel: 'high',
+          metadata: { x: 490, y: 100, rol: 'Iniciador del reclamo' }
+        },
+        {
+          id: 'n-2722-medico',
+          label: 'Dr. Mena',
+          type: 'Medico',
+          riskLevel: 'medium',
+          metadata: { x: 490, y: 240, coincidencias: 3 }
+        }
+      ],
+      edges: [
+        {
+          id: 'e-2722-1',
+          source: 'n-2722-persona',
+          target: 'n-2722-claim',
+          relationshipType: 'Titular fallecido del caso',
+          severity: 'critical'
+        },
+        {
+          id: 'e-2722-2',
+          source: 'n-2722-third',
+          target: 'n-2722-claim',
+          relationshipType: 'Tercero solicitante',
+          severity: 'high'
+        },
+        {
+          id: 'e-2722-3',
+          source: 'n-2722-claim',
+          target: 'n-2722-medico',
+          relationshipType: 'Certificacion medica',
+          severity: 'medium'
+        }
+      ]
+    },
     personalInfo: {
       fullName: 'Ruben Osvaldo Molina',
       document: '27222333444',
@@ -529,6 +925,59 @@ export const mockCases: Record<string, CaseEvaluation> = {
       ],
       evaluatorRecommendation:
         'No tomar decision final. Priorizar recupero de informacion y relanzar la evaluacion cuando haya datos suficientes.'
+    },
+    riskHeatmap: [
+      {
+        key: 'data-coverage',
+        label: 'Cobertura de datos',
+        value: 'Baja',
+        impactLevel: 'critical',
+        impactScore: 88,
+        description: 'La falta de cobertura impide una clasificacion confiable.'
+      },
+      {
+        key: 'identity-validation',
+        label: 'Validacion de identidad',
+        value: 'Incompleta',
+        impactLevel: 'high',
+        impactScore: 73,
+        description: 'La identidad no pudo consolidarse con el nivel minimo esperado.'
+      },
+      {
+        key: 'fiscal-coverage',
+        label: 'Cobertura fiscal',
+        value: 'Sin datos',
+        impactLevel: 'high',
+        impactScore: 69,
+        description: 'No hay datos laborales ni fiscales vigentes para evaluar.'
+      }
+    ],
+    relationshipGraph: {
+      nodes: [
+        {
+          id: 'n-2799-case',
+          label: 'Caso parcial',
+          type: 'Persona',
+          riskLevel: 'high',
+          metadata: { x: 180, y: 150, status: 'Datos incompletos' }
+        },
+        {
+          id: 'n-2799-account',
+          label: 'Cuenta no validada',
+          type: 'Cuenta',
+          riskLevel: 'medium',
+          metadata: { x: 390, y: 150, cobertura: 'Incompleta' }
+        }
+      ],
+      edges: [
+        {
+          id: 'e-2799-1',
+          source: 'n-2799-case',
+          target: 'n-2799-account',
+          relationshipType: 'Relacion no consolidada',
+          severity: 'medium'
+        }
+      ]
     },
     personalInfo: {
       fullName: 'Caso con datos parciales',

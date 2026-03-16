@@ -7,32 +7,34 @@ import { SectionCard } from './SectionCard';
 
 interface StatusStateProps {
   status: UiStatus;
+  title?: string;
   message?: string;
+  action?: React.ReactNode;
 }
 
-export function StatusState({ status, message }: StatusStateProps): JSX.Element {
+export function StatusState({ status, title, message, action }: StatusStateProps): JSX.Element {
   const content =
     status === 'loading'
       ? {
           icon: <CircularProgress size={42} />,
-          title: 'Cargando analisis',
+          title: title || 'Cargando analisis',
           description: message || 'Consolidando senales de riesgo y antecedentes.'
         }
       : status === 'empty'
         ? {
             icon: <SearchOffRoundedIcon color="primary" sx={{ fontSize: 42 }} />,
-            title: 'Sin resultados',
+            title: title || 'Sin resultados',
             description: message || 'No se encontro informacion para el identificador consultado.'
           }
         : status === 'error'
           ? {
               icon: <ErrorRoundedIcon color="primary" sx={{ fontSize: 42 }} />,
-              title: 'Error de consulta',
+              title: title || 'Error de consulta',
               description: message || 'No se pudo completar la evaluacion.'
             }
           : {
               icon: <ShieldRoundedIcon color="primary" sx={{ fontSize: 42 }} />,
-              title: 'Esperando una consulta',
+              title: title || 'Esperando una consulta',
               description: message || 'Busca un DNI, CUIL o CUIT para visualizar el panel antifraude.'
             };
 
@@ -44,6 +46,7 @@ export function StatusState({ status, message }: StatusStateProps): JSX.Element 
         <Typography color="text.secondary" sx={{ maxWidth: 480 }}>
           {content.description}
         </Typography>
+        {action}
       </Stack>
     </SectionCard>
   );

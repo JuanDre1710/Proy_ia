@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { Button, Grid, Stack } from '@mui/material';
 import WestRoundedIcon from '@mui/icons-material/WestRounded';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getRouteTitle } from '../../components/layout/AppBreadcrumbs';
 import { PageHeader } from '../../components/shared/PageHeader';
+import { PageSkeleton } from '../../components/shared/PageSkeleton';
 import { StatusState } from '../../components/shared/StatusState';
 import { ApiState } from '../../models/domain';
 import { CaseEvaluation } from '../../models/cases';
@@ -16,6 +18,9 @@ import { PersonalInfoCard } from './components/PersonalInfoCard';
 import { RiskScoreCard } from './components/RiskScoreCard';
 import { AlertsPanel } from './components/AlertsPanel';
 import { AIExplanationPanel } from './components/AIExplanationPanel';
+import { RiskHeatmapCard } from './components/RiskHeatmapCard';
+import { RelationshipGraphCard } from './components/RelationshipGraphCard';
+import { ExportActionsCard } from './components/ExportActionsCard';
 
 export function CaseDashboardPage(): JSX.Element {
   const navigate = useNavigate();
@@ -28,6 +33,10 @@ export function CaseDashboardPage(): JSX.Element {
 
   useEffect(() => {
     let active = true;
+
+    if (caseId) {
+      document.title = getRouteTitle(`/cases/${caseId}`);
+    }
 
     const load = async (): Promise<void> => {
       if (!caseId) {
@@ -53,6 +62,10 @@ export function CaseDashboardPage(): JSX.Element {
     };
   }, [caseId]);
 
+  if (state.status === 'loading') {
+    return <PageSkeleton sections={4} />;
+  }
+
   return (
     <Stack spacing={3}>
       <PageHeader
@@ -66,11 +79,16 @@ export function CaseDashboardPage(): JSX.Element {
       />
 
       {state.status !== 'success' || !state.data ? (
-        <StatusState status={state.status} message={state.error ?? undefined} />
+        <StatusState
+          status={state.status}
+          title={state.status === 'empty' ? 'Caso no disponible' : undefined}
+          message={state.error ?? undefined}
+        />
       ) : (
         <>
           <CaseStatusBanner caseData={state.data} />
           <CaseHeaderSummary caseData={state.data} />
+          <ExportActionsCard evaluation={state.data} />
           <Grid container spacing={2}>
             <Grid item xs={12} xl={4}>
               <RiskScoreCard caseData={state.data} />
@@ -87,6 +105,11 @@ export function CaseDashboardPage(): JSX.Element {
               <AIExplanationPanel explanation={state.data.aiExplanation} />
             </Grid>
           </Grid>
+          <RiskHeatmapCard variables={state.data.riskHeatmap} />
+          <RelationshipGraphCard
+            nodes={state.data.relationshipGraph.nodes}
+            edges={state.data.relationshipGraph.edges}
+          />
           <Grid container spacing={2}>
             <Grid item xs={12} xl={6}>
               <FinancialInfoCard financialInfo={state.data.financialInfo} />

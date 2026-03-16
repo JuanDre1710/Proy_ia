@@ -16,4 +16,5 @@ export interface LoginRequest {
 export interface SessionState {
   authenticated: boolean;
   user: User | null;
+  expiresAt?: string;
 }

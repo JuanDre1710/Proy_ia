@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Alert, Chip, Grid, Stack } from '@mui/material';
+import { getRouteTitle } from '../../components/layout/AppBreadcrumbs';
 import { PageHeader } from '../../components/shared/PageHeader';
 import { StatusState } from '../../components/shared/StatusState';
 import { DailyLimitIndicator } from './components/DailyLimitIndicator';
@@ -9,6 +11,10 @@ import { useSearchFlow } from './hooks/useSearchFlow';
 export function SearchPage(): JSX.Element {
   const { flow, recentSearches, dailyUsage, validateInput, submitSearch, openRecentSearch } =
     useSearchFlow();
+
+  useEffect(() => {
+    document.title = getRouteTitle('/search');
+  }, []);
 
   return (
     <Stack spacing={3}>
@@ -41,7 +47,11 @@ export function SearchPage(): JSX.Element {
             {flow.status !== 'success' ? (
               <StatusState
                 status={flow.status}
-                message={flow.error ?? 'Busca un identificador para iniciar la evaluacion del caso.'}
+                title={flow.status === 'idle' ? 'Listo para evaluar un caso' : undefined}
+                message={
+                  flow.error ??
+                  'Busca un identificador valido para iniciar la evaluacion y abrir el dashboard del caso.'
+                }
               />
             ) : null}
           </Stack>

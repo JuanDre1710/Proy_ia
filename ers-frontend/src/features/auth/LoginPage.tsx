@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import {
   Alert,
   Box,
@@ -17,6 +17,8 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { useNavigate } from 'react-router-dom';
+import { getRouteTitle } from '../../components/layout/AppBreadcrumbs';
+import { authService } from '../../services/authService';
 import { useAuth } from '../../state/AuthContext';
 
 export function LoginPage(): JSX.Element {
@@ -26,15 +28,22 @@ export function LoginPage(): JSX.Element {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [sessionExpired, setSessionExpired] = useState(false);
+
+  useEffect(() => {
+    document.title = getRouteTitle('/login');
+    setSessionExpired(authService.consumeExpirationNotice());
+  }, []);
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
+    setError('');
     const success = login({ username, password });
     if (!success) {
       setError('Credenciales invalidas.');
       return;
     }
-    navigate('/dashboard');
+    navigate('/search');
   };
 
   return (
@@ -81,6 +90,11 @@ export function LoginPage(): JSX.Element {
           <Grid item xs={12} md={5}>
             <CardContent sx={{ p: 4 }}>
               <Stack component="form" gap={2} onSubmit={handleSubmit}>
+                {sessionExpired ? (
+                  <Alert severity="warning">
+                    La sesion mock expiro por inactividad. Vuelve a iniciar sesion para continuar.
+                  </Alert>
+                ) : null}
                 {error ? <Alert severity="error">{error}</Alert> : null}
                 <TextField
                   label="Usuario"

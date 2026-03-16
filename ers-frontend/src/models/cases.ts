@@ -12,6 +12,17 @@ export type AlertType =
   | 'Siniestros'
   | 'Conductual'
   | 'Integridad';
+export type NodeType =
+  | 'Persona'
+  | 'Empresa'
+  | 'Siniestro'
+  | 'Taller'
+  | 'Abogado'
+  | 'Medico'
+  | 'Testigo'
+  | 'Familiar'
+  | 'Cuenta';
+export type RelationshipSeverity = 'low' | 'medium' | 'high' | 'critical';
 
 export interface RiskScore {
   score: number;
@@ -45,6 +56,31 @@ export interface AIExplanation {
   executiveSummary: string;
   variables: ExplanationVariable[];
   evaluatorRecommendation: string;
+}
+
+export interface RiskVariableImpact {
+  key: string;
+  label: string;
+  value?: string | number;
+  impactLevel: 'low' | 'medium' | 'high' | 'critical';
+  impactScore?: number;
+  description?: string;
+}
+
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: NodeType;
+  riskLevel: RelationshipSeverity;
+  metadata: Record<string, string | number | boolean | undefined>;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  relationshipType: string;
+  severity: RelationshipSeverity;
 }
 
 export interface PersonalInfo {
@@ -99,6 +135,11 @@ export interface CaseEvaluation {
   riskScore: RiskScore;
   alerts: FraudAlert[];
   aiExplanation: AIExplanation;
+  riskHeatmap: RiskVariableImpact[];
+  relationshipGraph: {
+    nodes: GraphNode[];
+    edges: GraphEdge[];
+  };
   personalInfo: PersonalInfo;
   financialInfo: FinancialInfo;
   laborFiscalInfo: LaborFiscalInfo;

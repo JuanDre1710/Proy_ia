@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { LoginRequest, Role, SessionState } from '../models/auth';
 import { authService } from '../services/authService';
 
@@ -7,6 +7,7 @@ interface AuthContextValue {
   login: (request: LoginRequest) => boolean;
   logout: () => void;
   hasAnyRole: (roles: Role[]) => boolean;
+  refreshSession: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -14,12 +15,16 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [session, setSession] = useState<SessionState>(() => authService.getSession());
 
+  const refreshSession = (): void => {
+    setSession(authService.getSession());
+  };
+
   const login = (request: LoginRequest): boolean => {
     const user = authService.login(request);
     if (!user) {
       return false;
     }
-    setSession({ authenticated: true, user });
+    setSession(authService.getSession());
     return true;
   };
 
@@ -30,8 +35,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
 
   const hasAnyRole = (roles: Role[]): boolean => authService.hasAnyRole(session.user, roles);
 
+  useEffect(() => {
+    const handleFocus = (): void => {
+      refreshSession();
+    };
+
+    const interval = window.setInterval(() => {
+      refreshSession();
+    }, 30000);
+
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      window.clearInterval(interval);
+    };
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ session, login, logout, hasAnyRole }}>
+    <AuthContext.Provider value={{ session, login, logout, hasAnyRole, refreshSession }}>
       {children}
     </AuthContext.Provider>
   );

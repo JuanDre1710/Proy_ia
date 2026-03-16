@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Alert,
   AppBar,
   Avatar,
   Box,
@@ -18,9 +19,10 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TravelExploreRoundedIcon from '@mui/icons-material/TravelExploreRounded';
-import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../state/AuthContext';
+import { AppBreadcrumbs, getRouteTitle } from './AppBreadcrumbs';
 
 const drawerWidth = 290;
 
@@ -28,16 +30,16 @@ export function AppShell(): JSX.Element {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { session, hasAnyRole, logout } = useAuth();
   const navigate = useNavigate();
-  const canAccessAdmin = hasAnyRole(['Administrador', 'Supervisor']);
+  const location = useLocation();
+  const canAccessAdmin = hasAnyRole(['Administrador']);
+  const canAccessAudit = hasAnyRole(['Administrador', 'Supervisor']);
 
   const items = [
     { to: '/search', label: 'Busqueda', icon: <SearchRoundedIcon /> },
     { to: '/cases/30111222', label: 'Dashboard ejemplo', icon: <DashboardRoundedIcon /> },
+    ...(canAccessAudit ? [{ to: '/audit/logs', label: 'Auditoria', icon: <ReceiptLongRoundedIcon /> }] : []),
     ...(canAccessAdmin
-      ? [
-          { to: '/admin/thresholds', label: 'Umbrales', icon: <TuneRoundedIcon /> },
-          { to: '/admin/logs', label: 'Logs', icon: <ReceiptLongRoundedIcon /> }
-        ]
+      ? [{ to: '/admin', label: 'Panel admin', icon: <AdminPanelSettingsRoundedIcon /> }]
       : [])
   ];
 
@@ -95,6 +97,10 @@ export function AppShell(): JSX.Element {
       </List>
     </Box>
   );
+
+  useEffect(() => {
+    document.title = getRouteTitle(location.pathname);
+  }, [location.pathname]);
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -166,7 +172,15 @@ export function AppShell(): JSX.Element {
         </Drawer>
       </Box>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 10 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 3 }, mt: 10 }}>
+        <Box sx={{ mb: 2 }}>
+          <AppBreadcrumbs />
+        </Box>
+        {session.expiresAt ? (
+          <Alert severity="info" sx={{ mb: 3 }}>
+            Sesion mock activa hasta {new Date(session.expiresAt).toLocaleTimeString()}.
+          </Alert>
+        ) : null}
         <Outlet />
       </Box>
     </Box>

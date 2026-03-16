@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { AccessDeniedPage } from '../features/errors/AccessDeniedPage';
 import { Role } from '../models/auth';
 import { useAuth } from '../state/AuthContext';
 
@@ -14,7 +15,7 @@ export function ProtectedRoute({ roles }: ProtectedRouteProps): JSX.Element {
   }
 
   if (roles && !hasAnyRole(roles)) {
-    return <Navigate to="/access-denied" replace />;
+    return <AccessDeniedPage />;
   }
 
   return <Outlet />;
