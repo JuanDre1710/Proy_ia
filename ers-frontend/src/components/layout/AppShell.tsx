@@ -20,16 +20,17 @@ import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TravelExploreRoundedIcon from '@mui/icons-material/TravelExploreRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../state/AuthContext';
 import { AppBreadcrumbs, getRouteTitle } from './AppBreadcrumbs';
+import { CordobaRiskMapDrawer } from './CordobaRiskMapDrawer';
 
 const drawerWidth = 290;
 
 export function AppShell(): JSX.Element {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [riskMapOpen, setRiskMapOpen] = useState(false);
   const { session, hasAnyRole, logout } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
   const canAccessAdmin = hasAnyRole(['Administrador']);
   const canAccessAudit = hasAnyRole(['Administrador', 'Supervisor']);
@@ -134,7 +135,7 @@ export function AppShell(): JSX.Element {
               {session.user?.role}
             </Typography>
           </Box>
-          <IconButton color="inherit" onClick={() => navigate('/search')}>
+          <IconButton color="inherit" onClick={() => setRiskMapOpen(true)} aria-label="Abrir mapa de riesgo de Cordoba">
             <TravelExploreRoundedIcon />
           </IconButton>
           <IconButton color="inherit" onClick={logout}>
@@ -183,6 +184,8 @@ export function AppShell(): JSX.Element {
         ) : null}
         <Outlet />
       </Box>
+
+      <CordobaRiskMapDrawer open={riskMapOpen} onClose={() => setRiskMapOpen(false)} />
     </Box>
   );
 }
