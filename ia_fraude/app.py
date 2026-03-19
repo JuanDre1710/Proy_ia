@@ -5,6 +5,7 @@ from modelos.entrenador_fraude import entrenar_caso
 from modelos.modelo_watcher import iniciar_watcher
 from utils.schema import EvaluacionInput
 from utils.validadores import validar_input
+from api.integration_routes import router as integration_router
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -13,11 +14,13 @@ app = FastAPI(title="ERS - IA Microservicio River", version="1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],  
+    allow_origins=["http://localhost:4200", "http://localhost:5173"],  
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"]   
 )
+
+app.include_router(integration_router)
 
 @app.post("/evaluar")
 async def evaluar(input_data: EvaluacionInput):

@@ -21,6 +21,8 @@ export interface ActiveRule {
 
 export interface IntegrationStatus {
   id: string;
+  code?: string;
+  providerType?: 'IDENTITY' | 'FINANCIAL' | 'RELATIONSHIP' | 'DOCUMENT';
   name: string;
   type: 'API REST' | 'Webhook' | 'Batch' | 'Base de datos';
   status: 'Operativa' | 'Degradada' | 'Fuera de linea';
@@ -29,6 +31,11 @@ export interface IntegrationStatus {
   detail: string;
   endpoint?: string;
   authType?: 'API Key' | 'OAuth2' | 'Basic' | 'Ninguna';
+  timeoutMs?: number;
+  retries?: number;
+  enabled?: boolean;
+  secretConfigured?: boolean;
+  metadata?: Record<string, unknown>;
 }
 
 export interface SystemSetting {

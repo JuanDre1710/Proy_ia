@@ -1,0 +1,98 @@
+from enum import Enum
+
+
+class DocumentType(str, Enum):
+    DNI = "DNI"
+    CUIL = "CUIL"
+    CUIT = "CUIT"
+    PASSPORT = "PASSPORT"
+    UNKNOWN = "UNKNOWN"
+
+
+class IdentityLifecycleStatus(str, Enum):
+    VERIFIED = "VERIFIED"
+    UNVERIFIED = "UNVERIFIED"
+    DECEASED = "DECEASED"
+    INCONSISTENT = "INCONSISTENT"
+    NOT_FOUND = "NOT_FOUND"
+    INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
+
+
+class EvidenceSourceType(str, Enum):
+    IDENTITY = "IDENTITY"
+    FINANCIAL = "FINANCIAL"
+    LABOR_FISCAL = "LABOR_FISCAL"
+    RELATIONSHIP = "RELATIONSHIP"
+    DOCUMENT = "DOCUMENT"
+    INTERNAL_RULE = "INTERNAL_RULE"
+    MANUAL_REVIEW = "MANUAL_REVIEW"
+    SYSTEM = "SYSTEM"
+
+
+class EvidenceQuality(str, Enum):
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+    UNKNOWN = "UNKNOWN"
+
+
+class AlertSeverity(str, Enum):
+    INFO = "INFO"
+    WARNING = "WARNING"
+    CRITICAL = "CRITICAL"
+
+
+class RiskCategory(str, Enum):
+    NORMAL = "NORMAL"
+    REQUIRES_REVIEW = "REQUIRES_REVIEW"
+    FRAUD_SUSPECT = "FRAUD_SUSPECT"
+    NOT_EVALUABLE = "NOT_EVALUABLE"
+
+
+class RecommendationType(str, Enum):
+    APPROVE = "APPROVE"
+    REVIEW = "REVIEW"
+    DENY = "DENY"
+    ESCALATE = "ESCALATE"
+    REQUEST_MORE_INFORMATION = "REQUEST_MORE_INFORMATION"
+    BLOCK = "BLOCK"
+
+
+class DecisionStatus(str, Enum):
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    DENIED = "DENIED"
+    ESCALATED = "ESCALATED"
+    CANCELLED = "CANCELLED"
+
+
+class AuditActionType(str, Enum):
+    AUTH_LOGIN = "AUTH_LOGIN"
+    AUTH_LOGOUT = "AUTH_LOGOUT"
+    CASE_EVALUATED = "CASE_EVALUATED"
+    CASE_DECISION_RECORDED = "CASE_DECISION_RECORDED"
+    EXPORT_REQUESTED = "EXPORT_REQUESTED"
+    ADMIN_CONFIGURATION_CHANGED = "ADMIN_CONFIGURATION_CHANGED"
+    INTEGRATION_CONFIGURATION_CHANGED = "INTEGRATION_CONFIGURATION_CHANGED"
+
+
+class AuditResultType(str, Enum):
+    OK = "OK"
+    OBSERVED = "OBSERVED"
+    BLOCKED = "BLOCKED"
+    ERROR = "ERROR"
+
+
+class ProviderType(str, Enum):
+    IDENTITY = "IDENTITY"
+    FINANCIAL = "FINANCIAL"
+    RELATIONSHIP = "RELATIONSHIP"
+    DOCUMENT = "DOCUMENT"
+
+
+class IntegrationStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    DEGRADED = "DEGRADED"
+    DISABLED = "DISABLED"
+    TESTING = "TESTING"
+

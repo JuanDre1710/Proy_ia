@@ -5,11 +5,11 @@ import { getRouteTitle } from '../../components/layout/AppBreadcrumbs';
 import { PageSkeleton } from '../../components/shared/PageSkeleton';
 import { PageHeader } from '../../components/shared/PageHeader';
 import { StatusState } from '../../components/shared/StatusState';
-import { AdminPanelData } from '../../models/admin';
+import { AdminPanelData, IntegrationStatus } from '../../models/admin';
 import { adminService } from '../../services/adminService';
 import { useAuth } from '../../state/AuthContext';
 import { ExportSettingsCard } from './components/ExportSettingsCard';
-import { AddIntegrationCard } from './components/AddIntegrationCard';
+import { AddIntegrationCard, AddIntegrationFormValues } from './components/AddIntegrationCard';
 import { AddRuleCard } from './components/AddRuleCard';
 import { IntegrationStatusCard } from './components/IntegrationStatusCard';
 import { RulesSummaryCard } from './components/RulesSummaryCard';
@@ -26,6 +26,8 @@ type SavingState = Record<'thresholds' | 'systemSettings' | 'exportSettings' | '
 export function AdminPage(): JSX.Element {
   const { session } = useAuth();
   const [data, setData] = useState<AdminPanelData | null>(null);
+  const [editingIntegration, setEditingIntegration] = useState<IntegrationStatus | null>(null);
+  const [integrationActionLoadingId, setIntegrationActionLoadingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState<SavingState>({
@@ -88,6 +90,24 @@ export function AdminPage(): JSX.Element {
     return <StatusState status="error" message={error ?? 'No hay datos administrativos disponibles.'} />;
   }
 
+  const integrationFormValue: AddIntegrationFormValues | null = editingIntegration
+    ? {
+        code: editingIntegration.code ?? '',
+        providerType: editingIntegration.providerType ?? 'IDENTITY',
+        name: editingIntegration.name,
+        type: editingIntegration.type,
+        status: editingIntegration.status,
+        endpoint: editingIntegration.endpoint ?? '',
+        authType: editingIntegration.authType ?? 'API Key',
+        timeoutMs: editingIntegration.timeoutMs ?? 5000,
+        retries: editingIntegration.retries ?? 0,
+        enabled: editingIntegration.enabled === false ? 'false' : 'true',
+        secretRef: editingIntegration.secretConfigured ? 'configured-secret' : '',
+        detail: editingIntegration.detail,
+        metadataJson: JSON.stringify(editingIntegration.metadata ?? {}, null, 2)
+      }
+    : null;
+
   return (
     <Stack spacing={3}>
       <PageHeader
@@ -147,20 +167,121 @@ export function AdminPage(): JSX.Element {
           <AddIntegrationCard
             loading={saving.integrations}
             feedback={feedback.integrations}
+            initialValue={integrationFormValue}
+            submitLabel={editingIntegration ? 'Actualizar integracion' : 'Agregar integracion'}
+            onCancelEdit={() => setEditingIntegration(null)}
             onSubmit={async (value) => {
               await withSaving('integrations', async () => {
-                const integrations = await adminService.addIntegration(value, session.user);
+                const metadata = (() => {
+                  try {
+                    return value.metadataJson?.trim() ? JSON.parse(value.metadataJson) : {};
+                  } catch {
+                    throw new Error('Metadata JSON invalido.');
+                  }
+                })();
+
+                const payload = {
+                  code: value.code,
+                  providerType: value.providerType,
+                  name: value.name,
+                  type: value.type,
+                  status: value.status,
+                  endpoint: value.endpoint,
+                  authType: value.authType,
+                  timeoutMs: value.timeoutMs,
+                  retries: value.retries,
+                  enabled: value.enabled === 'true',
+                  secretConfigured: !!value.secretRef?.trim(),
+                  detail: value.detail,
+                  metadata
+                };
+
+                const integrations = editingIntegration
+                  ? await adminService.updateIntegration(editingIntegration.id, payload, session.user)
+                  : await adminService.addIntegration(payload, session.user);
                 setData((current) => (current ? { ...current, integrations } : current));
                 setFeedback((current) => ({
                   ...current,
-                  integrations: { type: 'success', message: 'Integracion externa agregada correctamente.' }
+                  integrations: {
+                    type: 'success',
+                    message: editingIntegration
+                      ? 'Integracion externa actualizada correctamente.'
+                      : 'Integracion externa agregada correctamente.'
+                  }
                 }));
+                setEditingIntegration(null);
               });
             }}
           />
         </Grid>
         <Grid item xs={12}>
-          <IntegrationStatusCard integrations={data.integrations} loading={loading} />
+          <IntegrationStatusCard
+            integrations={data.integrations}
+            loading={loading}
+            actionLoadingId={integrationActionLoadingId}
+            onEdit={(integration) => setEditingIntegration(integration)}
+            onToggleEnabled={async (integration) => {
+              setIntegrationActionLoadingId(integration.id);
+              try {
+                const updated = await adminService.toggleIntegrationEnabled(
+                  integration.id,
+                  integration.enabled === false,
+                  session.user
+                );
+                setData((current) =>
+                  current
+                    ? {
+                        ...current,
+                        integrations: current.integrations.map((item) =>
+                          item.id === integration.id ? updated : item
+                        )
+                      }
+                    : current
+                );
+                setFeedback((current) => ({
+                  ...current,
+                  integrations: {
+                    type: 'success',
+                    message:
+                      updated.enabled === false
+                        ? 'Integracion deshabilitada correctamente.'
+                        : 'Integracion habilitada correctamente.'
+                  }
+                }));
+              } catch (_error) {
+                setFeedback((current) => ({
+                  ...current,
+                  integrations: { type: 'error', message: 'No se pudo actualizar el estado de la integracion.' }
+                }));
+              } finally {
+                setIntegrationActionLoadingId(null);
+              }
+            }}
+            onTestConnectivity={async (integration) => {
+              setIntegrationActionLoadingId(integration.id);
+              try {
+                const result = await adminService.testIntegrationConnectivity(integration.id, session.user);
+                const refreshed = await adminService.getAdminPanelData();
+                setData(refreshed);
+                setFeedback((current) => ({
+                  ...current,
+                  integrations: {
+                    type: result.success ? 'success' : 'error',
+                    message: result.success
+                      ? `Prueba de conectividad OK${result.latencyMs ? ` (${result.latencyMs} ms)` : ''}.`
+                      : `Conectividad observada: ${result.message}`
+                  }
+                }));
+              } catch (_error) {
+                setFeedback((current) => ({
+                  ...current,
+                  integrations: { type: 'error', message: 'No se pudo probar la conectividad.' }
+                }));
+              } finally {
+                setIntegrationActionLoadingId(null);
+              }
+            }}
+          />
         </Grid>
         <Grid item xs={12} lg={6}>
           <SystemSettingsCard

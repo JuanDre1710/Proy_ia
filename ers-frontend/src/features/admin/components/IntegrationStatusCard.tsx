@@ -1,14 +1,28 @@
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded';
 import SyncRoundedIcon from '@mui/icons-material/SyncRounded';
-import { Chip, Grid, LinearProgress, Stack, Typography } from '@mui/material';
+import WifiTetheringRoundedIcon from '@mui/icons-material/WifiTetheringRounded';
+import { Button, Chip, Grid, LinearProgress, Stack, Typography } from '@mui/material';
 import { IntegrationStatus } from '../../../models/admin';
 import { SectionCard } from '../../../components/shared/SectionCard';
 
 interface IntegrationStatusCardProps {
   integrations: IntegrationStatus[];
   loading: boolean;
+  actionLoadingId?: string | null;
+  onEdit?: (integration: IntegrationStatus) => void;
+  onToggleEnabled?: (integration: IntegrationStatus) => Promise<void>;
+  onTestConnectivity?: (integration: IntegrationStatus) => Promise<void>;
 }
 
-export function IntegrationStatusCard({ integrations, loading }: IntegrationStatusCardProps): JSX.Element {
+export function IntegrationStatusCard({
+  integrations,
+  loading,
+  actionLoadingId,
+  onEdit,
+  onToggleEnabled,
+  onTestConnectivity
+}: IntegrationStatusCardProps): JSX.Element {
   return (
     <SectionCard title="Estado de integraciones" subtitle="Disponibilidad y latencia de fuentes externas">
       <Stack spacing={2}>
@@ -61,9 +75,40 @@ export function IntegrationStatusCard({ integrations, loading }: IntegrationStat
                     Auth: {integration.authType}
                   </Typography>
                 ) : null}
+                <Typography variant="caption" color="text.secondary">
+                  {integration.enabled === false ? 'Deshabilitada' : 'Habilitada'}
+                  {integration.code ? ` • ${integration.code}` : ''}
+                </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 'auto' }}>
                   Ultima sincronizacion: {new Date(integration.lastSyncAt).toLocaleString()}
                 </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap">
+                  {onEdit ? (
+                    <Button size="small" startIcon={<EditRoundedIcon />} onClick={() => onEdit(integration)}>
+                      Editar
+                    </Button>
+                  ) : null}
+                  {onToggleEnabled ? (
+                    <Button
+                      size="small"
+                      startIcon={<PowerSettingsNewRoundedIcon />}
+                      disabled={actionLoadingId === integration.id}
+                      onClick={() => void onToggleEnabled(integration)}
+                    >
+                      {integration.enabled === false ? 'Habilitar' : 'Deshabilitar'}
+                    </Button>
+                  ) : null}
+                  {onTestConnectivity ? (
+                    <Button
+                      size="small"
+                      startIcon={<WifiTetheringRoundedIcon />}
+                      disabled={actionLoadingId === integration.id}
+                      onClick={() => void onTestConnectivity(integration)}
+                    >
+                      Probar
+                    </Button>
+                  ) : null}
+                </Stack>
               </Stack>
             </Grid>
           ))}
