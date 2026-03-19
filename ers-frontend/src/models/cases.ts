@@ -4,6 +4,8 @@ export type CaseStatus =
   | 'Fallecido'
   | 'No evaluable'
   | 'En revision prioritaria';
+export type CaseResolutionStatus = 'Pendiente' | 'Aceptado' | 'Denegado';
+export type CaseDecisionAction = 'accept' | 'deny';
 export type AlertSeverity = 'success' | 'warning' | 'error' | 'info';
 export type AlertType =
   | 'RENAPER'
@@ -127,6 +129,12 @@ export interface ClaimRecord {
   notes: string;
 }
 
+export interface CaseResolution {
+  status: CaseResolutionStatus;
+  decidedAt?: string;
+  decidedBy?: string;
+}
+
 export interface CaseEvaluation {
   caseId: string;
   requestedAt: string;
@@ -144,4 +152,5 @@ export interface CaseEvaluation {
   financialInfo: FinancialInfo;
   laborFiscalInfo: LaborFiscalInfo;
   claimsHistory: ClaimRecord[];
+  resolution?: CaseResolution;
 }

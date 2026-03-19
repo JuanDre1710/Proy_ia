@@ -7,6 +7,7 @@
 
 ## Busqueda y evaluacion
 - Reemplazar `searchService` y `caseService` por endpoints reales de evaluacion y detalle de caso.
+- Conectar la resolucion manual del caso (`aceptar` / `denegar`) a un endpoint real con auditoria.
 - Normalizar codigos de error de negocio e integracion para mensajes uniformes en UI.
 - Persistir busquedas recientes y limites diarios desde backend.
 

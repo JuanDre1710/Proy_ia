@@ -7,7 +7,7 @@ import { PageHeader } from '../../components/shared/PageHeader';
 import { PageSkeleton } from '../../components/shared/PageSkeleton';
 import { StatusState } from '../../components/shared/StatusState';
 import { ApiState } from '../../models/domain';
-import { CaseEvaluation } from '../../models/cases';
+import { CaseDecisionAction, CaseEvaluation } from '../../models/cases';
 import { caseService } from '../../services/caseService';
 import { CaseHeaderSummary } from './components/CaseHeaderSummary';
 import { CaseStatusBanner } from './components/CaseStatusBanner';
@@ -21,6 +21,11 @@ import { AIExplanationPanel } from './components/AIExplanationPanel';
 import { RiskHeatmapCard } from './components/RiskHeatmapCard';
 import { RelationshipGraphCard } from './components/RelationshipGraphCard';
 import { ExportActionsCard } from './components/ExportActionsCard';
+import { CaseDecisionCard } from './components/CaseDecisionCard';
+
+function isDecisionEnabled(caseData: CaseEvaluation): boolean {
+  return caseData.riskScore.category !== 'Normal';
+}
 
 export function CaseDashboardPage(): JSX.Element {
   const navigate = useNavigate();
@@ -62,6 +67,27 @@ export function CaseDashboardPage(): JSX.Element {
     };
   }, [caseId]);
 
+  const handleDecision = async (action: CaseDecisionAction): Promise<void> => {
+    if (!caseId || state.status !== 'success' || !state.data) {
+      throw new Error('Case not loaded');
+    }
+
+    const result = await caseService.decideCase(caseId, action);
+
+    if (result.status !== 'success' || !result.data) {
+      throw new Error(result.error ?? 'No se pudo resolver el caso.');
+    }
+
+    setState({
+      status: 'success',
+      data: {
+        ...state.data,
+        resolution: result.data
+      },
+      error: null
+    });
+  };
+
   if (state.status === 'loading') {
     return <PageSkeleton sections={4} />;
   }
@@ -88,6 +114,9 @@ export function CaseDashboardPage(): JSX.Element {
         <>
           <CaseStatusBanner caseData={state.data} />
           <CaseHeaderSummary caseData={state.data} />
+          {isDecisionEnabled(state.data) ? (
+            <CaseDecisionCard caseData={state.data} onDecision={handleDecision} />
+          ) : null}
           <ExportActionsCard evaluation={state.data} />
           <Grid container spacing={2}>
             <Grid item xs={12} xl={4}>
