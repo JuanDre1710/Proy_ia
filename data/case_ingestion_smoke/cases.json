@@ -1,0 +1,734 @@
+[
+  {
+    "case_id": "30111222",
+    "created_at": "2026-03-20T15:39:34.791790",
+    "updated_at": "2026-03-20T15:39:34.791790",
+    "requested_by": "usr-eval",
+    "source_channel": "frontend",
+    "processing_state": "waiting_for_enrichment",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "missing_active_integrations"
+    },
+    "subject": {
+      "person_id": "30111222",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "DNI",
+      "document_number": "30111222",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.791790"
+    }
+  },
+  {
+    "case_id": "27123456789",
+    "created_at": "2026-03-20T15:39:34.796827",
+    "updated_at": "2026-03-20T15:39:34.796827",
+    "requested_by": "usr-eval",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "27123456789",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIL",
+      "document_number": "27123456789",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.796827"
+    }
+  },
+  {
+    "case_id": "ABC",
+    "created_at": "2026-03-20T15:39:34.801580",
+    "updated_at": "2026-03-20T15:39:34.801580",
+    "requested_by": "usr-eval",
+    "source_channel": "frontend",
+    "processing_state": "invalid_identifier",
+    "validation_results": {
+      "identifier": "invalid"
+    },
+    "subject": {
+      "person_id": "ABC",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "UNKNOWN",
+      "document_number": "ABC",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.801580"
+    }
+  },
+  {
+    "case_id": "30000000000",
+    "created_at": "2026-03-20T15:39:34.806280",
+    "updated_at": "2026-03-20T15:39:34.806280",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000000",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000000",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.806280"
+    }
+  },
+  {
+    "case_id": "30000000001",
+    "created_at": "2026-03-20T15:39:34.811350",
+    "updated_at": "2026-03-20T15:39:34.811350",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000001",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000001",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.811350"
+    }
+  },
+  {
+    "case_id": "30000000002",
+    "created_at": "2026-03-20T15:39:34.816302",
+    "updated_at": "2026-03-20T15:39:34.816302",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000002",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000002",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.816302"
+    }
+  },
+  {
+    "case_id": "30000000003",
+    "created_at": "2026-03-20T15:39:34.820241",
+    "updated_at": "2026-03-20T15:39:34.820241",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000003",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000003",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.820241"
+    }
+  },
+  {
+    "case_id": "30000000004",
+    "created_at": "2026-03-20T15:39:34.824800",
+    "updated_at": "2026-03-20T15:39:34.824800",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000004",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000004",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.824800"
+    }
+  },
+  {
+    "case_id": "30000000005",
+    "created_at": "2026-03-20T15:39:34.829679",
+    "updated_at": "2026-03-20T15:39:34.829679",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000005",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000005",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.829679"
+    }
+  },
+  {
+    "case_id": "30000000006",
+    "created_at": "2026-03-20T15:39:34.836042",
+    "updated_at": "2026-03-20T15:39:34.836042",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000006",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000006",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.836042"
+    }
+  },
+  {
+    "case_id": "30000000007",
+    "created_at": "2026-03-20T15:39:34.843228",
+    "updated_at": "2026-03-20T15:39:34.843228",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000007",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000007",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.843228"
+    }
+  },
+  {
+    "case_id": "30000000008",
+    "created_at": "2026-03-20T15:39:34.846995",
+    "updated_at": "2026-03-20T15:39:34.846995",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000008",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000008",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.846995"
+    }
+  },
+  {
+    "case_id": "30000000009",
+    "created_at": "2026-03-20T15:39:34.849538",
+    "updated_at": "2026-03-20T15:39:34.849538",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000009",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000009",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.849538"
+    }
+  },
+  {
+    "case_id": "30000000010",
+    "created_at": "2026-03-20T15:39:34.851913",
+    "updated_at": "2026-03-20T15:39:34.851913",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000010",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000010",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.851913"
+    }
+  },
+  {
+    "case_id": "30000000011",
+    "created_at": "2026-03-20T15:39:34.855497",
+    "updated_at": "2026-03-20T15:39:34.855497",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "accepted_for_processing",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30000000011",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30000000011",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.855497"
+    }
+  },
+  {
+    "case_id": "30999999999",
+    "created_at": "2026-03-20T15:39:34.859279",
+    "updated_at": "2026-03-20T15:39:34.859279",
+    "requested_by": "usr-limit",
+    "source_channel": "frontend",
+    "processing_state": "daily_limit_reached",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "reached"
+    },
+    "subject": {
+      "person_id": "30999999999",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIT",
+      "document_number": "30999999999",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-20T15:39:34.859279"
+    }
+  }
+]

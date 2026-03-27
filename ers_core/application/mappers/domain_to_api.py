@@ -55,6 +55,8 @@ def map_case_to_api_dto(case: Case) -> ApiCaseDto:
             ApiScoreDto(
                 score=score.score_value,
                 category=score.risk_category.value,
+                confidence=score.confidence,
+                model_version=score.model_version,
                 top_factors=score.top_factors,
             )
             if score
@@ -72,4 +74,3 @@ def map_case_to_api_dto(case: Case) -> ApiCaseDto:
             else None
         ),
     )
-

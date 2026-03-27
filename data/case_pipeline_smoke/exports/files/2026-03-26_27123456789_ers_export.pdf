@@ -1,0 +1,35 @@
+%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 704 >> stream
+BT
+/F1 11 Tf
+50 760 Td
+(ERS - Informe de Caso) Tj
+0 -16 Td (Caso: 27123456789) Tj
+0 -16 Td (Documento: 27123456789) Tj
+0 -16 Td (Nombre: Paula Fernandez) Tj
+0 -16 Td (Estado pipeline: scored) Tj
+0 -16 Td (Score: 15.0) Tj
+0 -16 Td (Categoria: NORMAL) Tj
+0 -16 Td (Estado final: READY_FOR_DECISION) Tj
+0 -16 Td (Accion recomendada: APPROVE) Tj
+0 -16 Td (Prioridad final: LOW) Tj
+0 -16 Td (Resumen analista: Estado final READY_FOR_DECISION con score 15.0. Prioridad LOW. Accion sugerida: APPROVE. Calidad de evidencia HIGH. El caso presenta senales estructuradas para revision contextual con 0 evidencias a revisar y 2 elementos atenuantes.) Tj
+0 -16 Td (Fecha exportacion: 2026-03-26T13:52:03.913532) Tj
+ET
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000996 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+1066
+%%EOF

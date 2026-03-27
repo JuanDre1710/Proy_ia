@@ -1,0 +1,841 @@
+case_id,dni,edad,provincia,antiguedad_domicilio_meses,situacion_laboral,antiguedad_laboral_meses,ingresos_mensuales,score_crediticio,deuda_total,cantidad_deudas,cheques_rechazados,tipo_siniestro,frecuencia_siniestros_ultimo_anio,monto_reclamado,repite_domicilio,repite_telefono,cambio_aseguradora_frecuente,denuncia_tardia,siniestro_cerca_vencimiento,testigo_repetido,inconsistencia_ingresos_vs_deuda,inconsistencia_laboral,datos_incompletos,mes_siniestro,trimestre_siniestro,dia_semana_siniestro,fin_de_semana_siniestro,requiere_revision,nivel_riesgo,fraude,split
+CASE-00298,30691219,35,caba,59,empleado,52,274281,739,411916,0,0,comercio,2,40697,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00539,46386996,28,caba,91,monotributista,18,249095,464,235450,3,0,hogar,1,93240,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00774,34622576,45,buenos aires,26,monotributista,14,64294,686,102154,1,2,robo,1,122962,1,0,1,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00558,29334760,40,tucuman,43,empleado,29,191056,704,163899,3,1,auto,2,201045,0,0,0,1,1,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00324,33575703,23,mendoza,34,desempleado,3,25000,772,30777,1,3,lesiones,1,325399,0,0,0,0,0,0,0,0,0,7,3,3,0,1,medio,0,train_balanced
+CASE-00096,33064637,44,caba,79,autonomo,27,258802,685,354802,0,1,comercio,1,610616,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00914,23909321,56,caba,29,autonomo,9,302052,617,349205,1,1,robo,1,387956,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00070,26208714,55,santa fe,74,empleado,78,142126,541,201750,1,1,hogar,1,154188,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00679,29168312,33,mendoza,29,empleado,41,207623,694,398255,2,0,robo,3,161933,1,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00827,26485093,18,mendoza,57,empleado,32,313485,760,439224,0,0,robo,1,123960,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00988,28179484,49,mendoza,50,empleado,30,292071,649,364518,0,0,robo,2,324879,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00946,32812854,31,caba,40,monotributista,10,217768,779,466667,3,0,hogar,0,113525,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00910,46274693,34,cordoba,50,monotributista,4,211072,795,610087,3,0,robo,0,145198,0,0,0,1,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00246,22459507,41,neuquen,40,desempleado,19,94221,670,18995,0,0,comercio,0,128825,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00538,44068274,24,salta,128,empleado,103,305630,618,377824,0,0,robo,1,228730,0,1,0,0,1,1,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00993,23817580,49,caba,32,empleado,67,106812,696,209524,2,0,comercio,1,76470,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00765,34688967,20,neuquen,17,empleado,10,320688,561,144707,2,0,robo,1,50109,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00460,24604156,42,santa fe,15,monotributista,6,128530,529,151212,1,0,comercio,0,109829,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00907,32982508,31,neuquen,55,empleado,31,309011,504,409512,4,0,lesiones,2,93355,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00041,32037574,39,buenos aires,57,desempleado,2,126608,629,165434,0,0,hogar,1,161778,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00033,33672297,60,cordoba,82,empleado,43,257702,451,0,0,2,robo,0,302851,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,train_balanced
+CASE-00038,37336140,50,neuquen,57,monotributista,6,56898,593,48158,1,0,lesiones,0,175682,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00655,30695586,21,santa fe,54,empleado,49,312173,682,283521,0,0,robo,0,83685,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00264,37887186,53,neuquen,29,desempleado,0,140172,724,332813,3,0,lesiones,2,100739,1,0,1,0,0,0,0,0,0,4,2,1,0,0,bajo,0,train_balanced
+CASE-00146,30047698,59,buenos aires,25,empleado,52,145586,830,252241,4,1,lesiones,0,130486,0,0,0,1,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00325,24056926,34,santa fe,32,empleado,62,226543,808,643645,1,0,lesiones,0,316437,1,0,0,0,0,0,1,0,0,12,4,0,0,1,medio,0,train_balanced
+CASE-00871,35310929,28,buenos aires,42,empleado,17,250918,770,24474,2,1,robo,1,87859,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00116,43076157,29,caba,107,empleado,23,198335,501,573352,4,0,auto,1,74755,0,0,0,0,0,0,1,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00824,39478868,52,salta,92,desempleado,5,108491,604,226184,0,0,auto,0,416570,0,1,0,0,0,0,0,0,1,7,3,4,0,1,medio,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00961,44402086,24,neuquen,39,autonomo,18,409666,579,929310,4,0,comercio,2,203433,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00361,38045646,31,mendoza,49,autonomo,27,589119,580,223078,0,0,hogar,1,276316,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00083,37565659,44,salta,77,monotributista,11,103378,793,90451,4,0,hogar,0,546158,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00766,44306203,31,buenos aires,64,empleado,30,306855,810,402515,1,2,lesiones,1,88920,0,1,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00831,20243977,49,salta,54,empleado,13,156961,665,219660,1,0,hogar,2,196017,0,0,0,0,0,0,0,0,0,3,1,1,0,0,bajo,0,train_balanced
+CASE-00391,27436949,18,neuquen,66,autonomo,17,131669,649,266774,3,1,auto,0,314368,0,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00747,25517592,31,mendoza,46,empleado,27,276776,753,7754,2,2,lesiones,0,109798,0,1,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,train_balanced
+CASE-00051,24876872,44,salta,31,empleado,104,227220,860,446866,1,2,comercio,0,223249,0,0,0,0,1,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00801,38225392,45,caba,48,desempleado,4,31942,555,32284,2,0,comercio,2,71488,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00327,30645005,32,buenos aires,64,desempleado,1,57768,649,81419,3,0,lesiones,1,158301,0,0,0,0,1,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00692,40520517,27,tucuman,68,empleado,26,217107,683,349645,0,0,robo,2,589896,0,0,0,0,0,0,0,0,1,4,2,4,0,1,medio,0,train_balanced
+CASE-00331,40419677,40,tucuman,16,monotributista,4,92498,680,0,1,0,robo,0,72323,0,0,0,1,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00590,28913042,37,neuquen,66,autonomo,24,477945,894,525090,0,0,lesiones,0,90307,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00095,41864908,43,buenos aires,74,monotributista,6,235227,674,290490,2,1,robo,1,797483,0,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00839,30565845,59,cordoba,26,empleado,27,95577,548,132257,0,1,comercio,0,147366,0,0,0,0,0,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00035,44319751,28,mendoza,169,monotributista,20,192589,603,554179,1,2,auto,0,174142,0,0,0,0,1,0,1,0,0,10,4,1,0,1,medio,0,train_balanced
+CASE-00919,33697256,40,buenos aires,65,desempleado,1,151866,757,59873,3,0,robo,0,30288,1,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00125,25053127,43,mendoza,110,empleado,37,253575,501,198783,1,0,lesiones,0,1178772,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00950,44351236,39,santa fe,84,autonomo,29,25000,749,60260,4,0,comercio,2,354759,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00065,30831890,42,salta,56,desempleado,9,52454,694,92391,2,0,hogar,2,168493,0,0,0,0,0,0,0,0,0,3,1,1,0,0,bajo,0,train_balanced
+CASE-00973,36877257,45,buenos aires,14,empleado,12,252173,640,467003,3,0,lesiones,2,583812,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00421,33669152,45,salta,101,monotributista,28,187236,628,0,1,0,comercio,0,131931,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00815,44177368,35,mendoza,49,monotributista,38,193302,791,288039,0,2,robo,1,268380,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00740,45462005,53,cordoba,72,empleado,83,157746,672,186970,2,0,comercio,0,137710,0,0,0,1,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00689,40721027,43,cordoba,64,empleado,37,212573,630,422613,2,1,lesiones,1,193150,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00845,37914023,39,cordoba,135,monotributista,22,222587,569,287170,2,0,lesiones,1,319700,1,0,0,0,0,0,0,0,1,9,3,1,0,1,medio,0,train_balanced
+CASE-00441,34170396,42,neuquen,94,empleado,74,97428,615,0,1,2,auto,1,141339,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00922,29943812,50,cordoba,103,empleado,66,345578,646,540458,3,0,robo,3,228653,0,0,0,0,1,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00046,28127125,60,neuquen,59,monotributista,14,256230,784,327420,2,1,lesiones,0,114087,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00929,35420758,41,neuquen,17,monotributista,25,149318,842,22195,1,0,hogar,2,205324,0,0,0,0,0,0,0,0,1,10,4,6,1,1,medio,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00678,44697571,39,caba,79,monotributista,23,138030,832,0,1,1,lesiones,1,456340,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00860,24904156,25,cordoba,35,empleado,76,131580,532,99748,1,0,auto,1,183404,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00616,38754216,36,salta,13,empleado,56,290262,558,914302,0,1,robo,1,289301,0,0,0,0,0,0,1,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00440,32543416,21,santa fe,46,monotributista,9,215305,580,0,0,0,auto,1,127269,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00256,36636098,19,santa fe,5,desempleado,3,80752,501,101074,3,2,robo,1,35873,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00474,32765071,40,salta,54,autonomo,13,271011,597,622755,0,1,auto,0,219274,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00703,36075122,45,salta,44,empleado,49,122940,739,378987,1,0,lesiones,0,60626,1,0,0,0,0,0,1,0,0,6,2,5,1,1,medio,0,train_balanced
+CASE-00093,25934261,30,caba,36,monotributista,38,84190,540,140980,2,0,auto,0,53104,0,0,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,train_balanced
+CASE-00285,41654539,45,santa fe,48,empleado,50,166391,679,81912,3,1,lesiones,1,76729,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-00885,46161134,47,cordoba,17,autonomo,28,319114,280,461360,2,1,robo,1,313028,0,1,0,0,0,0,0,0,1,3,1,0,0,1,medio,0,train_balanced
+CASE-00933,24021490,18,neuquen,40,monotributista,44,287609,485,300925,3,0,comercio,0,131730,0,0,0,1,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00157,35516706,23,cordoba,37,empleado,13,175518,657,134724,0,0,robo,0,156285,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00446,35571187,18,santa fe,96,empleado,46,464141,784,608438,1,0,lesiones,3,307708,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00501,31244866,29,neuquen,72,monotributista,44,140447,569,0,2,0,robo,0,365293,0,1,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00058,31476429,33,caba,52,empleado,128,168616,510,0,1,1,lesiones,2,78218,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00020,36751329,33,tucuman,68,empleado,46,276299,756,687220,1,1,comercio,1,202742,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00197,29886458,50,salta,89,monotributista,36,103164,709,239651,0,0,comercio,0,357882,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00686,23181653,37,cordoba,44,empleado,48,199658,653,309296,1,0,robo,1,247623,0,0,0,0,1,0,0,0,0,8,3,2,0,0,bajo,0,train_balanced
+CASE-00547,37951004,44,neuquen,15,empleado,57,114339,511,135302,3,0,auto,0,147509,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00357,40590425,46,cordoba,42,empleado,40,145656,528,204658,1,0,robo,1,133687,0,0,0,1,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00991,27224321,46,tucuman,73,autonomo,3,283747,746,348534,2,1,comercio,1,126884,1,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00454,30089617,33,neuquen,9,empleado,59,169392,495,425478,2,0,hogar,1,720569,0,0,0,0,0,0,1,0,0,10,4,5,1,1,medio,0,train_balanced
+CASE-00856,28156304,54,mendoza,56,autonomo,19,123506,491,83142,1,0,lesiones,1,205647,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00445,34383068,38,neuquen,66,empleado,49,361610,631,4851,3,0,lesiones,0,309964,0,0,0,1,1,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00107,33321008,28,buenos aires,45,autonomo,14,483708,854,288936,2,0,lesiones,0,163896,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00037,34229748,34,santa fe,79,desempleado,0,25000,498,57511,3,0,hogar,1,224848,0,1,0,0,0,0,1,0,0,8,3,5,1,1,medio,0,train_balanced
+CASE-00160,33984068,47,mendoza,134,autonomo,28,251624,558,472891,0,0,comercio,0,147695,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00296,45370986,38,cordoba,24,autonomo,61,83148,615,31052,2,0,hogar,0,372536,0,0,0,0,0,0,0,0,1,2,1,3,0,1,medio,0,train_balanced
+CASE-00162,40485417,25,santa fe,21,empleado,62,155130,627,17885,3,2,robo,0,305542,0,0,0,0,1,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00122,37815434,49,cordoba,112,desempleado,2,98174,418,0,2,0,lesiones,1,168298,0,1,0,0,1,0,0,0,0,12,4,5,1,1,medio,0,train_balanced
+CASE-00406,27931329,36,tucuman,58,empleado,33,180995,548,189382,4,1,comercio,0,171248,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00758,26833412,45,tucuman,93,autonomo,29,401340,584,470428,2,0,comercio,1,125794,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00180,37846628,41,salta,78,monotributista,15,243686,478,184105,1,2,comercio,0,86902,0,0,0,0,1,0,0,0,0,7,3,6,1,0,bajo,0,train_balanced
+CASE-00858,24332006,34,mendoza,24,empleado,91,192729,560,97559,4,0,lesiones,0,152192,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00571,21705950,65,tucuman,48,monotributista,19,213501,563,144381,0,0,hogar,1,120979,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00489,40000695,43,santa fe,16,monotributista,18,111437,548,75457,1,0,comercio,0,224985,0,0,0,0,0,0,0,0,1,6,2,3,0,1,medio,0,train_balanced
+CASE-00675,24263402,62,caba,46,monotributista,8,86494,605,67590,2,1,hogar,1,517350,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00129,22848439,54,buenos aires,41,empleado,34,338760,827,38655,1,0,robo,1,263804,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00718,28001565,42,caba,19,empleado,18,150864,604,191826,2,0,robo,0,299417,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00231,25385201,45,santa fe,98,monotributista,23,306532,695,45848,3,1,hogar,0,150369,0,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00700,31888784,30,buenos aires,68,monotributista,31,214262,740,0,1,1,auto,0,444940,0,0,1,0,0,0,0,0,1,3,1,5,1,1,medio,0,train_balanced
+CASE-00745,41231326,51,tucuman,58,empleado,54,228500,601,299855,1,2,hogar,3,403032,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00804,45655584,43,tucuman,49,autonomo,13,511463,694,863231,0,0,hogar,0,418370,0,1,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00632,25441619,35,cordoba,43,desempleado,16,89223,428,52473,0,0,hogar,1,428765,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00693,28674803,21,cordoba,44,empleado,70,50663,588,61069,1,2,lesiones,2,564768,0,0,0,1,0,0,0,0,1,6,2,5,1,1,medio,0,train_balanced
+CASE-00465,40264038,49,cordoba,29,empleado,66,246462,436,373621,3,0,lesiones,3,166754,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00952,29115156,57,buenos aires,21,empleado,38,116514,505,132951,0,0,auto,0,401237,0,0,0,1,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00785,39357168,57,neuquen,5,empleado,29,63359,563,24429,1,1,auto,0,283935,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00810,25836369,35,santa fe,54,empleado,29,444708,852,955820,3,0,auto,0,252626,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00737,34854556,35,caba,74,empleado,80,241528,550,0,1,0,robo,0,362045,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00965,35418348,59,salta,17,empleado,37,352373,772,414543,3,1,comercio,0,234563,0,1,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00642,20094138,38,cordoba,46,empleado,35,150478,546,372854,2,0,hogar,1,314978,0,0,0,0,0,0,0,0,0,7,3,6,1,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00201,37675844,33,mendoza,151,empleado,19,131884,511,269876,1,4,auto,0,319296,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00954,35571994,24,tucuman,22,desempleado,3,87704,689,92542,1,1,lesiones,0,244727,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00887,42158705,18,tucuman,28,empleado,31,175346,520,226508,1,0,hogar,1,64983,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00902,46914453,34,mendoza,37,monotributista,79,276988,608,786553,1,1,robo,0,112444,0,0,0,0,0,0,1,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00662,38939304,46,santa fe,66,empleado,77,318541,450,439629,2,0,comercio,1,517159,1,1,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00266,42768449,26,salta,81,empleado,47,291347,555,94807,3,1,lesiones,2,224787,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00321,46439695,43,salta,55,empleado,15,203798,682,334986,2,0,comercio,1,298166,0,0,0,0,1,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00172,38848304,20,caba,41,monotributista,6,50934,542,53090,1,1,hogar,2,262004,0,0,0,1,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00449,43989507,34,cordoba,29,empleado,52,175729,376,461571,1,0,auto,1,506224,1,0,0,0,0,0,0,0,0,11,4,5,1,1,medio,0,train_balanced
+CASE-00890,21894089,30,mendoza,71,monotributista,17,319798,640,311736,2,0,hogar,0,112932,0,1,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00340,27356505,28,mendoza,71,empleado,53,297812,561,318558,1,0,hogar,0,250629,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00694,39456461,50,caba,47,desempleado,8,75313,736,165852,4,0,lesiones,0,1088938,0,0,1,0,0,1,0,0,0,1,1,5,1,1,medio,0,train_balanced
+CASE-00751,34112317,38,tucuman,72,autonomo,19,308555,687,823900,1,1,comercio,0,61912,0,0,0,0,0,0,1,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00052,29890633,58,salta,62,empleado,77,119515,719,199812,2,0,robo,0,83559,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00415,27736334,41,caba,17,monotributista,18,149013,608,78501,2,1,lesiones,1,110828,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00234,45790412,28,neuquen,27,empleado,5,222346,692,84176,1,0,comercio,3,479500,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00583,23126919,23,neuquen,40,autonomo,31,427200,630,292684,1,0,lesiones,0,189028,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00896,31267094,45,tucuman,16,monotributista,31,210576,837,165538,1,2,comercio,0,55470,0,1,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00176,43463157,30,mendoza,66,autonomo,12,25000,679,0,1,0,robo,0,191729,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00181,30194850,49,cordoba,50,monotributista,9,279435,539,881,3,1,hogar,0,62979,0,1,0,1,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00317,38735970,48,cordoba,19,autonomo,20,32165,520,0,2,0,lesiones,0,56310,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00617,41143713,39,salta,65,empleado,92,79505,568,81462,1,0,auto,0,476018,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00786,33272756,26,caba,22,empleado,8,58649,513,59572,2,1,lesiones,1,200875,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,train_balanced
+CASE-00192,22593449,39,santa fe,18,empleado,23,220280,684,384231,0,2,auto,0,371499,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00134,33330322,44,caba,62,empleado,54,213187,660,320696,1,0,comercio,0,247253,1,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00559,20310404,32,tucuman,3,autonomo,25,331731,674,0,1,1,comercio,1,82209,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00615,45867740,37,tucuman,87,autonomo,36,40661,682,25516,3,1,auto,0,251205,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00657,37488874,36,mendoza,112,empleado,37,162048,786,280171,5,1,robo,2,126193,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00167,43262887,40,tucuman,22,empleado,26,49734,707,90266,2,2,hogar,3,91875,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00252,40695662,37,mendoza,47,empleado,11,279395,747,382468,4,0,comercio,0,196959,0,0,0,0,0,0,0,0,0,8,3,2,0,0,bajo,0,train_balanced
+CASE-00563,38433355,40,neuquen,64,empleado,14,289038,603,151520,0,0,auto,1,447793,0,1,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00237,39773001,39,santa fe,37,autonomo,21,360432,399,584034,3,0,lesiones,0,259796,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00781,25921047,25,mendoza,48,monotributista,26,228588,554,292837,2,0,hogar,0,171925,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00304,21940711,28,buenos aires,26,empleado,30,334703,592,611071,2,0,robo,1,296820,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00382,28146837,58,santa fe,42,empleado,37,236196,765,282857,0,1,robo,1,169631,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00609,24342655,26,neuquen,98,autonomo,25,153792,782,223833,1,1,auto,1,62123,0,0,1,1,0,0,0,0,0,10,4,4,0,0,bajo,0,train_balanced
+CASE-00687,26595442,42,santa fe,32,empleado,34,315768,505,0,2,0,hogar,1,339775,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00951,46970135,18,salta,24,empleado,30,312344,496,173672,1,0,comercio,0,208452,0,0,0,0,1,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00247,20163944,25,tucuman,11,autonomo,21,278970,662,232597,0,0,lesiones,0,547082,0,0,1,0,1,1,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00984,32635112,35,tucuman,12,empleado,37,336684,715,807,3,0,robo,2,76512,0,0,0,0,0,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00148,32901865,27,santa fe,113,empleado,61,217670,663,47684,2,0,comercio,1,42414,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00714,40356149,21,tucuman,89,desempleado,1,116848,653,46553,2,0,robo,0,128581,0,1,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00634,43025179,21,cordoba,98,empleado,22,118221,786,229910,2,2,auto,1,185283,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00218,24261663,50,salta,63,empleado,39,246940,640,544994,1,0,lesiones,1,842882,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00091,25056093,47,santa fe,80,desempleado,1,182510,660,27802,4,0,comercio,2,190147,0,0,0,0,0,0,0,1,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00273,22744454,54,santa fe,43,monotributista,10,178857,759,23476,2,0,robo,0,125920,0,0,0,0,0,1,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00492,34691224,38,cordoba,56,autonomo,53,679507,673,387152,1,3,auto,1,201818,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00205,27074533,48,caba,51,empleado,60,375467,622,0,2,1,lesiones,1,144351,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00719,33591066,32,caba,60,empleado,12,338858,804,89677,1,1,comercio,1,609651,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00808,32300162,42,buenos aires,117,desempleado,3,25000,480,41598,0,0,robo,0,444788,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00405,29835484,48,buenos aires,36,autonomo,38,371311,772,498354,1,0,lesiones,0,219956,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00467,24416728,60,tucuman,41,empleado,49,288798,619,254353,1,1,auto,0,105386,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00448,20308293,32,santa fe,44,empleado,43,252138,675,101725,1,1,comercio,1,192628,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00221,45063367,60,buenos aires,29,desempleado,4,62782,642,113546,4,0,robo,0,197084,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00710,40599541,34,cordoba,52,monotributista,30,237627,701,115404,1,1,auto,0,80665,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00619,42490736,24,mendoza,86,autonomo,21,367397,765,579998,3,0,robo,0,175187,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00982,31463588,30,cordoba,18,monotributista,11,215604,627,126828,2,0,lesiones,0,99269,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,train_balanced
+CASE-00843,23376379,32,tucuman,59,empleado,28,218938,773,203971,3,1,lesiones,0,300840,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00989,35442967,37,santa fe,101,monotributista,7,88571,598,60368,1,1,lesiones,0,44359,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00493,31087811,40,salta,54,empleado,41,220617,781,349106,1,0,comercio,1,308235,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00791,23326793,49,tucuman,27,desempleado,1,69151,703,29524,0,0,hogar,2,359697,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00287,41605192,36,salta,93,autonomo,11,102383,836,74269,3,0,robo,1,274621,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,train_balanced
+CASE-00062,31952983,45,buenos aires,47,empleado,25,25000,591,7816,4,1,auto,0,36579,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00636,23381281,43,santa fe,41,empleado,50,187415,584,280378,2,0,lesiones,0,420837,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00355,22407777,21,santa fe,16,autonomo,35,273011,534,0,0,0,robo,0,41042,0,0,0,0,0,0,0,0,0,5,2,2,0,0,bajo,0,train_balanced
+CASE-00882,42639710,61,cordoba,70,empleado,88,212580,628,300063,2,0,hogar,0,104519,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00143,28730829,48,salta,42,empleado,57,133623,850,0,1,1,hogar,2,205530,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00943,45689633,52,salta,42,empleado,24,308934,688,49451,0,1,comercio,1,648974,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00386,22286113,55,buenos aires,103,monotributista,7,101809,401,150038,1,1,lesiones,0,260701,0,0,1,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00676,35520087,36,salta,108,empleado,54,211339,585,252572,3,0,comercio,1,179292,1,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00658,41896611,49,tucuman,19,monotributista,14,199302,369,165567,3,0,auto,1,301771,0,0,0,0,0,0,0,0,0,5,2,4,0,0,bajo,0,train_balanced
+CASE-00059,28859690,34,salta,35,empleado,62,240820,423,217598,1,2,comercio,3,350203,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00787,20146083,45,buenos aires,30,monotributista,25,226760,589,174247,2,0,comercio,1,72577,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00793,45886644,36,caba,59,empleado,32,419111,770,701184,0,0,comercio,0,111548,0,0,0,0,0,1,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00639,39071798,29,tucuman,36,empleado,75,179247,617,121579,3,0,robo,1,44142,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00649,37102612,27,salta,19,autonomo,18,32594,448,21279,1,1,auto,0,110727,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00521,28795041,34,tucuman,41,empleado,15,323345,568,972866,2,0,hogar,1,175903,0,0,0,0,0,0,1,0,0,8,3,4,0,1,medio,0,train_balanced
+CASE-00165,25093388,36,salta,68,empleado,18,193222,561,303194,0,0,robo,2,184322,0,0,0,0,0,1,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00135,22409409,27,caba,61,empleado,47,373644,600,1195645,1,0,hogar,1,707415,0,0,0,0,0,0,1,0,0,7,3,5,1,0,bajo,0,train_balanced
+CASE-00814,27414571,29,buenos aires,52,empleado,56,346449,797,351260,1,0,hogar,0,90326,0,0,0,0,0,0,0,0,1,3,1,3,0,1,medio,0,train_balanced
+CASE-00661,42488180,40,cordoba,33,monotributista,23,83977,691,36198,2,1,lesiones,2,136692,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00387,45627657,49,neuquen,37,empleado,16,348747,583,665370,1,1,comercio,0,346986,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00018,25562067,41,caba,48,autonomo,27,349719,592,970110,3,0,lesiones,2,65102,0,0,0,0,1,1,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00715,31137096,66,salta,4,autonomo,12,580942,497,731129,2,1,lesiones,1,49181,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00958,33849012,41,salta,107,empleado,46,278771,599,376095,3,0,comercio,0,150056,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00422,22018422,20,buenos aires,73,empleado,31,75550,594,163380,1,0,lesiones,0,60048,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00318,41908763,42,cordoba,12,empleado,34,81732,705,186789,2,1,comercio,0,130716,0,0,1,0,0,1,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00385,27200622,34,caba,9,monotributista,29,233958,708,178285,3,1,hogar,0,432175,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00535,29918154,33,mendoza,103,empleado,51,200717,650,272125,2,2,comercio,0,696158,0,0,0,0,1,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00358,20243761,37,buenos aires,51,empleado,39,148234,706,0,1,0,comercio,0,229379,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00674,33062119,49,caba,112,desempleado,5,138752,739,121055,0,0,lesiones,1,78814,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00728,43493230,40,salta,14,monotributista,16,245751,715,86554,1,0,robo,1,82908,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00582,28902230,30,caba,50,autonomo,31,467883,594,670893,4,0,auto,1,343496,0,1,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00123,21742166,23,buenos aires,19,monotributista,29,85200,529,109002,0,1,lesiones,0,220008,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00475,44510506,21,tucuman,28,autonomo,31,223737,604,31811,1,1,comercio,1,154302,0,0,0,0,0,0,0,0,0,7,3,6,1,0,bajo,0,train_balanced
+CASE-00076,23456653,38,santa fe,15,empleado,79,148666,675,5777,1,0,auto,1,413365,0,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00275,25541543,48,buenos aires,31,desempleado,6,70457,754,76149,2,0,lesiones,0,106037,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00349,20929441,36,santa fe,100,empleado,10,447690,656,1109799,1,0,robo,1,240099,0,0,0,1,0,0,0,0,1,6,2,0,0,1,medio,0,train_balanced
+CASE-00212,25824648,18,tucuman,45,desempleado,5,116546,700,229149,0,1,auto,0,90762,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00738,20692289,42,caba,51,desempleado,1,53208,708,93131,2,0,comercio,1,136866,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00179,45449640,45,caba,41,autonomo,30,387222,555,0,3,0,robo,1,107373,0,1,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00906,38432079,27,buenos aires,25,empleado,38,167423,371,95056,3,1,hogar,0,56888,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00290,26424788,47,buenos aires,46,empleado,58,276463,625,0,3,0,comercio,2,201157,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00220,38058474,45,mendoza,113,empleado,48,445289,566,399797,0,1,lesiones,0,224037,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00588,37352107,60,mendoza,59,autonomo,11,217684,712,46586,0,0,lesiones,0,340779,0,1,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00992,44757107,34,mendoza,29,monotributista,27,119954,745,0,1,1,robo,1,379225,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00683,41852197,46,santa fe,73,monotributista,27,169126,917,131420,1,1,robo,1,145233,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00624,25953332,30,tucuman,116,desempleado,3,60653,637,103416,1,0,auto,1,320321,0,0,0,1,0,0,0,0,1,4,2,3,0,1,medio,0,train_balanced
+CASE-00490,23530662,41,salta,38,monotributista,28,247858,754,541036,3,1,comercio,0,129842,0,0,1,0,1,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00706,28679111,28,neuquen,28,monotributista,18,283913,676,519424,1,2,comercio,1,552873,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-00605,31976837,35,salta,90,autonomo,21,592314,654,274055,3,2,auto,1,34657,0,1,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00669,46645205,50,salta,25,empleado,46,312469,624,625960,2,2,lesiones,2,288546,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00506,21221381,52,caba,68,empleado,83,334396,685,0,1,1,hogar,2,213367,0,1,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00023,35211913,25,caba,75,monotributista,22,162295,654,305141,1,1,lesiones,0,250305,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00225,40359093,33,neuquen,17,empleado,95,258180,654,471366,0,0,lesiones,0,118226,0,0,0,0,1,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00554,36463421,25,salta,30,autonomo,21,396273,521,1078388,2,0,robo,2,172850,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00963,31876521,18,buenos aires,44,desempleado,1,106209,836,138492,5,0,robo,0,562737,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00272,40360866,34,santa fe,52,empleado,67,197274,828,343271,0,0,lesiones,0,46868,0,0,0,0,0,0,0,0,0,2,1,2,0,0,bajo,0,train_balanced
+CASE-00512,34618068,39,buenos aires,22,autonomo,23,472818,606,1076333,2,1,comercio,0,115843,0,0,0,0,1,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00217,30286846,18,cordoba,98,autonomo,6,428772,598,993037,3,0,hogar,2,444912,0,0,0,0,0,0,1,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00966,34277175,25,mendoza,82,empleado,77,277058,556,266021,1,1,auto,2,58654,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00631,24527322,32,tucuman,95,monotributista,29,154804,626,115522,3,2,auto,1,153783,0,0,0,0,1,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00987,23511003,18,mendoza,49,desempleado,6,31331,716,13481,2,0,hogar,0,35929,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00118,20506453,50,santa fe,59,empleado,45,101189,848,45453,0,2,hogar,5,178347,0,0,1,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00846,41196820,25,tucuman,45,monotributista,7,142611,763,174912,1,0,robo,1,228845,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00735,20856495,40,santa fe,137,empleado,33,124561,691,174704,0,0,hogar,0,155767,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00447,36605227,35,cordoba,82,empleado,53,201841,611,311737,4,0,lesiones,0,486115,0,0,0,1,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00080,35226559,27,cordoba,152,empleado,33,316640,900,433204,1,0,hogar,0,220317,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00034,39545578,42,tucuman,83,monotributista,5,90429,601,115631,1,0,hogar,0,460298,0,0,0,1,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00341,23935806,49,salta,18,monotributista,24,179307,661,355578,1,0,hogar,0,299849,0,0,0,0,0,1,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00032,27271476,40,neuquen,44,autonomo,21,247909,718,371823,3,0,robo,1,55930,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00374,29657503,28,santa fe,35,autonomo,34,25000,618,59059,1,2,auto,0,80280,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00749,29284054,32,santa fe,11,autonomo,81,170014,467,0,2,0,robo,0,246539,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00303,20522797,46,mendoza,116,empleado,89,320975,980,0,1,2,auto,0,246616,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00926,33671196,24,mendoza,35,monotributista,22,141218,822,299506,1,0,lesiones,1,490130,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00567,37508802,30,cordoba,16,monotributista,14,258067,607,94507,1,1,comercio,1,317984,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00595,33458049,51,cordoba,123,monotributista,44,101154,711,237324,1,0,auto,0,128613,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00830,36355670,32,mendoza,16,empleado,27,208394,749,217388,2,0,lesiones,1,52611,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00646,36045335,41,neuquen,36,empleado,49,216754,625,202486,5,1,lesiones,0,156492,0,0,1,0,0,0,0,0,0,5,2,4,0,0,bajo,0,train_balanced
+CASE-00614,40386284,53,buenos aires,46,desempleado,4,78500,726,97733,1,0,comercio,1,815592,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00762,28108600,35,mendoza,70,monotributista,19,185935,640,298285,2,0,lesiones,0,70684,0,0,0,0,0,0,0,0,1,6,2,3,0,1,medio,0,train_balanced
+CASE-00629,36787516,27,cordoba,32,empleado,33,146296,595,0,0,0,robo,0,439134,0,0,0,0,0,1,0,0,0,4,2,1,0,0,bajo,0,train_balanced
+CASE-00147,33860792,18,caba,53,empleado,26,407377,637,140977,4,0,auto,1,84553,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00339,35985928,45,buenos aires,20,desempleado,7,58598,607,0,2,1,auto,1,542332,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00411,21021983,46,neuquen,60,monotributista,16,161579,430,0,1,1,comercio,3,276053,0,0,0,0,0,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00375,22107154,40,salta,67,empleado,33,152456,562,316631,1,0,comercio,2,353359,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00783,45966501,27,buenos aires,34,empleado,45,235878,475,116542,1,1,hogar,2,368805,0,0,0,0,1,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00648,26185190,52,caba,27,monotributista,28,213362,696,296437,1,2,robo,1,207168,0,0,1,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00047,46256629,33,neuquen,21,empleado,58,206836,456,301835,2,0,hogar,1,283154,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00014,38132747,28,cordoba,30,empleado,17,330520,811,71696,1,0,lesiones,1,246413,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00627,33889454,35,buenos aires,59,monotributista,31,186137,614,261262,3,0,comercio,0,193384,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00072,39678933,58,buenos aires,19,monotributista,20,25000,528,41430,0,0,comercio,1,759912,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00578,21975952,24,tucuman,46,desempleado,6,56170,726,123171,1,1,auto,2,77228,0,0,1,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00196,22791338,38,tucuman,42,autonomo,50,347304,804,227321,0,0,comercio,1,127059,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00336,44013808,27,neuquen,36,monotributista,21,56419,595,17649,3,1,comercio,1,62503,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00789,44199005,39,mendoza,74,empleado,23,258965,554,445994,3,0,lesiones,0,119069,0,0,0,1,0,0,0,0,0,5,2,1,0,0,bajo,0,train_balanced
+CASE-00870,33916106,39,santa fe,14,monotributista,17,118911,751,26306,0,1,lesiones,0,57230,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00682,42751314,35,caba,27,empleado,39,25000,688,0,1,1,comercio,0,209146,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00005,33596255,51,caba,80,empleado,51,353467,659,290422,0,0,comercio,0,288341,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00750,39003578,45,neuquen,6,autonomo,19,474597,591,1286392,0,0,hogar,2,177708,0,1,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00543,36710532,57,neuquen,111,monotributista,13,223218,774,235334,2,2,robo,0,123032,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00263,35434272,47,tucuman,34,desempleado,16,45990,550,137729,0,0,comercio,1,326602,0,0,0,0,0,0,1,0,0,3,1,0,0,1,medio,0,train_balanced
+CASE-00854,37028114,32,salta,35,autonomo,28,44690,722,3159,2,0,comercio,0,134336,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00010,35385150,47,santa fe,50,autonomo,30,166748,646,11893,4,0,comercio,4,492308,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00510,23756330,47,buenos aires,43,empleado,42,328700,696,573898,1,0,lesiones,4,511206,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00708,42206354,43,neuquen,65,empleado,53,210250,663,351359,1,0,auto,0,215245,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00956,34742512,43,cordoba,67,monotributista,7,178408,555,88555,0,1,robo,0,74880,1,0,0,0,1,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00306,28549906,29,santa fe,19,monotributista,31,181257,933,215231,1,0,auto,1,211451,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00075,31639736,45,tucuman,58,monotributista,26,159321,838,225551,1,1,robo,0,446238,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00057,42811423,24,salta,18,empleado,27,244529,784,421804,0,0,comercio,0,35094,0,1,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00817,24652595,38,mendoza,119,autonomo,105,357608,633,667745,0,1,auto,1,164944,0,0,0,1,1,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00193,27135580,44,santa fe,83,empleado,60,237089,755,53925,4,0,lesiones,0,170112,0,0,0,1,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00258,41235650,47,caba,121,empleado,61,130493,679,3014,1,0,hogar,1,48656,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00226,32682774,41,santa fe,24,autonomo,38,278262,824,158468,1,0,comercio,0,150298,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00945,42511510,29,mendoza,60,empleado,27,288058,774,419315,4,1,comercio,0,293727,0,0,0,0,0,0,0,0,0,7,3,5,1,0,bajo,0,train_balanced
+CASE-00667,21092886,34,tucuman,80,empleado,68,124206,642,0,2,0,comercio,1,403119,1,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00541,39714309,45,tucuman,70,empleado,35,441864,544,287632,3,1,comercio,1,102491,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00043,41927851,59,salta,97,monotributista,22,146098,600,0,2,0,robo,2,121060,0,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00525,46803615,39,cordoba,17,autonomo,19,306149,497,521543,2,0,comercio,0,139013,0,0,0,1,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00520,42824403,27,buenos aires,87,empleado,40,327884,436,520647,3,0,comercio,1,122384,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00760,38322368,26,caba,154,empleado,75,317077,690,456386,1,0,robo,1,98500,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00835,25487317,59,salta,67,empleado,42,276317,566,315692,2,2,robo,1,105331,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00189,39012183,34,santa fe,51,monotributista,47,174433,376,191247,2,1,hogar,0,151189,0,1,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,train_balanced
+CASE-00464,31789964,41,salta,19,empleado,21,358541,547,0,2,1,lesiones,0,170054,0,1,0,1,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00268,24935500,38,salta,117,empleado,28,296494,780,207548,0,0,lesiones,1,162893,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00224,36072326,46,tucuman,15,desempleado,4,126486,831,373012,0,0,lesiones,1,191226,0,1,0,0,0,1,1,0,0,11,4,4,0,1,medio,0,train_balanced
+CASE-00481,36040078,46,caba,22,autonomo,21,218054,840,634708,1,1,lesiones,0,1229751,0,0,0,0,0,0,1,0,0,11,4,5,1,1,medio,0,train_balanced
+CASE-00819,28728165,47,salta,41,autonomo,12,447196,664,309078,2,0,lesiones,2,130954,0,1,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00348,43929031,49,santa fe,49,empleado,11,205282,589,98494,4,3,auto,0,249719,0,0,0,1,0,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00832,24719242,49,neuquen,75,empleado,16,212324,722,141028,0,1,robo,1,257930,0,0,0,1,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00206,38868041,27,santa fe,20,empleado,69,273223,523,502868,4,0,robo,0,91753,1,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00008,24301754,39,santa fe,64,empleado,70,134165,608,276213,6,2,hogar,0,23982,1,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00697,26495883,24,buenos aires,46,empleado,61,329071,576,173434,0,0,robo,0,133344,0,0,1,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00342,25371704,57,mendoza,67,autonomo,36,519949,662,548735,1,0,comercio,0,388124,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00431,25645916,35,buenos aires,46,empleado,48,225573,572,169565,1,1,hogar,1,168556,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00007,37464192,56,buenos aires,48,monotributista,9,230268,535,142180,0,1,auto,1,387814,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-00969,32859593,45,neuquen,28,empleado,50,246609,443,453725,1,1,hogar,1,292928,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00289,39578545,31,caba,34,autonomo,13,62454,812,110260,3,1,lesiones,0,135500,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00208,36068491,39,buenos aires,51,autonomo,11,381195,652,764845,0,0,comercio,0,258670,0,0,0,0,0,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00399,37234198,39,mendoza,28,monotributista,27,71674,744,150805,2,0,lesiones,1,167202,0,1,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00394,20988807,41,caba,23,monotributista,21,122183,704,124148,1,0,comercio,2,246879,0,0,0,0,0,0,0,0,0,2,1,2,0,0,bajo,0,train_balanced
+CASE-00044,25282379,37,caba,18,autonomo,9,364863,576,248854,2,0,hogar,1,711185,0,1,0,0,1,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00351,22375093,37,cordoba,16,autonomo,48,481814,448,726839,0,1,hogar,2,97831,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00668,32512612,19,salta,29,desempleado,1,78509,602,156731,0,0,comercio,0,209394,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00174,36310714,45,cordoba,73,autonomo,11,374014,808,710160,2,1,lesiones,1,306601,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00593,31244467,38,caba,115,autonomo,13,228041,386,374914,1,1,auto,0,88383,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00513,28927516,24,neuquen,48,empleado,70,198721,688,0,0,0,robo,0,92303,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00155,27359055,48,buenos aires,46,empleado,77,173541,695,136496,1,0,comercio,0,118481,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00132,27981512,61,cordoba,75,empleado,55,275573,515,901263,0,1,auto,0,520314,0,0,0,0,0,0,1,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00472,25807290,40,neuquen,132,autonomo,74,392368,736,907870,2,0,robo,0,761613,1,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00241,44743689,36,salta,54,monotributista,30,114932,647,157347,0,2,hogar,1,215171,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00128,26119922,53,santa fe,41,empleado,17,202865,577,283312,1,0,auto,0,131360,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,train_balanced
+CASE-00566,25411582,29,tucuman,23,empleado,115,237575,583,566727,3,0,hogar,1,187992,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00603,31618997,37,salta,31,autonomo,29,455528,574,382282,1,0,robo,0,43701,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00659,33564112,36,buenos aires,44,monotributista,25,180423,728,227701,1,0,lesiones,2,172822,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00586,25794182,26,santa fe,24,desempleado,4,54124,614,21960,1,1,comercio,0,267759,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00131,30356675,34,neuquen,80,desempleado,3,40823,741,26451,1,1,comercio,1,127488,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00462,42120449,28,salta,14,monotributista,20,166168,439,462225,1,0,auto,1,275135,0,0,0,1,0,0,1,0,0,8,3,1,0,1,medio,0,train_balanced
+CASE-00862,40852955,37,neuquen,13,autonomo,24,337240,592,384872,2,0,auto,0,39446,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,train_balanced
+CASE-00120,21761369,47,neuquen,46,desempleado,3,127349,582,157670,2,0,hogar,2,71405,1,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00755,45534323,53,santa fe,9,autonomo,12,304086,772,289358,0,1,comercio,0,194642,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00777,36184524,47,buenos aires,55,monotributista,22,241844,568,49134,3,2,auto,1,157442,0,1,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00048,45227191,45,mendoza,19,monotributista,27,132007,579,65414,1,1,hogar,0,161296,0,0,0,0,1,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00255,29231261,30,caba,54,monotributista,6,139764,572,55018,1,2,robo,0,274194,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00305,23561669,42,salta,55,monotributista,21,162483,605,340425,2,0,lesiones,0,144526,0,0,1,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00618,28748118,18,mendoza,58,empleado,63,225957,841,0,1,0,comercio,2,122200,0,0,0,1,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00053,35560243,21,santa fe,83,empleado,36,125893,471,302249,3,2,hogar,0,50204,0,0,0,1,0,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00145,24537454,34,tucuman,19,autonomo,16,291143,700,94466,2,0,auto,0,183824,0,0,0,1,0,0,0,0,1,11,4,0,0,1,medio,0,train_balanced
+CASE-00488,31480487,42,salta,68,empleado,71,167342,466,243529,1,1,hogar,0,52078,0,0,1,0,0,0,0,0,0,8,3,2,0,0,bajo,0,train_balanced
+CASE-00997,42643441,52,mendoza,63,monotributista,12,122014,581,268539,3,0,auto,1,767151,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00530,29622068,19,caba,25,empleado,40,330106,503,247642,3,1,lesiones,2,142984,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00768,44217706,35,tucuman,83,empleado,50,280176,771,45974,1,1,hogar,0,106713,0,0,0,0,0,0,0,0,1,1,1,3,0,1,medio,0,train_balanced
+CASE-00423,23772093,31,caba,28,desempleado,4,133111,640,206552,0,2,robo,4,300312,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00970,46528623,28,salta,24,empleado,28,223764,658,334010,2,3,hogar,1,146769,0,1,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00376,28938770,50,santa fe,49,empleado,57,354267,583,357762,3,0,comercio,1,129516,1,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00577,31762730,48,tucuman,48,monotributista,46,150135,425,77323,1,1,hogar,1,122006,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00859,24746326,36,santa fe,96,empleado,15,289308,662,527296,1,0,auto,1,26884,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00001,45019896,44,caba,44,autonomo,23,247220,670,496779,1,2,auto,0,120661,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00607,28110910,40,tucuman,21,autonomo,14,92502,731,48631,0,1,robo,0,292790,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00744,24703544,49,buenos aires,72,desempleado,10,79702,576,125798,2,1,lesiones,1,197133,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00249,37181686,55,neuquen,70,autonomo,50,483576,797,538166,0,0,hogar,1,360052,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00019,23196340,48,caba,31,desempleado,3,116211,656,0,2,1,robo,1,205545,0,0,0,0,0,0,0,0,0,3,1,1,0,0,bajo,0,train_balanced
+CASE-00098,32651235,37,neuquen,27,desempleado,15,101306,698,15021,5,2,hogar,1,106494,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00124,45963407,42,mendoza,46,monotributista,11,83158,709,0,2,0,lesiones,0,520466,1,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00401,43232550,38,mendoza,100,empleado,61,231269,731,378897,3,1,lesiones,1,268654,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00828,40543643,25,caba,72,desempleado,12,102468,417,271474,2,1,auto,0,121193,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00463,21142252,34,tucuman,84,monotributista,7,262249,631,104182,5,0,lesiones,1,846355,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00477,41326009,29,neuquen,65,monotributista,29,92844,691,176268,3,0,comercio,1,98724,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00109,46612074,30,santa fe,26,empleado,95,202927,576,266943,6,1,hogar,1,158131,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00626,22486973,38,santa fe,57,empleado,78,269043,715,503874,1,0,lesiones,0,104893,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00338,29037451,49,neuquen,112,empleado,68,270040,733,513798,2,1,lesiones,0,82570,0,0,0,0,1,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00643,34533084,53,buenos aires,57,empleado,37,171983,433,5095,3,0,auto,0,83189,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00315,36747076,46,caba,28,empleado,76,279326,492,120627,2,1,lesiones,0,165962,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00344,23488271,23,tucuman,28,desempleado,0,130420,844,132697,0,1,lesiones,0,176910,0,1,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00641,41100318,49,caba,79,monotributista,18,151053,649,168427,3,1,auto,1,51004,0,0,0,0,0,1,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00905,29331651,29,neuquen,71,empleado,29,139402,574,78387,1,0,auto,0,176479,0,1,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00948,23616446,21,tucuman,58,empleado,19,312858,640,593329,2,0,robo,0,106980,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00151,44136875,37,santa fe,60,empleado,33,56176,735,46782,0,0,robo,0,188889,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00913,38246577,42,tucuman,56,autonomo,34,524203,637,455427,1,1,comercio,0,136058,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00473,37765710,55,tucuman,40,autonomo,19,263426,748,381804,4,0,comercio,1,160639,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00517,30505434,60,mendoza,11,autonomo,9,275058,647,163399,1,1,hogar,0,457191,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00006,26314127,31,salta,43,empleado,73,320448,632,451963,0,0,auto,1,31306,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00207,20377224,26,buenos aires,86,desempleado,3,127557,780,231105,0,0,lesiones,2,170485,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00104,41306491,49,tucuman,48,monotributista,13,197054,792,40050,1,0,lesiones,0,147975,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00909,30302298,63,santa fe,14,monotributista,10,245468,581,218238,1,0,robo,0,121116,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00350,38916679,27,caba,15,empleado,56,314681,724,268112,1,0,comercio,1,174071,0,0,1,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00866,29431153,40,cordoba,50,empleado,37,191032,888,421343,0,1,hogar,0,64152,0,0,0,1,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00772,29187745,50,caba,42,desempleado,1,99789,467,129958,1,1,robo,0,499783,0,0,0,0,1,0,0,0,0,6,2,6,1,1,medio,0,train_balanced
+CASE-00164,43943492,34,buenos aires,17,empleado,21,521878,893,488840,2,0,auto,1,167088,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00663,25716555,34,tucuman,97,empleado,27,184000,495,198836,2,0,auto,1,1205710,0,0,0,0,0,0,0,0,1,5,2,2,0,1,medio,0,train_balanced
+CASE-00177,21717479,18,buenos aires,39,empleado,93,262458,902,377777,1,0,robo,0,109116,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00552,41336433,37,cordoba,15,autonomo,19,262520,664,0,6,0,lesiones,1,371704,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00729,40382797,43,cordoba,36,empleado,46,181982,570,496407,1,0,comercio,0,58534,0,0,0,0,0,0,1,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00479,25118037,46,caba,37,empleado,101,252343,644,213790,1,1,hogar,0,124274,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00620,27436019,44,caba,42,desempleado,0,48295,692,70985,1,0,comercio,0,121255,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00419,24807971,50,tucuman,41,autonomo,69,446674,735,0,2,0,lesiones,0,78311,0,0,0,0,0,1,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00953,22876959,38,buenos aires,42,autonomo,15,436154,514,960738,1,1,hogar,0,66432,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00469,32666716,45,neuquen,56,empleado,23,370320,700,349310,2,0,auto,1,44728,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00483,32432518,48,neuquen,27,autonomo,51,89013,875,150316,2,1,hogar,2,78700,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00232,33812133,35,cordoba,18,empleado,60,460195,653,409038,1,1,auto,1,445953,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00971,33227697,30,santa fe,18,autonomo,46,301096,529,350947,1,1,auto,2,633601,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00702,44394282,22,caba,90,desempleado,6,56576,507,81049,0,0,auto,2,67300,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00757,24968217,24,buenos aires,21,empleado,102,227908,727,0,2,0,lesiones,2,244773,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00039,30569320,41,mendoza,91,empleado,92,173917,578,91541,0,4,comercio,0,413752,0,0,0,0,0,0,0,0,0,5,2,2,0,0,bajo,0,train_balanced
+CASE-00707,29473339,49,cordoba,41,empleado,86,264062,670,442463,0,1,auto,3,284706,0,1,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00471,34948057,22,cordoba,116,empleado,42,228275,582,418864,2,0,auto,0,128858,0,1,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00673,22227883,28,neuquen,13,desempleado,4,117237,613,672,2,0,robo,4,593885,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00654,22626961,46,buenos aires,114,desempleado,1,119652,782,100262,3,1,auto,0,204835,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00495,20131235,18,cordoba,61,empleado,48,324350,596,223495,3,0,hogar,3,337584,0,0,0,1,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00849,26997922,35,tucuman,185,monotributista,19,246573,941,742577,2,0,lesiones,1,76034,0,0,0,0,0,0,1,0,0,7,3,6,1,0,bajo,0,train_balanced
+CASE-00704,34632977,31,buenos aires,43,desempleado,8,55798,557,95097,2,0,lesiones,0,480073,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00932,45130233,41,buenos aires,16,monotributista,44,143094,577,174125,1,1,robo,0,85070,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00974,27897838,23,tucuman,15,desempleado,3,175356,694,201722,3,1,lesiones,1,283357,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00453,43462711,20,mendoza,53,autonomo,10,418409,689,445978,0,0,robo,1,189594,0,0,0,0,0,0,0,0,0,3,1,1,0,0,bajo,0,train_balanced
+CASE-00377,45591965,37,salta,60,autonomo,4,340341,778,927286,2,0,lesiones,1,158581,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00610,31762424,55,caba,53,monotributista,43,57160,631,0,2,0,auto,4,157928,0,0,0,0,1,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00245,46088053,48,neuquen,53,empleado,37,175271,725,80473,3,1,hogar,1,792341,0,1,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00575,45405022,44,caba,100,desempleado,4,100121,598,138992,1,0,auto,1,184348,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00716,23339335,41,tucuman,52,monotributista,36,198797,510,0,0,0,comercio,1,436139,0,1,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00158,30533405,42,caba,18,empleado,66,321763,477,481959,1,0,auto,0,423159,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00829,38549034,27,tucuman,113,empleado,75,156048,563,101158,2,0,robo,1,214282,0,1,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00379,40025496,21,salta,72,autonomo,15,376994,827,0,3,1,robo,0,519957,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00021,21631107,52,mendoza,112,empleado,80,47369,855,40883,3,2,auto,0,261732,0,0,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,train_balanced
+CASE-00094,26472652,40,santa fe,68,empleado,52,77343,603,54312,2,0,auto,0,142266,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00228,39744597,38,caba,88,monotributista,25,185882,666,0,3,1,robo,0,48370,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00311,32192062,22,salta,104,autonomo,4,175920,582,355225,2,1,robo,0,466917,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00253,29694535,34,neuquen,36,empleado,96,201190,375,0,2,0,hogar,1,82965,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00194,28077813,22,tucuman,26,empleado,25,298700,696,686216,0,2,robo,0,453819,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00983,20413725,36,tucuman,27,desempleado,27,103208,686,122703,0,0,comercio,1,155648,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00292,26439519,47,santa fe,82,empleado,64,229845,394,641893,1,0,auto,1,232463,0,0,0,0,0,0,1,0,0,2,1,5,1,1,medio,0,train_balanced
+CASE-00456,43512834,40,neuquen,21,autonomo,22,188763,504,137659,3,0,robo,1,335702,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00553,28050379,49,caba,20,empleado,49,133781,734,75962,1,1,lesiones,0,391677,1,0,0,0,1,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00930,29795053,40,santa fe,36,monotributista,18,184771,683,349766,0,2,comercio,0,390752,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00947,32025312,58,caba,155,desempleado,7,60971,598,48334,4,1,lesiones,0,427657,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,train_balanced
+CASE-00635,28789215,45,caba,88,empleado,22,248296,763,0,1,1,comercio,0,372081,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00412,24412176,39,neuquen,49,desempleado,3,129436,474,104743,3,0,robo,0,458452,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00186,33115037,32,mendoza,42,empleado,42,328174,479,169478,2,2,hogar,2,183939,0,0,0,1,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00484,30543086,49,mendoza,125,empleado,37,215800,645,151365,1,1,auto,0,72723,0,0,0,0,1,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00888,35735120,52,tucuman,88,monotributista,32,186490,677,331943,1,1,comercio,0,436158,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00585,34411087,18,caba,19,desempleado,4,140204,701,258571,3,1,lesiones,0,424635,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00761,44346319,18,caba,206,monotributista,3,226113,593,570220,2,0,hogar,1,580039,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00461,40665655,35,salta,18,autonomo,23,266682,484,333070,2,0,hogar,1,353985,0,0,1,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00276,43601341,43,tucuman,25,empleado,76,202033,551,237529,1,0,lesiones,4,118223,0,0,0,0,0,0,0,0,1,9,3,0,0,1,medio,0,train_balanced
+CASE-00354,27180096,66,mendoza,21,autonomo,41,247305,764,567040,3,3,auto,1,323861,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00392,30121576,29,santa fe,66,empleado,13,132102,626,12328,1,0,robo,0,282295,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,train_balanced
+CASE-00796,43864731,30,neuquen,26,autonomo,4,276457,463,367347,0,1,auto,0,604718,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00981,33624119,53,salta,8,empleado,54,303509,613,728988,2,0,robo,0,131780,1,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00346,33799570,36,neuquen,63,autonomo,9,675390,601,382798,1,0,robo,2,226310,0,0,0,1,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00886,36606673,33,cordoba,47,autonomo,50,364801,534,1163548,2,1,hogar,0,317821,0,0,0,0,0,0,1,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00398,42501390,63,cordoba,67,empleado,37,96599,766,97382,0,1,robo,1,184794,0,1,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00384,24082940,28,santa fe,44,autonomo,20,247409,720,256960,2,0,hogar,2,161471,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00763,44079746,26,cordoba,13,autonomo,34,418608,380,113629,0,0,lesiones,0,89402,1,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00335,23413553,40,santa fe,15,desempleado,7,39234,463,57103,1,0,lesiones,1,296286,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00912,43856651,45,salta,22,monotributista,23,65247,795,2212,1,1,hogar,1,106936,0,0,1,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00417,43189987,56,tucuman,11,desempleado,2,81229,456,242157,1,0,robo,1,195860,0,0,0,0,0,0,1,0,0,4,2,2,0,1,medio,0,train_balanced
+CASE-00726,26890801,43,cordoba,46,empleado,28,375337,745,68984,1,1,comercio,2,281683,0,1,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00797,35300412,36,salta,38,empleado,28,107358,783,210738,2,1,robo,1,138788,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00314,44129452,27,salta,17,monotributista,31,62032,705,111164,1,1,lesiones,1,132860,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00402,22300775,34,mendoza,34,desempleado,6,83313,643,124935,3,0,comercio,2,147909,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00312,43134938,51,caba,9,empleado,65,132041,788,440991,1,0,comercio,2,282306,0,0,0,0,0,0,1,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00608,40780417,61,tucuman,88,monotributista,16,179715,583,301555,1,1,hogar,2,336882,1,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00202,27907288,40,caba,32,monotributista,17,162212,567,182532,1,2,comercio,0,193623,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00504,43067629,25,mendoza,32,empleado,43,261578,504,343428,4,2,hogar,1,134615,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00677,39664726,49,salta,46,empleado,40,118947,652,0,2,1,comercio,1,179804,0,0,0,1,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00771,41131026,18,buenos aires,43,empleado,52,358101,522,640125,0,0,robo,1,272092,1,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00977,31173371,40,neuquen,72,desempleado,2,25000,496,38624,1,0,auto,0,139767,0,0,1,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00601,43829099,40,santa fe,71,autonomo,49,53463,620,10520,1,1,lesiones,0,131467,0,0,0,0,1,0,0,0,0,12,4,3,0,0,bajo,0,train_balanced
+CASE-00613,28271914,18,cordoba,58,monotributista,25,166035,677,161478,1,0,comercio,1,94282,0,0,0,0,1,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00235,39286179,43,caba,87,desempleado,5,25000,563,0,0,0,lesiones,0,262129,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00995,42549316,45,tucuman,10,empleado,90,297628,682,547313,0,0,hogar,0,201753,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00813,20801176,50,neuquen,61,empleado,72,257036,689,0,3,0,robo,0,86120,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00439,44474184,51,salta,35,empleado,48,153431,771,62302,2,0,auto,2,194137,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00380,32064163,52,buenos aires,40,autonomo,47,315307,423,0,1,0,comercio,1,154247,0,0,0,0,0,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00271,21378148,18,salta,43,empleado,82,428826,848,130643,1,1,comercio,0,108938,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00775,32987319,51,neuquen,23,monotributista,13,113817,817,247023,5,2,hogar,4,457768,0,0,0,0,0,0,0,0,0,8,3,2,0,0,bajo,0,train_balanced
+CASE-00720,23406936,48,salta,129,autonomo,23,338192,549,35354,4,1,robo,1,254204,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00362,37836504,20,neuquen,12,monotributista,25,112080,496,189224,1,2,auto,2,249229,0,0,0,1,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00388,41320727,33,neuquen,12,empleado,79,136149,573,272895,1,0,robo,1,703308,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00645,38821433,41,salta,30,empleado,54,322218,765,0,2,0,lesiones,1,439506,0,0,0,0,0,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00153,46183321,53,neuquen,42,empleado,48,382615,848,474834,1,0,comercio,0,368495,0,0,0,1,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00141,35700526,25,santa fe,55,empleado,5,233917,816,180082,2,0,robo,1,513577,0,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00215,22657303,50,tucuman,33,autonomo,29,105764,665,58465,1,0,lesiones,1,88483,0,0,0,0,0,0,0,0,0,5,2,4,0,0,bajo,0,train_balanced
+CASE-00114,42096944,46,santa fe,56,monotributista,53,33992,619,30082,0,2,auto,0,489833,0,0,0,0,0,0,0,0,1,10,4,5,1,1,medio,0,train_balanced
+CASE-00611,46131508,37,caba,68,empleado,40,117095,686,196683,2,2,lesiones,0,127830,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00507,31962723,38,salta,53,empleado,38,184022,796,214272,0,1,comercio,1,382976,0,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00191,43827521,37,mendoza,81,empleado,31,291322,513,518337,0,1,hogar,0,206965,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00027,29803005,44,santa fe,30,monotributista,3,202884,615,374618,2,1,auto,0,38288,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00916,32802163,61,caba,21,empleado,58,285911,850,316907,0,2,robo,1,150677,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00468,44828186,53,neuquen,85,monotributista,19,151674,525,136937,2,1,auto,0,210099,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-01000,20130134,19,santa fe,138,autonomo,15,324332,680,156678,1,0,hogar,0,457499,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00142,28443353,29,santa fe,76,empleado,68,270610,739,708889,3,0,robo,1,86302,0,0,0,0,0,0,1,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00867,33329977,38,tucuman,25,autonomo,16,325861,709,343928,2,1,comercio,1,120974,1,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00672,34609627,63,tucuman,35,empleado,63,153347,617,0,0,0,hogar,0,81617,0,0,0,0,1,0,0,0,1,7,3,5,1,1,medio,0,train_balanced
+CASE-00855,33195269,22,caba,36,monotributista,28,148057,681,229945,2,0,robo,0,163215,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00430,34442263,43,neuquen,57,empleado,20,81236,691,0,0,0,lesiones,2,57536,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00069,30916027,53,caba,10,empleado,18,124297,655,0,2,0,robo,2,157351,0,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00863,44249160,57,tucuman,32,empleado,20,139298,518,172970,4,1,robo,2,391480,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-00393,36786506,49,santa fe,93,autonomo,35,333717,741,788515,0,1,lesiones,1,255480,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00670,45321670,47,mendoza,31,empleado,46,80402,574,125986,2,0,auto,0,210203,0,0,0,1,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00227,38545623,38,neuquen,38,monotributista,23,69244,645,106051,1,0,hogar,0,299830,0,0,1,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00928,27205449,35,salta,24,empleado,64,270201,584,314640,0,1,comercio,1,157634,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00873,25863564,29,cordoba,23,autonomo,15,211421,523,387312,3,3,comercio,0,136300,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00022,28083123,29,neuquen,115,autonomo,27,329414,584,672262,1,0,comercio,1,76708,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00560,41486201,52,tucuman,69,empleado,50,207309,458,502443,2,1,auto,0,396210,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00499,36572175,18,mendoza,25,monotributista,17,213491,449,174123,3,0,comercio,1,211527,0,0,0,0,1,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00365,30892542,45,neuquen,26,empleado,59,60184,663,76662,3,0,lesiones,1,355067,0,0,0,0,0,0,0,0,0,3,1,1,0,0,bajo,0,train_balanced
+CASE-00935,38050687,35,buenos aires,27,monotributista,13,25000,574,4568,2,2,auto,1,199870,0,0,0,0,0,0,0,0,1,4,2,5,1,1,medio,0,train_balanced
+CASE-00664,29942634,18,salta,51,empleado,56,125239,626,244714,0,0,auto,0,138031,0,1,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00522,35981049,33,caba,66,desempleado,2,140591,854,156648,1,0,robo,1,123138,0,0,1,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00184,46365223,43,cordoba,51,empleado,39,169597,638,155323,1,0,robo,0,459170,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00644,44112942,47,mendoza,70,monotributista,29,280428,716,0,0,0,lesiones,4,177373,0,0,1,1,0,0,0,0,0,5,2,2,0,0,bajo,0,train_balanced
+CASE-00901,25540190,40,buenos aires,52,empleado,32,180643,708,199205,3,0,lesiones,0,86704,0,0,0,0,0,0,0,0,1,3,1,0,0,1,medio,0,train_balanced
+CASE-00699,43703929,43,neuquen,83,monotributista,2,194653,724,500517,4,0,lesiones,0,301990,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00149,44428177,30,mendoza,60,empleado,47,68293,803,23900,1,1,hogar,0,139748,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00818,31854181,38,tucuman,37,empleado,29,213858,532,333134,0,1,lesiones,0,128709,0,0,0,1,1,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00012,40279846,45,neuquen,78,empleado,33,171200,743,383447,2,0,comercio,1,107925,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00294,46733255,29,santa fe,69,empleado,66,330324,879,516119,1,0,hogar,2,347979,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00494,37456086,58,santa fe,63,empleado,31,111026,848,154648,1,0,lesiones,0,51683,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00486,38925407,53,buenos aires,53,empleado,85,330710,544,7244,1,0,robo,1,94029,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00389,26466138,67,buenos aires,55,monotributista,6,151221,724,96017,1,0,hogar,0,159783,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00403,40353782,54,neuquen,33,empleado,41,195036,559,99911,1,1,lesiones,0,54407,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00503,20988128,42,mendoza,19,desempleado,0,166063,613,43322,3,0,lesiones,0,454780,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00592,20446918,47,neuquen,45,empleado,14,288492,544,681465,1,1,lesiones,0,124844,1,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00086,41861017,49,neuquen,69,empleado,30,212917,798,101245,3,0,comercio,1,247506,0,0,0,0,0,0,0,0,1,5,2,0,0,1,medio,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00684,30856061,46,tucuman,64,autonomo,29,342931,719,142320,2,0,hogar,1,59648,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00188,46926950,25,buenos aires,111,empleado,93,284905,761,873861,3,1,lesiones,0,120360,0,0,0,0,0,0,1,0,0,10,4,4,0,1,medio,0,train_balanced
+CASE-00452,33408660,35,mendoza,140,empleado,38,252482,433,440005,0,0,auto,1,249095,0,0,0,1,0,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00230,22997493,42,santa fe,43,autonomo,7,452165,527,522747,0,0,robo,1,231651,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00589,28305520,23,buenos aires,56,desempleado,12,68818,746,206670,1,0,auto,0,361493,0,0,0,0,0,0,1,0,0,2,1,3,0,1,medio,0,train_balanced
+CASE-00414,41780054,43,salta,20,empleado,34,149607,636,116135,4,0,lesiones,2,125731,0,0,0,0,1,0,0,0,1,2,1,5,1,1,medio,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00534,20976273,23,salta,63,monotributista,34,221138,615,123194,2,0,auto,0,423036,0,0,0,1,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00133,45732334,46,caba,46,empleado,55,192775,847,308613,1,0,hogar,2,70676,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00119,27173877,36,salta,23,autonomo,49,262054,712,0,0,1,lesiones,1,64099,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00288,45014059,39,salta,117,empleado,67,73366,602,77973,0,0,robo,2,269624,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00841,45891429,33,cordoba,65,empleado,48,198292,768,266826,1,2,auto,1,260930,0,0,0,0,0,1,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00587,41817653,50,buenos aires,153,empleado,49,203456,746,446271,0,0,comercio,0,302552,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00054,26516616,39,neuquen,74,empleado,29,370281,650,845337,0,2,auto,0,121049,0,0,0,0,0,0,1,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00853,33987222,31,neuquen,29,monotributista,20,149463,473,373369,2,0,comercio,1,181025,0,1,0,0,0,0,1,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00505,28450292,33,salta,66,empleado,37,288280,547,425709,1,0,lesiones,1,71517,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00576,20191933,26,cordoba,23,empleado,18,236435,551,562957,2,1,auto,1,170036,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00836,41840566,40,buenos aires,32,monotributista,36,165243,743,194508,0,0,auto,0,39806,0,0,0,1,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00029,33427105,56,mendoza,54,autonomo,34,503046,583,105315,2,2,auto,1,164828,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00204,26488000,44,tucuman,21,empleado,119,189172,829,57017,2,0,lesiones,2,308960,0,0,0,0,0,0,0,0,1,7,3,0,0,1,medio,0,train_balanced
+CASE-00713,26437169,40,cordoba,18,autonomo,75,317246,695,660741,0,1,robo,0,110980,0,0,0,0,1,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00274,30297650,34,salta,151,empleado,102,424376,435,274378,1,0,lesiones,0,266510,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00514,38042581,36,santa fe,46,autonomo,10,151723,638,263251,0,1,comercio,0,255532,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00584,27134670,36,tucuman,45,autonomo,14,210543,620,0,1,1,comercio,1,141085,0,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00844,25965121,42,buenos aires,50,empleado,37,308082,797,447617,2,0,comercio,1,41569,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00326,23981917,41,salta,29,monotributista,10,188044,508,140725,1,0,robo,0,147455,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00962,32849793,27,mendoza,36,desempleado,0,30694,626,65635,3,1,lesiones,0,188861,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00371,20472803,48,buenos aires,25,desempleado,5,78120,637,121831,2,0,hogar,0,621297,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00897,21762023,71,buenos aires,106,empleado,25,275264,594,306556,2,0,auto,0,329105,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00959,45720653,40,mendoza,17,desempleado,0,90668,453,41305,0,1,comercio,1,203520,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00972,23668124,23,caba,62,empleado,35,442813,551,345979,1,0,hogar,2,164603,0,0,0,0,1,0,0,0,0,4,2,4,0,0,bajo,0,train_balanced
+CASE-00279,28324878,66,buenos aires,34,desempleado,12,84692,483,57119,2,0,lesiones,1,73340,0,0,0,0,0,1,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00101,31038932,32,neuquen,13,empleado,61,25000,520,3068,1,2,lesiones,1,150919,0,0,0,0,0,0,0,0,1,5,2,1,0,1,medio,0,train_balanced
+CASE-00425,31857062,46,caba,11,monotributista,20,199694,660,171025,1,0,lesiones,1,205189,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00612,44386796,40,caba,43,empleado,102,237317,695,515218,2,0,robo,3,224669,1,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,train_balanced
+CASE-00213,29840119,27,mendoza,37,empleado,47,282907,708,0,0,0,comercio,0,192105,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00722,23673433,35,cordoba,28,empleado,74,274676,698,555565,1,1,robo,0,230931,1,0,0,0,0,0,0,0,0,5,2,2,0,0,bajo,0,train_balanced
+CASE-00711,41082052,39,santa fe,47,empleado,49,205973,641,0,3,0,lesiones,1,159958,0,0,0,0,0,0,0,0,0,4,2,1,0,0,bajo,0,train_balanced
+CASE-00082,36553464,45,cordoba,64,monotributista,19,173098,642,300739,3,1,robo,1,211919,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00476,44616550,55,salta,47,desempleado,3,45276,635,96280,0,1,robo,1,99194,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00822,36931740,46,neuquen,46,empleado,28,329843,514,271581,1,2,robo,0,429970,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00727,45901382,23,caba,56,autonomo,20,197737,807,387659,3,0,robo,1,183287,0,0,0,1,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00546,30302546,33,buenos aires,11,monotributista,35,190234,717,230394,1,0,robo,1,123215,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00921,41183769,48,salta,4,desempleado,3,64076,559,75118,2,1,hogar,0,469739,0,0,0,1,0,0,0,0,0,2,1,3,0,1,medio,0,train_balanced
+CASE-00821,26121995,53,cordoba,26,empleado,24,166360,797,688559,1,1,lesiones,0,360362,0,0,0,0,0,0,1,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00570,39147447,21,santa fe,85,empleado,77,359258,771,534902,0,0,hogar,1,212714,1,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00940,31914179,39,buenos aires,100,desempleado,5,54411,651,20314,3,1,comercio,2,220477,1,0,0,0,0,0,0,0,0,2,1,2,0,1,medio,0,train_balanced
+CASE-00092,46584236,32,santa fe,54,empleado,37,230047,706,0,1,0,auto,0,36076,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00115,37683666,48,neuquen,46,monotributista,14,118043,800,81767,2,2,comercio,1,164353,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00242,32054240,42,cordoba,55,empleado,88,264356,685,221091,0,1,comercio,0,277754,0,0,0,0,1,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00883,26764489,42,salta,44,empleado,27,292591,631,448581,1,1,comercio,1,173936,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00564,22276164,45,santa fe,41,empleado,45,220570,629,182508,4,0,comercio,0,84070,1,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00549,33520753,33,cordoba,36,monotributista,7,151727,734,112991,2,0,lesiones,0,166315,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00695,45951078,51,neuquen,47,empleado,60,114135,620,0,1,0,robo,2,119628,0,0,0,0,1,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00016,43088542,38,cordoba,26,autonomo,45,259411,707,602376,0,0,hogar,1,266222,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00519,22385987,25,mendoza,25,empleado,40,299840,740,638288,2,0,lesiones,2,270970,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00161,34997400,20,santa fe,31,monotributista,18,232092,474,13628,0,0,robo,0,102028,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00433,46940526,47,cordoba,31,empleado,27,195368,811,258287,2,0,robo,1,135708,1,0,0,0,0,1,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00156,30948852,51,mendoza,64,empleado,7,139904,608,326156,2,0,auto,1,79426,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00277,35090951,20,cordoba,66,desempleado,9,149281,618,147567,1,0,lesiones,1,147745,0,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00671,26668470,39,salta,84,empleado,29,163194,644,294584,0,0,auto,0,89676,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,train_balanced
+CASE-00183,36308429,40,salta,10,empleado,58,35996,716,36706,1,1,auto,2,278818,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00171,28625146,41,buenos aires,17,autonomo,37,219077,719,125218,1,0,auto,1,142242,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00746,27973088,39,neuquen,49,monotributista,9,223722,637,70161,0,2,comercio,0,250778,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00899,28480707,18,mendoza,59,empleado,54,254987,735,369614,2,2,hogar,0,173886,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00081,44920395,38,neuquen,32,empleado,87,166158,509,307715,1,2,comercio,1,317490,0,0,0,0,0,0,0,0,0,7,3,5,1,0,bajo,0,train_balanced
+CASE-00994,26163962,23,salta,107,desempleado,5,141180,823,205265,3,0,lesiones,0,113794,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00779,24666428,33,santa fe,79,desempleado,2,85723,480,168443,0,0,hogar,0,302059,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00502,45297965,38,mendoza,25,empleado,74,466756,692,1296554,2,1,lesiones,1,144058,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00239,24512121,58,santa fe,78,autonomo,62,100917,573,129415,1,1,hogar,0,212958,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00736,28461909,50,cordoba,53,empleado,59,361313,607,294907,1,1,hogar,1,299703,0,1,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00944,41182426,28,neuquen,59,empleado,73,194848,648,315800,2,1,comercio,1,284475,0,0,0,0,0,0,0,0,0,4,2,1,0,0,bajo,0,train_balanced
+CASE-00099,33698156,38,cordoba,68,autonomo,16,313871,630,155350,1,1,comercio,1,102532,1,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00078,29909551,35,caba,66,empleado,117,76981,698,136322,1,2,auto,0,96816,1,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00229,32079806,37,tucuman,100,empleado,24,218760,641,283686,2,0,auto,3,131700,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00568,44710622,48,santa fe,47,monotributista,45,129869,476,145756,0,1,auto,0,266998,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00812,44596491,41,salta,62,autonomo,28,182888,543,95508,0,0,comercio,0,92851,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00604,38785837,40,neuquen,12,autonomo,40,275055,681,252387,0,1,lesiones,1,220192,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00334,25482571,33,santa fe,41,empleado,14,201055,787,17251,2,1,auto,2,371416,0,0,0,0,0,1,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00283,37334047,27,buenos aires,48,autonomo,19,223302,675,434464,3,0,robo,0,61337,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00802,35803154,37,tucuman,66,empleado,88,245798,736,250160,3,0,hogar,2,86117,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00881,22534424,18,tucuman,103,empleado,14,211679,468,106547,1,0,hogar,0,92321,0,0,0,0,1,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00967,34283760,47,neuquen,35,autonomo,29,504266,572,437459,2,0,robo,1,145487,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00280,21512185,47,buenos aires,57,monotributista,14,169943,621,191794,2,0,auto,0,189791,0,0,0,0,1,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00102,23344250,52,santa fe,119,autonomo,46,347242,577,559626,0,0,auto,1,193770,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00429,29821646,24,tucuman,55,monotributista,27,234248,614,173489,2,2,comercio,2,118647,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00498,34894285,39,buenos aires,110,autonomo,17,289707,564,549453,0,0,lesiones,0,756041,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,train_balanced
+CASE-00792,39304651,48,salta,66,empleado,47,214215,624,116585,1,1,hogar,0,113459,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00759,42629856,57,caba,53,empleado,101,304392,791,181264,1,0,comercio,0,589267,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00574,37033296,66,mendoza,35,monotributista,14,144527,646,524157,2,1,hogar,1,278382,0,0,0,0,0,0,1,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00265,36673847,30,buenos aires,85,monotributista,27,219045,686,488520,3,0,hogar,1,268841,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00090,37219120,46,buenos aires,15,desempleado,4,139426,496,0,2,1,comercio,2,204721,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00243,44294691,18,neuquen,37,autonomo,77,449119,392,1133192,2,0,auto,2,135407,0,0,0,0,0,0,1,0,0,8,3,3,0,1,medio,0,train_balanced
+CASE-00257,33317681,34,tucuman,109,empleado,15,233034,669,22525,0,1,robo,0,416045,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00842,39221543,34,santa fe,135,desempleado,0,43829,435,104380,0,1,robo,2,246414,0,0,0,0,0,0,1,0,0,11,4,0,0,1,medio,0,train_balanced
+CASE-00979,43950189,44,santa fe,74,autonomo,19,151243,719,29030,2,0,comercio,1,584928,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00660,22254651,43,salta,91,empleado,61,114217,478,223508,1,0,hogar,4,86828,0,0,0,1,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00240,35161311,39,buenos aires,28,empleado,42,340614,295,821531,3,0,auto,1,731423,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00126,27539769,25,neuquen,54,monotributista,13,163863,684,249314,0,1,hogar,0,139840,0,0,0,0,0,0,0,0,0,5,2,4,0,0,bajo,0,train_balanced
+CASE-00113,34716532,52,mendoza,86,autonomo,46,246227,528,289838,1,0,lesiones,0,89647,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00036,27429645,48,cordoba,80,desempleado,5,114378,655,86442,0,0,comercio,2,107759,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00369,24692489,40,caba,94,autonomo,63,331847,484,0,4,0,lesiones,1,245491,0,0,0,1,0,0,0,0,0,3,1,0,0,0,bajo,0,train_balanced
+CASE-00599,26669785,25,salta,77,empleado,93,431733,628,540252,2,2,auto,1,71552,0,0,0,0,0,0,0,0,0,7,3,5,1,0,bajo,0,train_balanced
+CASE-00163,26332961,56,neuquen,11,empleado,28,25000,554,17965,1,0,robo,0,340253,0,0,0,0,1,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00640,24774787,42,tucuman,15,empleado,48,272823,609,220341,1,0,comercio,0,195445,0,1,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00712,33629960,18,neuquen,113,empleado,44,323230,656,779480,0,0,comercio,0,130008,0,0,0,0,0,0,1,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00847,45958418,49,neuquen,70,autonomo,65,169156,688,99115,1,3,auto,0,230460,1,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00875,45592052,49,mendoza,79,empleado,69,264904,595,616220,1,3,lesiones,0,63427,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00251,39156309,29,mendoza,39,empleado,57,300716,788,264539,2,0,hogar,3,253946,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00127,38403744,45,santa fe,25,desempleado,2,148640,617,157518,3,0,robo,1,76953,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00370,27784081,41,neuquen,43,empleado,71,303533,528,159213,0,0,auto,2,116883,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,train_balanced
+CASE-00809,24761133,31,santa fe,32,monotributista,35,160586,870,74575,2,1,auto,0,495941,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00833,43132456,55,neuquen,63,autonomo,25,399966,603,32090,1,0,auto,0,63601,0,0,0,0,0,0,0,0,1,10,4,4,0,1,medio,0,train_balanced
+CASE-00580,37237989,26,buenos aires,34,desempleado,12,87748,880,117966,2,1,hogar,0,286208,1,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,train_balanced
+CASE-00985,31343783,48,neuquen,10,autonomo,36,451060,553,1058457,2,2,hogar,1,173317,0,0,0,1,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00343,22333180,24,tucuman,57,autonomo,57,221939,777,302020,2,1,lesiones,0,209033,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00459,36912729,50,tucuman,40,empleado,29,336290,505,556091,1,3,hogar,0,568639,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00254,35477847,44,mendoza,73,empleado,21,227616,635,0,2,0,lesiones,0,354085,0,1,0,0,0,1,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00416,23320938,33,tucuman,36,desempleado,4,87922,555,122013,1,0,lesiones,0,293187,0,0,0,1,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00496,36102578,44,neuquen,76,monotributista,14,235809,597,249687,0,1,robo,1,123276,0,0,0,1,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00088,40279842,55,santa fe,79,empleado,64,431576,690,895983,2,2,hogar,1,253639,0,0,0,0,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00741,35603124,18,salta,78,desempleado,11,73658,707,91097,0,1,hogar,2,159579,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00780,36209524,53,salta,22,monotributista,19,218604,575,318318,1,0,auto,1,287831,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00794,23482042,30,tucuman,43,monotributista,12,190626,729,293624,1,0,auto,1,193934,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00457,31452553,48,tucuman,36,autonomo,47,25000,652,93133,4,0,comercio,2,251677,0,0,0,0,0,0,1,0,0,7,3,6,1,1,medio,0,train_balanced
+CASE-00864,38370136,30,caba,37,empleado,44,79056,527,127096,2,1,comercio,1,823582,0,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00730,40413215,39,caba,88,monotributista,23,310141,682,276753,4,0,lesiones,2,206136,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00363,30024454,46,buenos aires,38,empleado,30,190036,609,2077,1,0,comercio,1,734801,0,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,train_balanced
+CASE-00927,21151219,52,buenos aires,31,monotributista,41,150480,469,286276,1,3,auto,1,52509,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00550,43276054,37,neuquen,135,desempleado,3,53952,678,40346,2,0,robo,1,58459,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00100,30119600,47,neuquen,78,empleado,40,102316,663,33353,1,1,hogar,0,87526,0,0,0,0,0,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00569,25581113,40,santa fe,51,autonomo,41,258958,476,799477,1,0,comercio,0,108068,0,0,0,0,1,0,1,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00650,35479079,24,mendoza,76,empleado,34,174349,678,432676,1,0,comercio,1,262874,0,0,0,1,0,0,0,0,1,10,4,5,1,1,medio,0,train_balanced
+CASE-00999,25880759,48,mendoza,10,monotributista,13,270187,625,114221,1,2,lesiones,0,88987,0,0,1,0,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00893,36217735,29,caba,82,empleado,37,315931,593,399981,2,1,comercio,0,155344,0,1,0,0,1,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00565,33896984,20,buenos aires,118,empleado,48,333005,834,0,0,1,auto,1,168828,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,train_balanced
+CASE-00957,31996265,35,tucuman,86,autonomo,31,228093,845,0,2,1,hogar,0,148880,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00404,40068724,43,caba,38,autonomo,40,25000,589,64944,1,0,comercio,0,128987,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,train_balanced
+CASE-00025,28791689,23,mendoza,75,desempleado,5,117634,702,159674,2,2,comercio,1,627118,0,0,0,1,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00436,28942224,41,santa fe,52,empleado,50,289120,560,333621,3,0,hogar,0,196288,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced
+CASE-00112,27913490,18,salta,66,empleado,26,240089,831,203375,1,0,hogar,1,242362,0,0,0,0,1,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00527,43721534,18,mendoza,17,autonomo,45,54613,779,27035,1,1,hogar,4,465937,0,0,0,0,1,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00395,27394518,30,santa fe,51,empleado,27,175174,718,256027,1,0,hogar,0,97779,0,0,1,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00323,43788828,40,santa fe,85,empleado,43,270847,833,348866,3,0,auto,1,321054,1,0,1,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00920,35188510,18,salta,11,autonomo,30,176386,719,433130,2,0,comercio,0,199371,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,train_balanced
+CASE-00330,24119586,20,tucuman,75,autonomo,15,288552,510,439085,2,0,robo,0,276063,0,0,0,0,1,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00724,44201980,66,cordoba,160,empleado,16,125338,601,250803,2,1,robo,1,377136,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00182,21420654,29,cordoba,19,autonomo,43,166958,530,51053,1,2,hogar,1,66450,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00865,20964921,19,mendoza,50,desempleado,7,63129,782,0,6,0,robo,1,352148,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,train_balanced
+CASE-00432,27023330,32,mendoza,29,empleado,70,424896,756,859265,1,1,comercio,0,407875,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00367,41706621,27,buenos aires,18,desempleado,5,78149,638,104262,2,0,robo,2,270879,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00685,27407310,48,santa fe,12,autonomo,30,148715,723,297919,0,0,auto,1,410387,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00428,25735642,47,buenos aires,46,desempleado,5,92744,578,90165,3,0,hogar,1,208731,0,0,0,0,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00723,30696973,66,caba,43,autonomo,68,128988,731,111202,1,1,comercio,0,260072,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00356,34038009,39,santa fe,21,empleado,63,146725,520,404171,1,2,robo,0,196419,0,0,0,0,0,0,1,0,0,1,1,1,0,1,medio,0,train_balanced
+CASE-00778,21940124,39,buenos aires,58,empleado,22,117517,843,0,2,1,robo,1,66303,1,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00009,43322751,29,buenos aires,78,monotributista,18,161474,939,268547,1,1,comercio,3,98785,0,0,1,1,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00721,34634037,50,mendoza,72,monotributista,27,112473,621,369234,3,2,comercio,0,170301,0,0,0,0,0,0,1,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00368,42185465,54,neuquen,42,autonomo,41,359610,682,921963,0,0,auto,0,212339,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,train_balanced
+CASE-00861,23889268,23,neuquen,54,empleado,25,46396,547,122372,3,2,hogar,1,165550,0,0,0,0,0,0,1,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00936,23132682,23,salta,86,monotributista,2,256977,667,0,1,1,hogar,1,189521,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,train_balanced
+CASE-00106,22082963,23,buenos aires,47,empleado,38,233948,681,329168,1,0,auto,1,73090,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00103,33059040,41,caba,64,monotributista,34,136792,497,1,6,0,lesiones,0,292900,0,0,0,0,1,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00705,32243351,24,santa fe,55,monotributista,20,305814,512,306142,1,1,robo,0,406794,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00622,34871570,77,neuquen,61,empleado,59,202164,614,154317,2,2,hogar,1,77013,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00359,42510629,18,cordoba,24,empleado,23,248301,624,469299,3,0,robo,1,150452,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00497,21605869,30,neuquen,34,monotributista,14,101885,750,29252,3,1,robo,0,206672,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,train_balanced
+CASE-00178,22870581,31,santa fe,35,empleado,62,381612,842,0,0,0,hogar,0,82059,0,1,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00898,39681622,26,caba,14,empleado,65,129123,706,396784,1,0,auto,0,657535,0,0,0,0,1,0,1,0,0,11,4,6,1,1,medio,0,train_balanced
+CASE-00857,36677401,31,santa fe,45,autonomo,27,220204,721,441421,0,1,comercio,2,260640,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,train_balanced
+CASE-00443,29089580,57,mendoza,26,empleado,49,404922,677,32011,1,1,comercio,0,70069,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00410,23732477,37,buenos aires,83,empleado,73,387350,423,235549,2,0,hogar,0,278231,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00756,46356666,30,cordoba,42,empleado,39,291117,835,93584,1,1,robo,0,202895,0,1,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00136,25938271,38,salta,31,empleado,33,206307,511,0,2,1,auto,0,180354,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,train_balanced
+CASE-00998,26349707,51,tucuman,12,empleado,64,200999,745,86891,0,0,lesiones,0,43660,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00938,23303752,32,salta,41,desempleado,4,57701,596,20955,2,0,robo,0,219150,1,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00316,20716177,41,tucuman,50,autonomo,5,217922,657,246273,5,0,lesiones,1,542083,1,0,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,train_balanced
+CASE-00572,32445775,44,buenos aires,52,autonomo,88,348796,610,343906,0,0,robo,0,68463,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00630,22224462,23,mendoza,41,desempleado,7,114897,703,119406,2,1,robo,0,582317,0,1,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,train_balanced
+CASE-00807,42060391,37,caba,50,monotributista,42,109985,638,141538,1,0,lesiones,0,218484,0,0,0,0,1,0,0,0,0,7,3,0,0,0,bajo,0,train_balanced
+CASE-00028,25748035,57,buenos aires,60,empleado,80,189982,723,51304,3,0,hogar,0,51823,0,1,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00532,38389136,53,santa fe,21,monotributista,22,229545,728,0,3,0,lesiones,1,170686,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,train_balanced
+CASE-00511,32125347,35,mendoza,37,desempleado,1,89056,557,165510,2,0,auto,1,123451,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00105,22871656,38,salta,41,empleado,41,293265,482,480235,1,0,lesiones,1,126570,1,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00752,45420381,32,neuquen,90,empleado,50,49477,548,90787,1,0,lesiones,4,150797,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,train_balanced
+CASE-00286,43612300,73,tucuman,57,empleado,59,264692,716,0,1,0,robo,1,482038,0,0,0,0,0,0,0,0,0,5,2,0,0,0,bajo,0,train_balanced
+CASE-00895,46131278,18,cordoba,19,empleado,22,269525,710,0,0,1,hogar,1,90697,1,0,0,0,0,1,0,0,0,8,3,6,1,0,bajo,0,train_balanced
+CASE-00437,36124308,35,mendoza,39,monotributista,43,186137,681,312840,3,0,comercio,0,1015084,0,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,train_balanced
+CASE-00734,41632495,26,tucuman,33,empleado,26,71980,652,0,3,1,lesiones,0,373951,1,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00478,23015750,37,buenos aires,42,monotributista,49,90505,514,109316,0,1,comercio,1,681541,0,0,0,0,0,1,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00934,43430413,18,neuquen,33,empleado,41,212308,673,388131,2,1,robo,5,81316,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,train_balanced
+CASE-00769,45483642,36,salta,16,empleado,12,214040,601,402051,0,0,auto,0,477084,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,train_balanced
+CASE-00968,28909940,41,santa fe,38,autonomo,27,553443,754,1131613,2,2,auto,2,93252,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00500,32285741,36,cordoba,59,empleado,71,197480,655,394744,1,1,auto,0,1386242,0,0,0,0,1,0,0,0,0,9,3,4,0,0,bajo,0,train_balanced
+CASE-00066,35231184,37,neuquen,73,monotributista,26,162467,637,299850,1,0,auto,1,94090,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00764,27416584,38,caba,17,autonomo,48,189555,746,135159,2,1,hogar,1,61840,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00270,38057496,42,mendoza,179,desempleado,9,73208,643,90073,6,0,lesiones,0,103784,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,train_balanced
+CASE-00633,38708220,47,salta,48,empleado,89,184732,500,571993,3,2,auto,1,329572,0,0,0,0,0,0,1,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00309,32571901,40,caba,78,empleado,63,431952,340,391993,2,1,comercio,0,432552,0,0,0,1,0,0,0,0,0,9,3,5,1,0,bajo,0,train_balanced
+CASE-00556,31006475,60,santa fe,57,empleado,20,315791,531,312528,2,0,lesiones,1,108401,0,0,1,0,0,0,0,0,0,3,1,6,1,0,bajo,0,train_balanced
+CASE-00396,23429031,54,mendoza,37,desempleado,0,100264,752,200153,2,0,hogar,2,176402,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00753,32499053,18,mendoza,71,desempleado,3,30926,734,48268,1,1,lesiones,0,69641,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00333,25156219,32,buenos aires,72,empleado,63,149290,802,178019,1,0,comercio,1,116854,0,0,0,1,0,0,0,0,0,6,2,6,1,0,bajo,0,train_balanced
+CASE-00526,29950852,70,tucuman,94,desempleado,13,68649,573,178955,0,2,comercio,0,324271,0,0,0,0,0,0,1,0,0,4,2,3,0,1,alto,1,train_balanced
+CASE-00244,34499638,26,santa fe,7,monotributista,32,97189,799,19514,1,1,auto,1,532389,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00424,28837039,21,mendoza,45,empleado,88,296127,479,289029,5,0,robo,2,64156,0,0,0,1,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00848,34275791,33,cordoba,66,autonomo,50,345467,626,284879,1,0,comercio,2,162255,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,train_balanced
+CASE-00190,22664921,49,neuquen,28,empleado,22,232603,615,469623,1,1,robo,0,98820,0,0,0,0,0,1,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00555,46620647,25,buenos aires,161,empleado,62,273766,531,582788,4,1,robo,0,153079,0,0,0,1,0,0,0,0,0,6,2,0,0,0,bajo,0,train_balanced
+CASE-00144,25152030,46,mendoza,57,monotributista,26,190366,711,14483,2,1,lesiones,1,97332,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00003,25515989,45,santa fe,48,monotributista,38,113288,524,0,1,0,hogar,2,69145,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00533,34808488,39,tucuman,17,monotributista,21,215946,851,317071,1,1,auto,2,133594,0,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00701,22972290,30,tucuman,90,empleado,36,146929,548,286495,2,0,robo,1,191966,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,train_balanced
+CASE-00173,23098056,59,buenos aires,25,monotributista,43,81522,672,208623,1,1,robo,0,169313,0,0,0,0,0,0,1,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00139,41978898,34,caba,41,empleado,64,268903,691,124538,2,0,lesiones,0,109337,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00150,21613560,29,tucuman,36,empleado,28,245529,695,599140,1,0,auto,2,206395,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,train_balanced
+CASE-00748,23609237,43,santa fe,55,empleado,52,271765,568,452904,1,0,comercio,1,89875,0,0,0,0,0,0,0,0,1,9,3,6,1,1,medio,0,train_balanced
+CASE-00049,37715057,51,santa fe,46,empleado,55,41435,667,35910,1,1,comercio,0,426894,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00110,41987523,31,santa fe,32,autonomo,65,212932,444,101920,2,1,comercio,1,180516,0,0,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,train_balanced
+CASE-00004,34744108,26,caba,45,monotributista,47,203672,351,374697,0,0,comercio,0,66675,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,train_balanced
+CASE-00301,27997018,26,cordoba,60,autonomo,11,268670,626,222932,1,0,comercio,1,72390,1,0,0,1,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00955,28836832,61,neuquen,95,monotributista,26,277582,689,227186,1,0,hogar,0,100134,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,train_balanced
+CASE-00754,25561886,79,salta,39,empleado,41,280229,582,312055,2,1,hogar,2,182779,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,train_balanced
+CASE-00013,35287338,23,mendoza,40,autonomo,11,262022,588,302021,2,0,auto,1,931275,0,1,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,train_balanced
+CASE-00002,46750222,27,mendoza,61,empleado,66,47595,763,85731,2,0,hogar,0,83278,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00050,26689142,39,mendoza,30,empleado,41,136854,648,0,0,0,comercio,2,198441,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00397,41113023,59,caba,76,empleado,72,178476,651,255065,2,1,auto,0,324612,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,train_balanced
+CASE-00731,21823821,25,tucuman,111,monotributista,5,203126,562,152215,3,1,auto,0,300460,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,train_balanced
+CASE-00302,22006811,29,caba,48,monotributista,36,92531,852,123165,2,1,hogar,0,239679,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00198,28994006,19,tucuman,50,monotributista,15,177625,464,262641,2,1,auto,0,120110,0,0,0,0,0,1,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00869,37743067,49,santa fe,52,empleado,58,138447,638,147736,3,0,hogar,0,147044,0,0,0,0,0,0,0,0,0,7,3,6,1,0,bajo,0,train_balanced
+CASE-00074,37017184,21,buenos aires,15,empleado,81,191621,649,444650,3,1,auto,1,103209,1,0,0,0,1,1,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00485,30374057,44,buenos aires,122,empleado,96,117721,671,236737,2,0,robo,1,915101,0,0,0,0,0,0,0,0,0,2,1,2,0,0,bajo,0,train_balanced
+CASE-00223,25256583,51,salta,39,autonomo,40,260608,593,215087,0,0,comercio,0,374576,0,0,1,0,0,0,0,0,0,4,2,1,0,0,bajo,0,train_balanced
+CASE-00877,22214442,50,salta,21,autonomo,13,408896,686,677814,0,0,lesiones,4,101920,0,0,0,1,0,0,0,0,0,11,4,2,0,0,bajo,0,train_balanced
+CASE-00904,27396765,27,salta,20,empleado,28,280001,684,561817,1,0,robo,1,142964,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00015,22386488,38,tucuman,76,desempleado,9,64072,744,56684,0,1,robo,0,327254,1,1,0,0,0,0,0,0,0,2,1,6,1,1,medio,0,train_balanced
+CASE-00130,41249305,29,buenos aires,19,desempleado,2,38812,675,2603,0,1,auto,1,769624,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00166,31381957,26,buenos aires,115,monotributista,17,229292,763,259920,0,1,auto,1,126872,0,0,0,0,0,0,0,0,0,11,4,1,0,0,bajo,0,train_balanced
+CASE-00017,22225300,49,tucuman,57,desempleado,14,72907,639,35424,0,0,auto,1,174028,0,1,0,0,0,0,0,0,1,1,1,0,0,1,medio,0,train_balanced
+CASE-00259,30490455,43,cordoba,94,empleado,78,215721,663,91710,0,1,hogar,0,94072,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00195,40918642,34,caba,7,monotributista,42,246210,556,187838,1,0,robo,2,102626,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,train_balanced
+CASE-00732,26887210,52,tucuman,38,empleado,43,31212,594,23384,1,0,robo,1,151056,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00798,44622730,41,mendoza,48,empleado,77,214646,684,359636,4,1,auto,0,336280,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,train_balanced
+CASE-00980,29414759,60,tucuman,44,empleado,11,174650,511,255125,3,0,lesiones,0,141542,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,train_balanced
+CASE-00408,30400647,18,caba,50,monotributista,10,193837,362,287948,3,0,hogar,0,236804,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,train_balanced
+CASE-00941,23953559,29,santa fe,33,autonomo,3,25000,621,23200,2,0,robo,2,96135,0,0,1,0,0,0,0,0,0,7,3,3,0,0,bajo,0,train_balanced
+CASE-00085,38283361,40,salta,47,empleado,23,259685,637,378496,1,0,robo,1,263205,0,0,0,0,0,0,0,0,1,11,4,4,0,1,medio,0,train_balanced
+CASE-00170,24869236,64,salta,64,empleado,102,300574,851,368021,3,0,comercio,0,292119,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,train_balanced
+CASE-00442,21602243,36,cordoba,26,empleado,34,254629,812,417382,1,1,lesiones,0,203553,0,0,0,1,0,0,0,0,0,3,1,3,0,0,bajo,0,train_balanced
+CASE-00269,22002507,24,buenos aires,38,autonomo,64,190760,584,292142,2,1,robo,1,78955,0,0,1,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00782,32675786,45,mendoza,82,desempleado,3,96120,786,70482,0,0,auto,0,142142,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00409,37755994,30,buenos aires,37,monotributista,9,252126,749,490039,4,1,robo,0,382850,0,0,0,0,0,0,0,0,1,6,2,5,1,1,medio,0,train_balanced
+CASE-00084,42576162,48,santa fe,26,autonomo,30,492049,863,553632,0,0,robo,0,241214,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,train_balanced
+CASE-00203,33963591,31,salta,54,autonomo,26,302132,791,246663,3,1,robo,0,141364,0,0,0,0,1,0,0,0,0,8,3,2,0,0,bajo,0,train_balanced
+CASE-00891,29985410,51,mendoza,122,monotributista,15,290783,649,237407,2,0,hogar,1,188534,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00063,44214909,44,mendoza,30,monotributista,16,192927,551,437737,1,1,robo,0,412794,0,0,1,0,0,0,0,0,0,5,2,1,0,0,bajo,0,train_balanced
+CASE-00562,40276221,20,santa fe,22,autonomo,15,215520,839,5493,1,0,auto,0,25364,0,0,0,0,1,0,0,0,0,12,4,5,1,0,bajo,0,train_balanced
+CASE-00806,37167108,18,cordoba,47,monotributista,25,232773,695,108600,1,0,hogar,0,334549,0,0,0,0,0,0,0,0,0,4,2,0,0,0,bajo,0,train_balanced
+CASE-00656,27921209,40,santa fe,42,monotributista,12,208286,730,406494,1,0,hogar,0,90018,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,train_balanced
+CASE-00284,41767260,45,salta,26,empleado,39,138512,477,0,0,1,robo,0,256388,0,0,0,0,0,0,0,0,0,5,2,6,1,0,bajo,0,train_balanced
+CASE-00834,21238663,44,tucuman,49,desempleado,3,88162,677,270885,1,1,comercio,2,1081241,0,0,0,0,0,1,1,0,0,2,1,3,0,1,alto,1,train_balanced
+CASE-00152,23230786,18,mendoza,15,empleado,41,240912,638,192401,0,2,hogar,0,200925,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,train_balanced
+CASE-00187,36975326,33,caba,34,empleado,37,245964,409,137767,1,1,lesiones,0,388303,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,train_balanced
+CASE-00373,36639758,34,mendoza,60,empleado,25,335107,747,118001,0,0,auto,1,99425,0,0,0,1,0,0,0,0,0,11,4,0,0,0,bajo,0,train_balanced
+CASE-00480,43848047,51,mendoza,17,empleado,44,162142,678,197837,2,0,hogar,0,212700,0,0,0,0,0,0,0,0,0,9,3,0,0,0,bajo,0,train_balanced
+CASE-00482,33369981,44,caba,45,empleado,22,284203,722,214728,2,2,auto,1,436572,0,1,0,0,0,0,0,0,0,2,1,4,0,0,bajo,0,train_balanced
+CASE-00233,26911616,33,buenos aires,59,autonomo,36,55592,553,9209,3,0,hogar,0,282844,0,0,0,0,0,0,0,0,0,1,1,0,0,0,bajo,0,train_balanced
+CASE-00420,36843754,44,neuquen,31,empleado,15,300484,577,711473,3,0,robo,1,164833,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,train_balanced
+CASE-00651,27120473,21,neuquen,127,empleado,85,117219,596,122319,1,1,comercio,1,534588,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,train_balanced
+CASE-00879,42516582,42,tucuman,26,monotributista,5,39459,543,0,0,0,auto,1,133514,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,train_balanced
+CASE-00168,30149777,24,mendoza,110,desempleado,4,78426,663,16153,1,0,hogar,0,88397,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,train_balanced
+CASE-00337,37469317,47,santa fe,9,monotributista,12,128025,475,140130,1,1,lesiones,0,361045,0,1,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,train_balanced
+CASE-00418,40161970,51,caba,34,autonomo,16,289224,823,248446,0,0,hogar,2,454341,0,1,0,1,0,0,0,0,0,7,3,4,0,0,bajo,0,train_balanced
+CASE-00154,44355905,30,mendoza,58,empleado,47,333823,792,276417,1,0,comercio,0,29100,0,1,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,train_balanced
+CASE-00407,26665472,28,mendoza,22,monotributista,81,162391,499,124094,1,0,auto,1,151428,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,train_balanced
+CASE-00851,41111090,27,santa fe,80,monotributista,63,203109,788,119286,0,1,auto,0,218005,0,0,0,0,0,0,0,0,1,12,4,5,1,1,medio,0,train_balanced
+CASE-00540,21811146,30,neuquen,74,empleado,48,225945,477,61573,0,0,auto,0,343781,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,train_balanced
+CASE-00666,25056332,34,neuquen,63,desempleado,7,99577,823,30286,4,0,auto,0,127983,1,0,1,1,0,0,0,0,0,5,2,4,0,1,medio,0,train_balanced
+CASE-00491,46566096,34,cordoba,21,autonomo,69,343007,575,527598,5,0,hogar,2,582322,0,1,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,train_balanced
+CASE-00923,29777361,19,tucuman,93,empleado,121,284599,909,53012,2,0,hogar,1,202810,0,0,0,0,0,1,0,0,0,1,1,1,0,0,bajo,0,train_balanced
+CASE-00042,22710626,53,buenos aires,41,empleado,64,290909,693,161919,2,0,robo,3,389757,0,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,train_balanced
+CASE-00117,37241678,43,buenos aires,109,autonomo,4,302395,471,292889,1,1,auto,2,444175,1,0,0,0,0,0,0,0,0,3,1,5,1,0,bajo,0,train_balanced
+CASE-00621,39174474,41,santa fe,40,empleado,37,366051,459,871263,3,0,hogar,1,94614,0,0,0,0,1,0,1,0,0,10,4,4,0,1,medio,0,train_balanced
+CASE-00508,33910388,42,tucuman,20,empleado,82,123798,573,0,5,1,comercio,0,211802,0,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,train_balanced
+CASE-00990,39632428,50,tucuman,66,autonomo,11,477894,615,604792,2,0,lesiones,0,164467,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,train_balanced

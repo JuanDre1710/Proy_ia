@@ -1,0 +1,266 @@
+[
+  {
+    "case_id": "30111201",
+    "created_at": "2026-03-27T12:41:41.475183",
+    "updated_at": "2026-03-27T12:41:41.476573",
+    "requested_by": "usr-eval",
+    "source_channel": "smoke",
+    "processing_state": "excluded",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30111201",
+      "full_name": "Ana Romero",
+      "document_type": "DNI",
+      "document_number": "30111201",
+      "birth_date": "1981-12-09",
+      "age": 57,
+      "email": "titular1201@ers.local",
+      "phone": "+54-11-1035-1175",
+      "address": "Calle Validada 135",
+      "locality": "La Plata",
+      "province": "Buenos Aires",
+      "metadata": {
+        "ingestionOnly": false,
+        "normalized": true
+      }
+    },
+    "identity_status": {
+      "status": "VERIFIED",
+      "verified": true,
+      "deceased": false,
+      "source_reference": "DEMO_IDENTITY",
+      "source_timestamp": "2026-03-27T12:41:41.476573",
+      "inconsistencies": [],
+      "quality_score": 0.97
+    },
+    "financial_info": {
+      "credit_score": 474,
+      "debt_ratio": 0.59,
+      "bancarization_level": "Baja",
+      "active_loans": 4,
+      "bounced_checks": 0,
+      "monthly_income_estimate": "ARS 430000",
+      "observation": "Respuesta parcial del proveedor financiero demo.",
+      "source_reference": "DEMO_FINANCIAL",
+      "quality_score": 0.72,
+      "attributes": {
+        "partial": true,
+        "consultaId": "FIN-DEMO-30111201"
+      }
+    },
+    "labor_fiscal_info": {
+      "tax_status": "Monotributo",
+      "main_activity": "Comercio",
+      "employer_or_company": "Empresa 153",
+      "income_bracket": "Medio",
+      "registered_employees": 7,
+      "fiscal_observation": "Actividad y condicion fiscal consolidadas desde provider demo.",
+      "source_reference": "DEMO_LABOR",
+      "quality_score": 0.84,
+      "attributes": {
+        "partial": false,
+        "consultaId": "LAB-DEMO-30111201",
+        "declaredProvince": "Cordoba"
+      }
+    },
+    "evidences": [
+      {
+        "evidence_id": "EVD-ID-30111201",
+        "source_type": "IDENTITY",
+        "provider_code": "DEMO_IDENTITY",
+        "title": "Identidad normalizada",
+        "summary": "Se consolidaron datos de identidad y contacto.",
+        "details": "Estado VERIFIED.",
+        "collected_at": "2026-03-27T12:41:41.476573",
+        "quality": "HIGH",
+        "quality_score": 0.97,
+        "related_keys": [
+          "identity",
+          "contact",
+          "subject"
+        ],
+        "attributes": {
+          "partial": false
+        },
+        "raw_reference_id": "INT-28646723"
+      },
+      {
+        "evidence_id": "EVD-FIN-30111201",
+        "source_type": "FINANCIAL",
+        "provider_code": "DEMO_FINANCIAL",
+        "title": "Perfil financiero normalizado",
+        "summary": "Se consolido el perfil financiero desde provider demo interno.",
+        "details": "Credit score 474, deuda 0.59, cheques rechazados 0.",
+        "collected_at": "2026-03-27T12:41:41.476573",
+        "quality": "MEDIUM",
+        "quality_score": 0.72,
+        "related_keys": [
+          "credit_score",
+          "debt_ratio",
+          "bounced_checks"
+        ],
+        "attributes": {
+          "consultaId": "FIN-DEMO-30111201",
+          "partial": true
+        },
+        "raw_reference_id": "INT-CBF1D1BD"
+      },
+      {
+        "evidence_id": "EVD-LAB-30111201",
+        "source_type": "LABOR_FISCAL",
+        "provider_code": "DEMO_LABOR",
+        "title": "Perfil laboral y fiscal normalizado",
+        "summary": "Se consolido condicion fiscal y actividad economica desde provider demo interno.",
+        "details": "Condicion Monotributo, actividad Comercio, empleados registrados 7.",
+        "collected_at": "2026-03-27T12:41:41.476573",
+        "quality": "HIGH",
+        "quality_score": 0.84,
+        "related_keys": [
+          "tax_status",
+          "main_activity",
+          "income_bracket"
+        ],
+        "attributes": {
+          "consultaId": "LAB-DEMO-30111201",
+          "partial": false
+        },
+        "raw_reference_id": "INT-6291CBB3"
+      }
+    ],
+    "alerts": [
+      {
+        "alert_id": "ALT-FIN-PARTIAL-30111201",
+        "severity": "INFO",
+        "title": "Respuesta parcial del proveedor financiero demo",
+        "short_description": "Se consolidaron datos parciales financieros.",
+        "detail": "Faltan algunas variables financieras, pero el enrichment continuo con evidencia estructurada.",
+        "source_type": "FINANCIAL",
+        "source_reference": "DEMO_FINANCIAL",
+        "related_variable": "provider_partial_response",
+        "recommendation_hint": "Continuar con evidencia disponible y revisar contexto.",
+        "evidence_ids": [
+          "EVD-FIN-30111201"
+        ]
+      },
+      {
+        "alert_id": "ALT-RULE-CRITICAL_CROSS_SOURCE_INCONSISTENCY-30111201",
+        "severity": "CRITICAL",
+        "title": "Se detecto una inconsistencia critica entre fuentes.",
+        "short_description": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "detail": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada. Efecto: exclude_case.",
+        "source_type": "INTERNAL_RULE",
+        "source_reference": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "related_variable": "hard_rule",
+        "recommendation_hint": "Revisar evidencia y politica aplicadas antes de continuar.",
+        "evidence_ids": [
+          "EVD-ID-30111201",
+          "EVD-LAB-30111201"
+        ]
+      }
+    ],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": {
+      "assessment_id": "FAS-30111201",
+      "case_id": "30111201",
+      "risk_category": "NOT_EVALUABLE",
+      "recommendation": "BLOCK",
+      "executive_summary": "Caso excluido por Se detecto una inconsistencia critica entre fuentes.. Prioridad CRITICAL. Accion sugerida: BLOCK. Calidad de evidencia MEDIUM.",
+      "final_status": "EXCLUDED",
+      "final_priority": "CRITICAL",
+      "recommended_action": "BLOCK",
+      "confidence": 0.75,
+      "summary_for_analyst": "Caso excluido por Se detecto una inconsistencia critica entre fuentes.. Prioridad CRITICAL. Accion sugerida: BLOCK. Calidad de evidencia MEDIUM.",
+      "evidence_quality": "MEDIUM",
+      "pipeline_state": "excluded",
+      "requires_manual_review": true,
+      "blocked_by_hard_rules": true,
+      "hard_rule_reasons": [
+        "Se detecto una inconsistencia critica entre fuentes."
+      ],
+      "alert_ids": [
+        "ALT-FIN-PARTIAL-30111201",
+        "ALT-RULE-CRITICAL_CROSS_SOURCE_INCONSISTENCY-30111201"
+      ],
+      "reasoning_result_id": null,
+      "score_result_id": null,
+      "metadata": {
+        "alertCount": 2,
+        "evidenceCount": 3,
+        "relationshipSignals": 0,
+        "providerStatuses": {
+          "IDENTITY": "ok",
+          "FINANCIAL": "partial",
+          "LABOR_FISCAL": "ok"
+        },
+        "generatedAt": "2026-03-27T12:41:41.481442"
+      },
+      "created_at": "2026-03-27T12:41:41.481458"
+    },
+    "consolidated_evidence": {
+      "bundle_id": "EVB-30111201",
+      "collected_at": "2026-03-27T12:41:41.476573",
+      "ready_for_rules": true,
+      "provider_statuses": {
+        "IDENTITY": "ok",
+        "FINANCIAL": "partial",
+        "LABOR_FISCAL": "ok"
+      },
+      "warnings": [
+        "El proveedor financiero demo devolvio una respuesta parcial."
+      ],
+      "evidence_ids": [
+        "EVD-ID-30111201",
+        "EVD-FIN-30111201",
+        "EVD-LAB-30111201"
+      ],
+      "metadata": {
+        "evidenceCount": 3
+      }
+    },
+    "hard_rule_evaluation": {
+      "evaluation_id": "HRE-30111201",
+      "evaluated_at": "2026-03-27T12:41:41.480705",
+      "findings": [
+        {
+          "code": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+          "severity": "CRITICAL",
+          "message": "Se detecto una inconsistencia critica entre fuentes.",
+          "justification": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada.",
+          "evidence_refs": [
+            "EVD-ID-30111201",
+            "EVD-LAB-30111201"
+          ],
+          "effect_on_pipeline": "exclude_case",
+          "metadata": {}
+        }
+      ],
+      "final_effect": "exclude_case",
+      "ready_for_reasoning": false,
+      "ready_for_scoring": false,
+      "metadata": {
+        "findingsCount": 1
+      }
+    },
+    "relationship_graph": null,
+    "latest_decision": null,
+    "tags": [
+      "hard-rules-excluded",
+      "final-assessment-ready"
+    ],
+    "metadata": {
+      "pipelineStage": "final_assessment",
+      "validatedAt": "2026-03-27T12:41:41.475183",
+      "consolidatedAt": "2026-03-27T12:41:41.476573",
+      "hardRulesEvaluatedAt": "2026-03-27T12:41:41.480705",
+      "hardRuleFinalEffect": "exclude_case",
+      "analystSummary": "Caso excluido por Se detecto una inconsistencia critica entre fuentes.. Prioridad CRITICAL. Accion sugerida: BLOCK. Calidad de evidencia MEDIUM.",
+      "finalAssessedAt": "2026-03-27T12:41:41.481458"
+    }
+  }
+]

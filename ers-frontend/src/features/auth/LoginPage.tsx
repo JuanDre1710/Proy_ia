@@ -28,6 +28,7 @@ export function LoginPage(): JSX.Element {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
@@ -35,15 +36,18 @@ export function LoginPage(): JSX.Element {
     setSessionExpired(authService.consumeExpirationNotice());
   }, []);
 
-  const handleSubmit = (event: FormEvent): void => {
+  const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
+    setLoading(true);
     setError('');
-    const success = login({ username, password });
+    const success = await login({ username, password });
     if (!success) {
       setError('Credenciales invalidas.');
+      setLoading(false);
       return;
     }
     navigate('/search');
+    setLoading(false);
   };
 
   return (
@@ -89,7 +93,7 @@ export function LoginPage(): JSX.Element {
           </Grid>
           <Grid item xs={12} md={5}>
             <CardContent sx={{ p: 4 }}>
-              <Stack component="form" gap={2} onSubmit={handleSubmit}>
+              <Stack component="form" gap={2} onSubmit={(event) => void handleSubmit(event)}>
                 {sessionExpired ? (
                   <Alert severity="warning">
                     La sesion mock expiro por inactividad. Vuelve a iniciar sesion para continuar.
@@ -100,6 +104,7 @@ export function LoginPage(): JSX.Element {
                   label="Usuario"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
+                  disabled={loading}
                   InputProps={{ endAdornment: <PersonRoundedIcon color="action" /> }}
                 />
                 <TextField
@@ -107,16 +112,17 @@ export function LoginPage(): JSX.Element {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
+                  disabled={loading}
                   InputProps={{
                     endAdornment: (
-                      <IconButton onClick={() => setShowPassword((value) => !value)}>
+                      <IconButton onClick={() => setShowPassword((value) => !value)} disabled={loading}>
                         {showPassword ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />}
                       </IconButton>
                     )
                   }}
                 />
-                <Button type="submit" variant="contained" size="large">
-                  Iniciar sesion
+                <Button type="submit" variant="contained" size="large" disabled={loading}>
+                  {loading ? 'Ingresando...' : 'Iniciar sesion'}
                 </Button>
               </Stack>
               <Box sx={{ mt: 3, p: 2, borderRadius: 4, bgcolor: 'rgba(227,237,247,0.9)' }}>

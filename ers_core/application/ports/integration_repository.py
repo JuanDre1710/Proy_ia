@@ -23,3 +23,19 @@ class AuditLogRepository(Protocol):
     def append(self, audit_log: AuditLog) -> None:
         """Persist a single audit log entry."""
 
+    def query(
+        self,
+        *,
+        actor_id: str | None = None,
+        actor_role: str | None = None,
+        entity_id: str | None = None,
+        action: str | None = None,
+        result: str | None = None,
+        date_from: str | None = None,
+        date_to: str | None = None,
+        page: int = 0,
+        page_size: int = 20,
+        sort_by: str = "timestamp",
+        sort_direction: str = "desc",
+    ) -> tuple[list[AuditLog], int]:
+        """Return paginated audit logs."""

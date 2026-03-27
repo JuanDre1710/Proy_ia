@@ -20,15 +20,15 @@ export function SearchPage(): JSX.Element {
     <Stack spacing={3}>
       <PageHeader
         title="Busqueda y evaluacion"
-        subtitle="Inicia el flujo antifraude ingresando un DNI, CUIL o CUIT. La evaluacion valida formato, consulta fuentes mock y redirige al dashboard del caso cuando aplica."
+        subtitle="Inicia el flujo antifraude ingresando un DNI, CUIL o CUIT. La demo usa fuentes internas, ejecuta reglas, reasoning, scoring y habilita resolucion manual con auditoria."
       />
 
       <Stack direction="row" gap={1} flexWrap="wrap">
-        <Chip label="Normal: 20333444556" variant="outlined" />
-        <Chip label="Revision: 27123456789" variant="outlined" />
-        <Chip label="Sospechoso: 30111222" variant="outlined" />
-        <Chip label="Fallecido: 27222333444" variant="outlined" />
-        <Chip label="No evaluable: 27999888776" variant="outlined" />
+        <Chip label="Normal: 27123456789" variant="outlined" />
+        <Chip label="Revision: 30111205" variant="outlined" />
+        <Chip label="Sospechoso: 30111201" variant="outlined" />
+        <Chip label="Datos incompletos: 30111297" variant="outlined" />
+        <Chip label="Inconsistencia: 30111277" variant="outlined" />
       </Stack>
 
       <Grid container spacing={2}>

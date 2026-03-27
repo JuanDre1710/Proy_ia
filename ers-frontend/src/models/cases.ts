@@ -4,8 +4,8 @@ export type CaseStatus =
   | 'Fallecido'
   | 'No evaluable'
   | 'En revision prioritaria';
-export type CaseResolutionStatus = 'Pendiente' | 'Aceptado' | 'Denegado';
-export type CaseDecisionAction = 'accept' | 'deny';
+export type CaseResolutionStatus = 'Pendiente' | 'Aceptado' | 'Denegado' | 'Escalado';
+export type CaseDecisionAction = 'accept' | 'deny' | 'escalate';
 export type AlertSeverity = 'success' | 'warning' | 'error' | 'info';
 export type AlertType =
   | 'RENAPER'
@@ -57,6 +57,12 @@ export interface AIExplanation {
   textualClassification: RiskCategory;
   executiveSummary: string;
   variables: ExplanationVariable[];
+  evidenceForReview?: string[];
+  evidenceAgainstFraud?: string[];
+  inconsistencies?: string[];
+  missingEvidence?: string[];
+  suggestedPriority?: 'HIGH' | 'MEDIUM' | 'LOW';
+  suggestedNextChecks?: string[];
   evaluatorRecommendation: string;
 }
 
@@ -133,6 +139,20 @@ export interface CaseResolution {
   status: CaseResolutionStatus;
   decidedAt?: string;
   decidedBy?: string;
+  decidedByRole?: string;
+  comment?: string;
+}
+
+export interface FinalAssessment {
+  finalStatus: string;
+  finalPriority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  recommendedAction: string;
+  confidence: number;
+  summaryForAnalyst: string;
+  evidenceQuality?: string;
+  requiresManualReview: boolean;
+  blockedByHardRules: boolean;
+  hardRuleReasons: string[];
 }
 
 export interface CaseEvaluation {
@@ -153,4 +173,5 @@ export interface CaseEvaluation {
   laborFiscalInfo: LaborFiscalInfo;
   claimsHistory: ClaimRecord[];
   resolution?: CaseResolution;
+  finalAssessment?: FinalAssessment;
 }

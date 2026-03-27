@@ -1,0 +1,21 @@
+[
+  {
+    "integration_id": "INT-TEST01",
+    "provider_type": "IDENTITY",
+    "provider_code": "RENAPER",
+    "display_name": "Renaper",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://example.com",
+    "auth_type": "OAuth2",
+    "secret_ref": null,
+    "timeout_ms": 5000,
+    "retries": 0,
+    "retry_policy": {},
+    "mapping_profile": null,
+    "settings": {},
+    "metadata": {},
+    "updated_at": "2026-03-20T15:39:34.795983",
+    "updated_by": null
+  }
+]

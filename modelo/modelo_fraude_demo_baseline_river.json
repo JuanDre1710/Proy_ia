@@ -1,0 +1,13 @@
+{
+  "modelo_class": "BaggingClassifier",
+  "dataset": "data/ml/demo_scoring/dataset_demo_fraude_train_balanced.csv",
+  "validation_dataset": "data/ml/demo_scoring/dataset_demo_fraude_validation.csv",
+  "metadata": {
+    "accuracy": 0.995,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "n_models": 10,
+    "descripcion": "Baseline demo entrenado sobre dataset sintetico preparado para scoring binario de fraude."
+  }
+}

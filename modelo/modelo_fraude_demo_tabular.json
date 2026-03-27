@@ -1,0 +1,59 @@
+{
+  "modelo_class": "DemoTabularLogisticBaseline",
+  "dataset": "data/ml/demo_scoring/dataset_demo_backend_features_train.csv",
+  "validation_dataset": "data/ml/demo_scoring/dataset_demo_backend_features_validation.csv",
+  "target_column": "fraude",
+  "feature_names": [
+    "monto_reclamado",
+    "cantidad_siniestros_previos",
+    "debt_ratio",
+    "bounced_checks",
+    "antiguedad_como_cliente_meses",
+    "zona_de_riesgo",
+    "imagenes_sospechosas",
+    "telefono_repetido_con_otro_cliente",
+    "proveedor_repetido",
+    "historial_fraude_confirmado",
+    "credit_score"
+  ],
+  "thresholds": {
+    "binary": 0.5,
+    "review": 0.33,
+    "fraud": 0.66
+  },
+  "sample_output_contract": {
+    "score": "0-100",
+    "riskClass": [
+      "Normal",
+      "Requiere revision",
+      "Sospechoso de fraude"
+    ],
+    "topFactors": "lista de factores influyentes"
+  },
+  "metadata": {
+    "accuracy": 0.98,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "version": "demo-tabular-baseline-v1",
+    "descripcion": "Baseline tabular demo entrenado solo con dataset sintetico preparado y alineado al payload del backend.",
+    "coefficients": {
+      "debt_ratio": 2.999848,
+      "bounced_checks": 2.671451,
+      "zona_de_riesgo": -2.446917,
+      "monto_reclamado": 1.632119,
+      "antiguedad_como_cliente_meses": 1.284338,
+      "credit_score": -0.417603,
+      "proveedor_repetido": -0.258129,
+      "imagenes_sospechosas": -0.252242,
+      "telefono_repetido_con_otro_cliente": -0.172921,
+      "cantidad_siniestros_previos": -0.035103,
+      "historial_fraude_confirmado": 0.0
+    }
+  },
+  "limitations": [
+    "Dataset demo con solo 3 positivos reales.",
+    "Las metricas de precision, recall y F1 no son suficientes para inferencias productivas.",
+    "El modelo se usa para demo end-to-end y facilidad de integracion, no para decision automatica real."
+  ]
+}

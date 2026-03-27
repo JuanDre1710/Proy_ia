@@ -137,7 +137,7 @@ export function AuditLogFilters({
             onClick={onExport}
             disabled={loading}
           >
-            Exportar CSV mock
+            Exportar CSV
           </Button>
         </Stack>
       </Stack>

@@ -1,0 +1,201 @@
+case_id,dni,edad,provincia,antiguedad_domicilio_meses,situacion_laboral,antiguedad_laboral_meses,ingresos_mensuales,score_crediticio,deuda_total,cantidad_deudas,cheques_rechazados,tipo_siniestro,frecuencia_siniestros_ultimo_anio,monto_reclamado,repite_domicilio,repite_telefono,cambio_aseguradora_frecuente,denuncia_tardia,siniestro_cerca_vencimiento,testigo_repetido,inconsistencia_ingresos_vs_deuda,inconsistencia_laboral,datos_incompletos,mes_siniestro,trimestre_siniestro,dia_semana_siniestro,fin_de_semana_siniestro,requiere_revision,nivel_riesgo,fraude,split
+CASE-00803,31057642,38,buenos aires,20,empleado,32,256295,761,583091,1,1,robo,0,105521,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,validation
+CASE-00892,28598752,35,mendoza,38,autonomo,34,278198,549,456879,2,1,comercio,1,170893,0,0,0,0,1,0,0,0,0,12,4,3,0,0,bajo,0,validation
+CASE-00345,40318102,55,tucuman,86,empleado,52,234177,625,364801,2,1,robo,0,85407,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,validation
+CASE-00597,27301126,30,tucuman,43,empleado,5,211634,464,283714,1,1,lesiones,0,68609,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,validation
+CASE-00293,44148407,38,buenos aires,30,empleado,36,264418,495,196355,2,0,auto,1,174849,0,0,0,0,0,0,0,0,0,1,1,3,0,0,bajo,0,validation
+CASE-00307,44676367,40,santa fe,44,monotributista,11,218838,728,152921,2,1,auto,0,254668,0,0,0,0,0,0,0,0,0,2,1,1,0,0,bajo,0,validation
+CASE-00261,27652126,41,santa fe,54,desempleado,1,105970,692,0,3,0,auto,1,114801,0,0,0,0,0,0,0,0,0,2,1,3,0,0,bajo,0,validation
+CASE-00111,27603876,40,neuquen,13,empleado,72,187987,700,163650,2,0,hogar,2,379316,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,validation
+CASE-00925,23041591,27,neuquen,75,desempleado,4,96464,717,223965,3,0,lesiones,0,84359,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,validation
+CASE-00200,32872874,39,cordoba,40,empleado,21,135360,582,147149,1,0,comercio,1,154913,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,validation
+CASE-00372,24313399,53,cordoba,63,empleado,40,292254,589,457500,3,0,comercio,0,106658,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,validation
+CASE-00138,45198590,51,buenos aires,114,empleado,56,197777,574,198647,0,0,comercio,0,189394,0,0,0,0,0,1,0,0,0,1,1,1,0,0,bajo,0,validation
+CASE-00322,46402911,27,mendoza,94,autonomo,38,263526,717,638626,2,0,robo,1,277639,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,validation
+CASE-00717,23516951,19,buenos aires,72,empleado,49,101025,640,74967,1,1,robo,0,77093,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,validation
+CASE-00964,27122629,32,tucuman,27,empleado,15,271991,486,490296,5,1,auto,1,242796,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,validation
+CASE-00908,20049348,36,neuquen,44,monotributista,16,220045,609,455028,2,0,lesiones,0,472233,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,validation
+CASE-00328,40987268,42,tucuman,54,empleado,31,211504,580,404294,1,1,hogar,0,56167,0,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,validation
+CASE-00942,35667448,37,mendoza,39,empleado,13,113600,828,0,4,1,auto,0,133409,0,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,validation
+CASE-00561,46660061,29,salta,76,empleado,13,234262,546,286110,4,1,robo,3,362737,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,validation
+CASE-00733,44377712,30,cordoba,49,empleado,55,387699,754,442157,1,0,hogar,0,132532,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,validation
+CASE-00894,34135442,36,cordoba,28,autonomo,13,234910,624,631549,1,0,comercio,0,68733,1,0,0,0,0,0,1,0,0,6,2,6,1,1,medio,0,validation
+CASE-00071,42229189,52,tucuman,37,autonomo,33,279342,547,460838,1,2,hogar,0,117661,0,0,1,0,0,0,0,0,0,12,4,3,0,0,bajo,0,validation
+CASE-00837,29128607,24,salta,18,desempleado,0,59591,868,68412,3,2,robo,0,324805,0,0,0,0,0,0,0,0,0,1,1,4,0,0,bajo,0,validation
+CASE-00911,28584804,30,tucuman,9,empleado,80,189245,611,0,2,1,robo,1,134692,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,validation
+CASE-00709,30507403,54,tucuman,58,empleado,68,332481,680,404930,1,0,auto,1,89185,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,validation
+CASE-00743,39385460,52,cordoba,29,monotributista,34,205476,614,277272,1,1,lesiones,1,123721,0,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,validation
+CASE-00889,28484455,36,mendoza,183,monotributista,20,254950,665,210444,2,0,auto,3,117412,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,validation
+CASE-00509,27575221,38,mendoza,21,monotributista,24,48632,552,79338,2,3,robo,0,209452,0,0,0,0,0,0,0,0,0,8,3,1,0,0,bajo,0,validation
+CASE-00800,28226153,56,tucuman,31,empleado,53,197203,672,265704,0,1,hogar,1,71801,0,0,0,1,1,0,0,0,0,6,2,1,0,0,bajo,0,validation
+CASE-00996,24015876,44,mendoza,36,autonomo,34,502102,573,758177,1,0,auto,0,131740,0,1,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,validation
+CASE-00438,37742314,32,buenos aires,60,empleado,45,300194,519,284273,2,0,comercio,0,148353,1,0,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,validation
+CASE-00470,23203028,46,cordoba,30,empleado,34,96979,627,196828,2,0,lesiones,1,164484,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,validation
+CASE-00031,37547260,37,salta,29,empleado,46,42946,503,1727,0,2,robo,0,207586,0,0,0,0,0,0,0,0,0,5,2,4,0,0,bajo,0,validation
+CASE-00523,40896933,45,tucuman,78,monotributista,13,204006,568,228101,1,0,lesiones,0,63859,0,0,0,0,0,0,0,0,0,7,3,5,1,0,bajo,0,validation
+CASE-00767,36997291,18,buenos aires,50,empleado,26,261230,728,418158,3,0,lesiones,0,153603,0,1,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,validation
+CASE-00975,28193468,56,cordoba,71,monotributista,18,71171,506,87291,3,1,lesiones,1,480213,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,validation
+CASE-00121,42718244,65,salta,54,autonomo,45,221295,667,567695,0,0,auto,2,305547,0,0,1,0,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00026,27021862,46,tucuman,23,empleado,124,175602,578,431019,2,0,comercio,2,270012,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,validation
+CASE-00698,33607795,51,caba,36,empleado,54,198362,748,403240,3,0,robo,0,107994,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,validation
+CASE-00915,40841194,58,santa fe,25,desempleado,4,130327,548,190725,1,0,lesiones,3,211270,0,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,validation
+CASE-00524,46639427,29,cordoba,86,monotributista,9,110699,697,60445,1,1,hogar,1,235074,0,0,0,0,0,0,0,0,0,4,2,1,0,0,bajo,0,validation
+CASE-00030,34246173,20,santa fe,40,empleado,43,111276,614,192127,2,1,auto,1,102881,1,0,0,0,0,0,0,0,0,11,4,6,1,0,bajo,0,validation
+CASE-00199,32159041,19,caba,39,empleado,20,278963,531,453642,2,1,robo,1,90591,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,validation
+CASE-00880,38132976,28,neuquen,25,desempleado,8,135063,589,0,1,1,lesiones,0,200905,0,0,0,0,0,0,0,0,0,6,2,1,0,0,bajo,0,validation
+CASE-00260,42373343,21,salta,115,empleado,36,104082,472,156733,2,0,hogar,1,364187,0,0,0,0,0,0,0,0,0,8,3,2,0,0,bajo,0,validation
+CASE-00347,37871312,37,mendoza,15,empleado,47,160674,740,171904,1,1,robo,0,391228,0,0,0,0,0,0,0,0,0,5,2,2,0,0,bajo,0,validation
+CASE-00811,45259229,49,tucuman,172,autonomo,39,316800,683,403736,3,0,robo,1,487888,0,1,0,0,0,0,0,0,0,11,4,3,0,0,bajo,0,validation
+CASE-00383,22598677,40,caba,66,desempleado,6,142865,662,209758,2,0,hogar,0,233452,0,1,0,1,0,0,0,0,0,6,2,5,1,0,bajo,0,validation
+CASE-00295,41948964,53,buenos aires,37,empleado,62,421681,756,545138,2,0,comercio,3,265252,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,validation
+CASE-00435,41669796,38,caba,89,empleado,74,372188,756,883063,3,2,auto,2,87551,1,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,validation
+CASE-00291,39123334,52,buenos aires,103,empleado,38,46917,503,73314,1,0,robo,1,532934,0,0,0,0,0,1,0,0,0,6,2,3,0,0,bajo,0,validation
+CASE-00681,44792214,31,cordoba,13,autonomo,17,209976,645,72222,1,0,auto,0,114779,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,validation
+CASE-00742,43140181,36,cordoba,43,empleado,73,258286,590,579249,0,0,hogar,1,197391,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,validation
+CASE-00931,34580734,38,tucuman,24,autonomo,36,254176,714,644712,1,0,auto,2,122951,1,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,validation
+CASE-00536,37247625,33,caba,37,desempleado,9,150054,514,363901,3,0,lesiones,0,498657,0,0,0,0,0,0,1,0,0,7,3,2,0,0,bajo,0,validation
+CASE-00653,46830619,47,santa fe,53,autonomo,44,484556,699,646729,1,0,lesiones,0,146157,0,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,validation
+CASE-00949,30940719,59,tucuman,51,empleado,65,45976,732,47744,3,1,hogar,0,129769,0,0,0,0,0,0,0,0,0,9,3,2,0,0,bajo,0,validation
+CASE-00826,42364721,34,cordoba,57,monotributista,48,196202,674,0,2,0,comercio,1,151110,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,validation
+CASE-00816,41104415,50,buenos aires,30,desempleado,6,107014,629,44383,1,0,robo,1,67044,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,validation
+CASE-00089,25081820,36,caba,26,empleado,55,62974,829,107361,0,0,robo,2,129222,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,validation
+CASE-00211,33679525,43,tucuman,54,autonomo,52,310750,605,285684,1,1,comercio,0,74713,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,validation
+CASE-00064,40000738,47,caba,69,empleado,78,172083,742,198121,4,0,robo,1,217233,0,0,0,1,0,0,0,0,0,11,4,0,0,0,bajo,0,validation
+CASE-00598,34561086,26,mendoza,121,autonomo,12,316964,542,430769,4,0,lesiones,0,123674,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,validation
+CASE-00638,24481040,42,tucuman,64,empleado,32,145987,751,144453,0,0,hogar,1,236174,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,validation
+CASE-00625,23682027,37,mendoza,22,empleado,22,314809,649,183579,2,0,comercio,1,363667,0,0,0,0,0,0,0,0,0,6,2,2,0,0,bajo,0,validation
+CASE-00725,30057095,19,mendoza,85,empleado,34,170420,768,68599,4,1,lesiones,0,225691,0,0,0,0,0,0,0,0,0,5,2,4,0,0,bajo,0,validation
+CASE-00381,26218897,43,caba,109,empleado,59,255188,467,385186,1,1,hogar,2,195222,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,validation
+CASE-00924,46357565,51,cordoba,42,empleado,29,227007,491,325445,1,1,lesiones,1,325806,0,0,0,0,0,0,0,0,1,8,3,4,0,1,medio,0,validation
+CASE-00487,25099015,43,tucuman,70,empleado,35,120192,513,297142,2,2,robo,1,69051,0,0,0,0,0,0,0,0,0,7,3,4,0,0,bajo,0,validation
+CASE-00876,42604690,31,neuquen,44,desempleado,6,105166,573,0,1,0,comercio,0,79901,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,validation
+CASE-00637,44043088,37,salta,50,monotributista,16,186364,662,181223,4,0,lesiones,2,233627,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,validation
+CASE-00137,21186430,57,santa fe,26,monotributista,42,274266,587,319819,2,1,comercio,1,142236,0,0,0,0,0,0,0,0,0,3,1,6,1,0,bajo,0,validation
+CASE-00594,40250817,32,tucuman,36,autonomo,24,342870,624,695400,0,0,comercio,0,161055,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,validation
+CASE-00790,31276458,40,buenos aires,23,empleado,34,270994,758,337853,1,0,comercio,0,89271,0,0,0,0,0,0,0,0,0,4,2,1,0,0,bajo,0,validation
+CASE-00329,31101702,35,neuquen,29,monotributista,19,149670,670,183078,1,1,hogar,1,24878,0,0,0,0,0,0,0,0,0,1,1,2,0,0,bajo,0,validation
+CASE-00087,28570556,41,neuquen,38,empleado,169,117998,869,6892,4,0,auto,1,167051,1,0,0,0,0,0,0,0,0,6,2,3,0,0,bajo,0,validation
+CASE-00060,35478907,18,neuquen,13,autonomo,52,268928,477,452155,1,0,comercio,0,471054,0,0,0,0,0,0,0,0,0,8,3,3,0,0,bajo,0,validation
+CASE-00045,41888358,34,tucuman,47,monotributista,9,118657,644,101775,0,0,hogar,0,169467,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,validation
+CASE-00805,36193120,47,neuquen,132,empleado,50,332118,560,0,1,1,lesiones,0,214601,0,1,0,0,0,0,0,0,0,10,4,0,0,0,bajo,0,validation
+CASE-00986,27497879,45,santa fe,81,empleado,51,336067,612,846122,0,0,robo,1,204593,0,0,0,0,0,0,0,0,0,6,2,4,0,0,bajo,0,validation
+CASE-00795,39343976,41,buenos aires,90,empleado,18,267607,545,0,3,0,lesiones,1,57773,0,0,0,0,0,0,0,0,0,4,2,3,0,0,bajo,0,validation
+CASE-00040,45271052,36,santa fe,12,monotributista,20,166869,540,329960,1,1,robo,2,339747,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,validation
+CASE-00579,44300936,32,cordoba,35,autonomo,12,438443,656,1268921,0,0,robo,0,200481,0,0,0,0,0,0,1,0,0,10,4,1,0,0,bajo,0,validation
+CASE-00282,36870105,30,neuquen,40,monotributista,15,171143,500,255824,3,0,hogar,2,355666,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,validation
+CASE-00773,24008919,40,cordoba,29,empleado,50,229361,907,317090,1,0,hogar,0,47248,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,validation
+CASE-00353,26149620,38,mendoza,8,autonomo,27,119841,594,293821,3,0,comercio,0,169746,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,validation
+CASE-00840,31846571,25,neuquen,21,autonomo,40,185923,741,148931,3,1,auto,0,514837,0,0,0,1,0,0,0,0,0,4,2,3,0,0,bajo,0,validation
+CASE-00696,23119599,53,mendoza,24,monotributista,14,179794,692,85847,1,0,comercio,0,118266,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,validation
+CASE-00838,39924369,47,cordoba,52,desempleado,12,34220,343,13596,2,2,auto,1,369451,0,0,0,0,0,0,0,0,0,9,3,1,0,0,bajo,0,validation
+CASE-00055,23119612,45,buenos aires,64,monotributista,8,92929,563,42137,3,1,auto,1,336771,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,validation
+CASE-00378,32816582,46,neuquen,36,empleado,72,193304,605,238931,3,0,robo,0,45282,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,validation
+CASE-00591,32475173,28,salta,31,empleado,33,158026,719,270535,1,0,auto,1,351880,0,0,0,0,0,0,0,0,0,8,3,2,0,0,bajo,0,validation
+CASE-00602,27961650,42,neuquen,111,monotributista,30,232517,638,380561,3,0,hogar,2,107703,0,0,0,0,0,0,0,0,0,7,3,2,0,0,bajo,0,validation
+CASE-00628,31520721,39,mendoza,51,empleado,14,402831,502,395070,4,0,auto,1,167367,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,validation
+CASE-00937,42342850,29,mendoza,42,empleado,23,232648,847,583769,0,0,robo,0,277985,0,0,0,0,0,0,1,0,0,1,1,6,1,0,bajo,0,validation
+CASE-00238,34116198,29,neuquen,74,autonomo,41,216490,690,201467,1,0,lesiones,1,598896,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,validation
+CASE-00444,22621645,31,mendoza,41,desempleado,1,83762,653,63586,1,0,lesiones,2,71374,0,0,0,1,0,0,0,0,0,6,2,2,0,0,bajo,0,validation
+CASE-00581,27910967,51,salta,62,empleado,19,166499,617,103957,3,0,comercio,2,237545,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,validation
+CASE-00169,39303513,30,neuquen,27,monotributista,33,211551,643,591237,3,0,comercio,1,103988,0,0,0,1,0,0,0,0,0,8,3,1,0,0,bajo,0,validation
+CASE-00236,28512270,34,salta,74,monotributista,10,209947,749,61230,2,0,comercio,0,44421,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,validation
+CASE-00310,28181494,20,buenos aires,25,empleado,64,192749,460,308529,1,0,robo,0,393792,0,0,0,0,0,0,0,0,0,10,4,5,1,0,bajo,0,validation
+CASE-00319,26277609,33,mendoza,65,empleado,33,318911,614,0,0,2,comercio,0,225979,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,validation
+CASE-00281,41104435,18,salta,16,monotributista,15,227824,441,493087,1,0,hogar,0,224319,0,1,0,0,0,0,0,0,1,1,1,6,1,1,medio,0,validation
+CASE-00185,34771352,27,salta,12,empleado,36,355294,675,677423,3,1,hogar,1,182687,0,0,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,validation
+CASE-00688,31358449,29,cordoba,40,empleado,80,25000,486,41569,2,3,auto,1,183856,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,validation
+CASE-00219,46838816,53,cordoba,50,empleado,25,320914,506,87426,0,1,comercio,1,496392,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,validation
+CASE-00680,41262198,45,santa fe,91,autonomo,32,160858,394,0,2,1,robo,0,36121,0,0,0,0,0,0,0,0,0,8,3,4,0,0,bajo,0,validation
+CASE-00978,25500914,47,cordoba,66,empleado,38,200029,450,76636,1,1,comercio,0,130290,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,validation
+CASE-00140,36760394,30,tucuman,24,autonomo,15,458414,631,467485,2,1,robo,1,74295,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,validation
+CASE-00820,37906171,54,salta,114,empleado,14,188432,759,308675,5,0,robo,0,247560,0,0,0,1,0,1,0,0,0,1,1,5,1,0,bajo,0,validation
+CASE-00917,30545316,46,neuquen,69,empleado,27,25000,610,22454,5,0,hogar,0,287560,0,0,0,0,0,0,0,0,0,2,1,6,1,0,bajo,0,validation
+CASE-00390,25991303,43,mendoza,83,empleado,55,431680,430,1497637,2,0,robo,1,187720,0,0,1,0,0,0,1,0,0,1,1,4,0,1,alto,1,validation
+CASE-00278,33332607,38,cordoba,61,autonomo,15,295671,684,90992,2,0,comercio,1,88172,0,0,0,0,0,0,0,0,0,9,3,6,1,0,bajo,0,validation
+CASE-00313,29530218,41,tucuman,101,empleado,44,143836,550,109110,2,1,auto,1,186134,0,0,0,0,0,0,0,0,0,7,3,6,1,0,bajo,0,validation
+CASE-00884,25602823,27,buenos aires,10,autonomo,22,259345,744,99137,1,0,auto,1,128514,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,validation
+CASE-00770,42925820,37,tucuman,35,empleado,14,331191,603,268325,2,1,hogar,1,96664,0,0,0,0,0,0,0,0,0,4,2,4,0,0,bajo,0,validation
+CASE-00516,29188036,36,santa fe,74,autonomo,12,472272,894,607599,1,0,comercio,0,102360,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,validation
+CASE-00427,40202514,40,neuquen,51,empleado,37,227922,738,232906,3,1,lesiones,0,595792,0,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,validation
+CASE-00537,32731777,34,tucuman,79,desempleado,9,97433,651,103516,0,0,robo,0,93100,0,0,0,1,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00250,41830895,57,neuquen,101,monotributista,28,161158,760,97997,1,2,lesiones,0,135651,0,0,0,0,0,0,0,0,0,4,2,1,0,0,bajo,0,validation
+CASE-00600,44074655,44,caba,85,empleado,38,170502,521,231663,1,1,comercio,1,126852,0,0,0,0,0,0,0,0,1,2,1,1,0,1,medio,0,validation
+CASE-00551,38904752,45,salta,44,empleado,76,307253,680,418526,1,1,comercio,1,314071,0,0,0,1,0,0,0,0,0,5,2,2,0,0,bajo,0,validation
+CASE-00297,32009042,45,cordoba,13,empleado,16,285345,696,522334,4,0,lesiones,0,227079,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,validation
+CASE-00061,22607411,49,mendoza,70,autonomo,33,25000,595,1348,2,0,comercio,1,89795,0,0,0,0,0,0,0,0,0,7,3,6,1,0,bajo,0,validation
+CASE-00903,46524595,36,neuquen,25,empleado,69,428852,606,546822,1,1,hogar,2,199190,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,validation
+CASE-00900,44320763,22,salta,79,empleado,94,75683,481,193754,2,1,comercio,1,351807,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,validation
+CASE-00364,33934360,26,mendoza,28,empleado,40,242937,788,362885,2,1,lesiones,1,446007,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,validation
+CASE-00352,38830387,62,santa fe,43,monotributista,32,260642,646,495837,1,0,lesiones,1,151193,0,0,0,0,0,0,0,0,0,1,1,1,0,0,bajo,0,validation
+CASE-00067,44133277,48,mendoza,75,monotributista,19,265539,608,67067,2,0,comercio,1,136615,0,0,0,0,0,0,0,0,0,1,1,5,1,0,bajo,0,validation
+CASE-00665,24942345,27,salta,28,empleado,17,42603,508,9516,1,0,auto,1,450484,0,0,1,0,0,0,0,0,0,11,4,1,0,0,bajo,0,validation
+CASE-00320,25881468,20,neuquen,28,empleado,186,252237,580,198865,0,1,lesiones,0,130565,0,0,0,0,0,0,0,0,0,12,4,5,1,0,bajo,0,validation
+CASE-00267,46832808,34,buenos aires,77,autonomo,27,423588,809,649134,1,0,comercio,2,95334,0,0,0,0,0,0,0,0,0,8,3,6,1,0,bajo,0,validation
+CASE-00518,46572549,31,caba,22,monotributista,33,129972,548,163154,1,0,auto,1,1319583,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,validation
+CASE-00776,32565102,38,neuquen,95,empleado,30,291964,533,293010,1,1,lesiones,1,422807,0,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,validation
+CASE-00939,41085673,27,buenos aires,50,empleado,33,283789,800,36342,2,0,lesiones,0,131685,0,1,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,validation
+CASE-00073,38033931,34,tucuman,64,desempleado,4,55565,620,220804,0,1,lesiones,0,194853,0,0,0,0,0,0,1,0,0,7,3,6,1,0,bajo,0,validation
+CASE-00210,28438856,35,salta,40,monotributista,15,88467,438,16997,3,0,auto,0,164538,0,0,0,0,0,0,0,0,0,9,3,3,0,0,bajo,0,validation
+CASE-00528,35733126,41,mendoza,52,autonomo,8,263055,573,341256,3,2,lesiones,0,229445,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,validation
+CASE-00784,21761428,35,salta,62,empleado,47,237639,755,438377,1,1,comercio,4,37540,0,0,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,validation
+CASE-00531,37716273,47,caba,10,autonomo,13,133990,680,101202,2,0,hogar,0,243911,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,validation
+CASE-00458,20521291,37,salta,80,empleado,31,259354,630,149177,1,2,lesiones,3,376674,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,validation
+CASE-00426,23925300,43,buenos aires,73,empleado,63,60531,472,65596,2,0,comercio,0,221020,0,1,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,validation
+CASE-00216,20398825,40,mendoza,64,desempleado,0,91273,636,165631,2,2,comercio,1,200143,0,0,0,0,0,0,0,0,0,3,1,3,0,0,bajo,0,validation
+CASE-00077,39315784,42,santa fe,73,empleado,35,127519,577,0,0,0,comercio,1,173884,0,1,0,1,0,0,0,0,1,7,3,4,0,1,medio,0,validation
+CASE-00976,37027832,41,santa fe,76,empleado,17,356785,587,0,1,1,lesiones,0,191349,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00545,38037996,23,cordoba,12,empleado,42,192351,608,235292,2,2,auto,0,121227,0,0,0,0,0,0,0,0,0,11,4,4,0,0,bajo,0,validation
+CASE-00918,45042562,33,cordoba,66,empleado,20,192775,679,41121,4,0,auto,1,249852,0,0,0,0,0,0,0,0,0,4,2,5,1,0,bajo,0,validation
+CASE-00691,23273438,33,neuquen,47,empleado,46,418705,526,527694,2,0,comercio,1,181910,0,0,0,0,0,0,0,0,1,7,3,2,0,1,medio,0,validation
+CASE-00366,27169165,31,tucuman,16,autonomo,26,328807,544,305717,1,0,hogar,0,113169,0,0,0,1,0,0,0,0,0,7,3,4,0,0,bajo,0,validation
+CASE-00068,36599117,34,cordoba,39,autonomo,27,429463,733,503934,1,1,comercio,0,449235,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,validation
+CASE-00788,30560217,44,santa fe,106,empleado,108,123115,759,237937,1,1,hogar,2,390206,1,0,0,0,0,0,0,0,0,7,3,1,0,0,bajo,0,validation
+CASE-00214,25320804,32,mendoza,63,autonomo,36,300842,569,346339,0,0,lesiones,0,331119,0,0,0,0,0,0,0,0,0,10,4,1,0,0,bajo,0,validation
+CASE-00451,32648382,45,tucuman,36,empleado,74,162158,536,57554,3,1,comercio,0,257983,0,0,0,0,0,0,0,0,0,2,1,5,1,0,bajo,0,validation
+CASE-00548,42396736,39,caba,33,autonomo,16,65325,616,41589,1,0,hogar,0,140250,0,1,0,0,0,0,0,0,0,11,4,2,0,0,bajo,0,validation
+CASE-00868,45180072,31,santa fe,130,empleado,32,255784,688,427090,1,0,auto,0,206651,0,0,0,0,0,1,0,0,1,6,2,0,0,1,medio,0,validation
+CASE-00544,41675364,30,salta,18,empleado,60,251065,672,130013,1,1,auto,0,76548,1,0,0,0,0,0,0,0,0,10,4,2,0,0,bajo,0,validation
+CASE-00466,20419794,54,buenos aires,29,autonomo,51,294807,510,271951,1,0,hogar,0,111435,0,0,0,0,0,1,0,0,0,5,2,3,0,0,bajo,0,validation
+CASE-00413,33161168,34,cordoba,42,monotributista,51,131690,626,324333,1,1,comercio,0,228020,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,validation
+CASE-00825,42831092,38,salta,44,autonomo,17,281179,624,628504,3,1,comercio,0,366996,0,0,0,0,0,0,0,0,0,11,4,5,1,0,bajo,0,validation
+CASE-00108,46580542,26,tucuman,66,monotributista,20,119492,624,165482,1,0,auto,1,205556,0,0,0,0,0,0,0,0,0,8,3,2,0,0,bajo,0,validation
+CASE-00690,34207967,46,neuquen,97,monotributista,8,204642,569,141065,0,0,comercio,0,65749,0,0,1,0,0,0,0,0,0,9,3,2,0,0,bajo,0,validation
+CASE-00056,36035897,33,cordoba,30,monotributista,5,41810,682,91298,3,1,hogar,0,65821,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,validation
+CASE-00596,28152629,48,cordoba,75,monotributista,34,163434,688,0,1,0,robo,1,72100,0,0,0,0,0,0,0,0,0,6,2,0,0,0,bajo,0,validation
+CASE-00799,31800886,41,tucuman,30,empleado,42,163613,586,71824,1,0,auto,0,297744,0,0,0,0,0,0,0,0,0,2,1,2,0,0,bajo,0,validation
+CASE-00874,44340695,36,caba,45,empleado,60,436425,730,110901,2,0,auto,2,260071,0,0,0,0,0,0,0,0,0,12,4,2,0,0,bajo,0,validation
+CASE-00024,45706501,35,caba,144,monotributista,61,277363,472,21556,2,0,comercio,0,116861,0,0,0,0,0,0,0,0,0,5,2,3,0,0,bajo,0,validation
+CASE-00852,41464181,55,buenos aires,61,empleado,41,375561,755,644858,2,1,hogar,1,200523,1,0,0,0,0,0,0,0,0,2,1,0,0,0,bajo,0,validation
+CASE-00872,44164666,28,tucuman,57,empleado,65,284563,518,88962,0,1,lesiones,0,90978,0,0,0,0,0,0,0,0,0,10,4,3,0,0,bajo,0,validation
+CASE-00079,23830121,38,neuquen,15,autonomo,12,264608,601,206506,4,0,auto,0,96135,0,1,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,validation
+CASE-00542,36627457,37,santa fe,24,empleado,53,458193,526,701895,3,1,auto,1,245790,0,0,0,0,0,0,0,0,0,4,2,2,0,0,bajo,0,validation
+CASE-00739,26422694,21,buenos aires,58,empleado,15,161106,635,202285,1,1,robo,1,678482,0,0,0,0,0,0,0,0,0,5,2,1,0,0,bajo,0,validation
+CASE-00515,36472732,18,tucuman,65,empleado,23,265565,450,395261,2,1,hogar,1,155033,0,0,0,0,0,0,0,0,0,10,4,4,0,0,bajo,0,validation
+CASE-00573,39497562,34,cordoba,120,empleado,60,171111,589,358403,0,1,hogar,0,54835,0,0,0,1,0,0,0,0,0,12,4,5,1,0,bajo,0,validation
+CASE-00011,21423286,39,salta,71,empleado,16,149619,603,374697,1,0,hogar,0,196948,0,0,0,1,0,0,0,0,0,4,2,0,0,0,bajo,0,validation
+CASE-00400,38570019,27,caba,20,empleado,15,373877,558,885674,2,0,lesiones,2,184279,0,0,0,0,0,0,0,0,0,5,2,5,1,0,bajo,0,validation
+CASE-00878,30251404,35,caba,73,desempleado,5,25000,428,8426,2,0,hogar,0,218924,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00360,44810897,54,buenos aires,95,empleado,15,25000,672,27458,0,0,auto,3,198530,0,0,0,0,1,0,0,0,0,10,4,1,0,0,bajo,0,validation
+CASE-00159,41512740,35,cordoba,49,autonomo,46,236718,526,66838,1,1,robo,3,100425,0,0,0,0,0,0,0,0,0,1,1,6,1,0,bajo,0,validation
+CASE-00647,26119491,47,mendoza,12,monotributista,28,128553,540,345953,0,0,hogar,0,352649,0,0,0,0,0,0,0,0,0,12,4,1,0,0,bajo,0,validation
+CASE-00332,45781819,47,mendoza,116,empleado,52,402553,766,0,3,0,comercio,0,163164,0,0,0,0,0,0,0,0,0,12,4,6,1,0,bajo,0,validation
+CASE-00455,23504179,20,neuquen,25,empleado,60,389098,528,149089,0,0,comercio,2,64187,0,0,0,0,0,0,0,0,0,3,1,2,0,0,bajo,0,validation
+CASE-00529,42063734,34,mendoza,30,autonomo,26,456244,650,170409,2,0,robo,2,172854,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,validation
+CASE-00299,41226936,43,santa fe,76,empleado,40,230957,493,0,2,1,lesiones,0,296759,0,0,0,0,0,0,0,0,0,12,4,3,0,0,bajo,0,validation
+CASE-00850,29042029,42,tucuman,72,empleado,40,107589,639,238935,1,0,robo,0,165056,0,0,0,0,0,0,0,0,0,12,4,4,0,0,bajo,0,validation
+CASE-00300,21734802,44,mendoza,42,empleado,78,291631,529,320486,2,0,robo,1,252058,0,0,0,0,0,0,0,0,0,12,4,0,0,0,bajo,0,validation
+CASE-00222,41795984,41,mendoza,79,empleado,38,84792,818,122511,1,0,hogar,0,321371,1,0,0,0,0,0,0,0,0,8,3,5,1,0,bajo,0,validation
+CASE-00623,27949504,49,caba,61,desempleado,4,45997,634,71011,0,0,robo,1,290319,0,0,0,1,0,0,0,0,0,7,3,2,0,0,bajo,0,validation
+CASE-00308,28757529,52,mendoza,81,empleado,37,185094,639,270031,0,0,comercio,0,106386,1,0,0,0,0,0,0,0,0,2,1,2,0,0,bajo,0,validation
+CASE-00652,33639922,39,mendoza,87,empleado,28,397445,698,791939,2,0,auto,0,120395,0,0,0,0,0,0,0,0,0,10,4,6,1,0,bajo,0,validation
+CASE-00175,44822625,35,cordoba,19,monotributista,64,219935,709,0,4,1,auto,0,139213,0,0,0,0,0,0,0,0,0,7,3,0,0,0,bajo,0,validation
+CASE-00248,41813333,44,salta,48,empleado,51,170655,566,344612,1,1,comercio,1,239748,0,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00262,41382893,47,salta,73,empleado,30,380609,688,838988,3,0,lesiones,0,59533,0,0,0,0,0,0,0,0,0,3,1,4,0,0,bajo,0,validation
+CASE-00209,26194702,29,santa fe,49,empleado,57,274622,299,333882,1,0,robo,1,389829,0,0,0,0,0,0,0,0,0,6,2,5,1,0,bajo,0,validation
+CASE-00557,30680315,18,neuquen,38,empleado,23,411918,721,107824,0,1,hogar,0,128960,0,0,0,0,0,0,0,0,0,3,1,0,0,0,bajo,0,validation
+CASE-00097,34940284,23,santa fe,53,autonomo,25,437253,547,639499,3,0,robo,1,263919,0,0,0,0,0,0,0,0,0,4,2,6,1,0,bajo,0,validation
+CASE-00960,22885194,48,tucuman,48,desempleado,5,69862,593,28507,1,0,comercio,0,222106,0,1,0,1,0,0,0,0,0,12,4,0,0,0,bajo,0,validation
+CASE-00606,44385748,43,tucuman,53,empleado,55,153511,780,381829,1,1,lesiones,2,183423,0,0,0,0,0,0,0,0,0,11,4,0,0,0,bajo,0,validation
+CASE-00450,21854936,62,mendoza,62,empleado,39,298207,609,232742,3,2,lesiones,0,109042,1,0,0,0,0,0,0,0,0,8,3,0,0,0,bajo,0,validation
+CASE-00823,24237698,49,mendoza,98,monotributista,12,151171,613,110389,3,1,auto,0,344600,0,0,0,0,0,0,0,0,0,7,3,3,0,0,bajo,0,validation
+CASE-00434,29905111,48,neuquen,22,autonomo,65,208154,583,143726,1,0,lesiones,1,200806,0,0,0,1,0,0,0,0,0,8,3,4,0,0,bajo,0,validation

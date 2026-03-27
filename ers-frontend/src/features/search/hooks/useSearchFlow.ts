@@ -69,7 +69,7 @@ export function useSearchFlow(): {
           response,
           error: null
         });
-        navigate(`/cases/${response.identifier}`);
+        navigate(`/cases/${response.caseId ?? response.identifier}`);
         return;
       }
 
@@ -94,7 +94,7 @@ export function useSearchFlow(): {
       search.outcome === 'deceased' ||
       search.outcome === 'insufficient_data'
     ) {
-      navigate(`/cases/${search.identifier}`);
+      navigate(`/cases/${search.caseId ?? search.identifier}`);
       return;
     }
 

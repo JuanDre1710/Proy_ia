@@ -33,6 +33,11 @@ class FinancialProvider(Protocol):
         """Return raw provider payload for financial sources."""
 
 
+class LaborFiscalProvider(Protocol):
+    def fetch_labor_fiscal_profile(self, request: ProviderRequest, config: IntegrationConfig) -> ProviderPayload:
+        """Return raw provider payload for labor/fiscal sources."""
+
+
 class FutureRelationshipProvider(Protocol):
     def fetch_relationships(self, request: ProviderRequest, config: IntegrationConfig) -> ProviderPayload:
         """Return raw provider payload for future relationship intelligence."""
@@ -41,4 +46,3 @@ class FutureRelationshipProvider(Protocol):
 class FutureDocumentProvider(Protocol):
     def fetch_documents(self, request: ProviderRequest, config: IntegrationConfig) -> ProviderPayload:
         """Return raw provider payload for future document intelligence."""
-

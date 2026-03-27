@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Response, status
 from ers_core.adapters.factories.integration_adapter_factory import IntegrationAdapterFactory
 from ers_core.adapters.repositories.file_audit_log_repository import FileAuditLogRepository
 from ers_core.adapters.repositories.file_integration_repository import FileIntegrationConfigRepository
+from ers_core.config.app_settings import get_settings
 from ers_core.application.services.integration_manager import IntegrationManager
 from ers_core.domain.enums import IntegrationStatus, ProviderType
 from ers_core.domain.models import IntegrationConfig
@@ -19,9 +20,10 @@ from .integration_schemas import (
 )
 
 router = APIRouter(prefix="/admin/integrations", tags=["admin-integrations"])
+settings = get_settings()
 
-_repository = FileIntegrationConfigRepository(Path("data") / "integration_configs.json")
-_audit_repository = FileAuditLogRepository(Path("data") / "audit_logs.jsonl")
+_repository = FileIntegrationConfigRepository(settings.data_dir / "integration_configs.json")
+_audit_repository = FileAuditLogRepository(settings.data_dir / "audit_logs.jsonl")
 _manager = IntegrationManager(_repository, _audit_repository, IntegrationAdapterFactory())
 
 

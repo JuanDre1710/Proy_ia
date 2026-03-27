@@ -1,0 +1,168 @@
+{
+  "dataset_name": "dataset_demo_fraude_1000",
+  "dataset_role": "demo_baseline_scoring",
+  "source_path": "data/ml/demo_scoring/dataset_demo_fraude_1000_raw.csv",
+  "prepared_path": "data/ml/demo_scoring/dataset_demo_fraude_preparado.csv",
+  "train_path": "data/ml/demo_scoring/dataset_demo_fraude_train.csv",
+  "train_balanced_path": "data/ml/demo_scoring/dataset_demo_fraude_train_balanced.csv",
+  "validation_path": "data/ml/demo_scoring/dataset_demo_fraude_validation.csv",
+  "target_column": "fraude",
+  "feature_columns": [
+    "edad",
+    "provincia",
+    "antiguedad_domicilio_meses",
+    "situacion_laboral",
+    "antiguedad_laboral_meses",
+    "ingresos_mensuales",
+    "score_crediticio",
+    "deuda_total",
+    "cantidad_deudas",
+    "cheques_rechazados",
+    "tipo_siniestro",
+    "frecuencia_siniestros_ultimo_anio",
+    "monto_reclamado",
+    "repite_domicilio",
+    "repite_telefono",
+    "cambio_aseguradora_frecuente",
+    "denuncia_tardia",
+    "siniestro_cerca_vencimiento",
+    "testigo_repetido",
+    "inconsistencia_ingresos_vs_deuda",
+    "inconsistencia_laboral",
+    "datos_incompletos",
+    "mes_siniestro",
+    "trimestre_siniestro",
+    "dia_semana_siniestro",
+    "fin_de_semana_siniestro"
+  ],
+  "traceability_columns": [
+    "case_id",
+    "dni"
+  ],
+  "auxiliary_columns": [
+    "requiere_revision",
+    "nivel_riesgo"
+  ],
+  "excluded_columns": {
+    "case_id": "Identificador unico del caso; solo sirve para trazabilidad.",
+    "dni": "Identificador sensible del titular; no aporta generalizacion.",
+    "fecha_siniestro": "Se reemplaza por variables temporales derivadas para evitar dependencia de formato.",
+    "requiere_revision": "Variable operativa derivada del workflow demo; no debe entrenar el target principal.",
+    "nivel_riesgo": "Etiqueta agregada derivada del target y del estado de revision; fuga de informacion directa.",
+    "cluster_fraude": "Flag sintetico interno del generador demo; no esta disponible en inferencia realista."
+  },
+  "quality": {
+    "row_count": 1000,
+    "column_count": 29,
+    "missing_values": {
+      "case_id": 0,
+      "dni": 0,
+      "edad": 0,
+      "provincia": 0,
+      "antiguedad_domicilio_meses": 0,
+      "situacion_laboral": 0,
+      "antiguedad_laboral_meses": 0,
+      "ingresos_mensuales": 0,
+      "score_crediticio": 0,
+      "deuda_total": 0,
+      "cantidad_deudas": 0,
+      "cheques_rechazados": 0,
+      "tipo_siniestro": 0,
+      "fecha_siniestro": 0,
+      "frecuencia_siniestros_ultimo_anio": 0,
+      "monto_reclamado": 0,
+      "repite_domicilio": 0,
+      "repite_telefono": 0,
+      "cluster_fraude": 0,
+      "cambio_aseguradora_frecuente": 0,
+      "denuncia_tardia": 0,
+      "siniestro_cerca_vencimiento": 0,
+      "testigo_repetido": 0,
+      "inconsistencia_ingresos_vs_deuda": 0,
+      "inconsistencia_laboral": 0,
+      "datos_incompletos": 0,
+      "requiere_revision": 0,
+      "fraude": 0,
+      "nivel_riesgo": 0
+    },
+    "numeric_columns": [
+      "edad",
+      "antiguedad_domicilio_meses",
+      "antiguedad_laboral_meses",
+      "ingresos_mensuales",
+      "score_crediticio",
+      "deuda_total",
+      "cantidad_deudas",
+      "cheques_rechazados",
+      "frecuencia_siniestros_ultimo_anio",
+      "monto_reclamado",
+      "repite_domicilio",
+      "repite_telefono",
+      "cambio_aseguradora_frecuente",
+      "denuncia_tardia",
+      "siniestro_cerca_vencimiento",
+      "testigo_repetido",
+      "inconsistencia_ingresos_vs_deuda",
+      "inconsistencia_laboral",
+      "datos_incompletos",
+      "mes_siniestro",
+      "trimestre_siniestro",
+      "dia_semana_siniestro",
+      "fin_de_semana_siniestro"
+    ],
+    "categorical_columns": [
+      "provincia",
+      "situacion_laboral",
+      "tipo_siniestro"
+    ],
+    "label_distribution": {
+      "rows": 1000,
+      "positives": 3,
+      "negatives": 997,
+      "positive_ratio": 0.003
+    },
+    "auxiliary_distribution": {
+      "requiere_revision": {
+        "0": 929,
+        "1": 71
+      },
+      "nivel_riesgo": {
+        "bajo": 929,
+        "medio": 68,
+        "alto": 3
+      }
+    }
+  },
+  "splits": {
+    "train": {
+      "rows": 800,
+      "positives": 2,
+      "negatives": 798,
+      "positive_ratio": 0.0025
+    },
+    "train_balanced": {
+      "rows": 840,
+      "positives": 42,
+      "negatives": 798,
+      "positive_ratio": 0.05
+    },
+    "validation": {
+      "rows": 200,
+      "positives": 1,
+      "negatives": 199,
+      "positive_ratio": 0.005
+    }
+  },
+  "observations": [
+    "El target principal fraude tiene solo 3 positivos sobre 1000 filas; no alcanza para una validacion robusta de produccion.",
+    "nivel_riesgo reproduce directamente el target fraude y el estado requiere_revision, por lo que se excluye del entrenamiento.",
+    "requiere_revision es util para analisis de pipeline demo, pero no debe ser feature del modelo binario principal.",
+    "cluster_fraude es un artefacto del generador sintetico y no representa una variable operativa disponible al inferir.",
+    "La version train_balanced usa duplicacion controlada de positivos solo para entrenamiento baseline; validation permanece sin balancear."
+  ],
+  "limitations": [
+    "Sin integracion con proveedores reales ni evidencia documental externa.",
+    "Posibles patrones sinteticos demasiado limpios para representar ruido de negocio real.",
+    "La calibracion del score no debe considerarse productiva con este dataset."
+  ]
+}

@@ -58,6 +58,19 @@ class RecommendationType(str, Enum):
     BLOCK = "BLOCK"
 
 
+class CaseProcessingState(str, Enum):
+    ACCEPTED_FOR_PROCESSING = "accepted_for_processing"
+    INVALID_IDENTIFIER = "invalid_identifier"
+    INSUFFICIENT_INPUT = "insufficient_input"
+    DAILY_LIMIT_REACHED = "daily_limit_reached"
+    WAITING_FOR_ENRICHMENT = "waiting_for_enrichment"
+    READY_FOR_RULES = "ready_for_rules"
+    READY_FOR_REASONING = "ready_for_reasoning"
+    NOT_EVALUABLE = "not_evaluable"
+    EXCLUDED = "excluded"
+    SCORED = "scored"
+
+
 class DecisionStatus(str, Enum):
     PENDING = "PENDING"
     ACCEPTED = "ACCEPTED"
@@ -69,7 +82,14 @@ class DecisionStatus(str, Enum):
 class AuditActionType(str, Enum):
     AUTH_LOGIN = "AUTH_LOGIN"
     AUTH_LOGOUT = "AUTH_LOGOUT"
+    CASE_CREATED = "CASE_CREATED"
+    CASE_VALIDATED = "CASE_VALIDATED"
     CASE_EVALUATED = "CASE_EVALUATED"
+    INTEGRATION_CONSUMED = "INTEGRATION_CONSUMED"
+    HARD_RULES_EXECUTED = "HARD_RULES_EXECUTED"
+    REASONING_EXECUTED = "REASONING_EXECUTED"
+    SCORING_EXECUTED = "SCORING_EXECUTED"
+    FINAL_ASSESSMENT_GENERATED = "FINAL_ASSESSMENT_GENERATED"
     CASE_DECISION_RECORDED = "CASE_DECISION_RECORDED"
     EXPORT_REQUESTED = "EXPORT_REQUESTED"
     ADMIN_CONFIGURATION_CHANGED = "ADMIN_CONFIGURATION_CHANGED"
@@ -86,6 +106,7 @@ class AuditResultType(str, Enum):
 class ProviderType(str, Enum):
     IDENTITY = "IDENTITY"
     FINANCIAL = "FINANCIAL"
+    LABOR_FISCAL = "LABOR_FISCAL"
     RELATIONSHIP = "RELATIONSHIP"
     DOCUMENT = "DOCUMENT"
 
@@ -95,4 +116,3 @@ class IntegrationStatus(str, Enum):
     DEGRADED = "DEGRADED"
     DISABLED = "DISABLED"
     TESTING = "TESTING"
-

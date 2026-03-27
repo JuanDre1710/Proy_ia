@@ -6,8 +6,8 @@
 - Registrar auditoria real de login, logout y expiracion.
 
 ## Busqueda y evaluacion
-- Reemplazar `searchService` y `caseService` por endpoints reales de evaluacion y detalle de caso.
-- Conectar la resolucion manual del caso (`aceptar` / `denegar`) a un endpoint real con auditoria.
+- Hecho en demo: `searchService` y `caseService` ya consumen endpoints reales de evaluacion y detalle de caso, con fallback controlado por feature flags.
+- Hecho en demo: la resolucion manual del caso (`aceptar` / `denegar`) ya usa endpoint real del backend demo con headers de actor.
 - Normalizar codigos de error de negocio e integracion para mensajes uniformes en UI.
 - Persistir busquedas recientes y limites diarios desde backend.
 
@@ -28,5 +28,5 @@
 
 ## Integracion general
 - Consolidar contratos TypeScript a partir de schemas OpenAPI o DTOs compartidos.
-- Reemplazar mocks por adaptadores HTTP manteniendo la misma interfaz de services.
+- Hecho en demo: se mantienen adaptadores HTTP sobre la misma interfaz de services y se usa backend demo como fuente primaria.
 - Agregar manejo global de errores HTTP, reintentos y telemetry.

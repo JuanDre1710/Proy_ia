@@ -8,7 +8,11 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ roles }: ProtectedRouteProps): JSX.Element {
-  const { session, hasAnyRole } = useAuth();
+  const { session, loading, hasAnyRole } = useAuth();
+
+  if (loading) {
+    return <></>;
+  }
 
   if (!session.authenticated) {
     return <Navigate to="/login" replace />;

@@ -9,6 +9,7 @@ import { StatusState } from '../../components/shared/StatusState';
 import { ApiState } from '../../models/domain';
 import { CaseDecisionAction, CaseEvaluation } from '../../models/cases';
 import { caseService } from '../../services/caseService';
+import { useAuth } from '../../state/AuthContext';
 import { CaseHeaderSummary } from './components/CaseHeaderSummary';
 import { CaseStatusBanner } from './components/CaseStatusBanner';
 import { ClaimsHistoryCard } from './components/ClaimsHistoryCard';
@@ -24,12 +25,13 @@ import { ExportActionsCard } from './components/ExportActionsCard';
 import { CaseDecisionCard } from './components/CaseDecisionCard';
 
 function isDecisionEnabled(caseData: CaseEvaluation): boolean {
-  return caseData.riskScore.category !== 'Normal';
+  return Boolean(caseData.finalAssessment?.requiresManualReview);
 }
 
 export function CaseDashboardPage(): JSX.Element {
   const navigate = useNavigate();
   const { caseId } = useParams<{ caseId: string }>();
+  const { session } = useAuth();
   const [state, setState] = useState<ApiState<CaseEvaluation>>({
     status: 'loading',
     data: null,
@@ -67,12 +69,15 @@ export function CaseDashboardPage(): JSX.Element {
     };
   }, [caseId]);
 
-  const handleDecision = async (action: CaseDecisionAction): Promise<void> => {
+  const handleDecision = async (action: CaseDecisionAction, comment: string): Promise<void> => {
     if (!caseId || state.status !== 'success' || !state.data) {
       throw new Error('Case not loaded');
     }
 
-    const result = await caseService.decideCase(caseId, action);
+    const result = await caseService.decideCase(caseId, {
+      action,
+      comment
+    });
 
     if (result.status !== 'success' || !result.data) {
       throw new Error(result.error ?? 'No se pudo resolver el caso.');
@@ -115,7 +120,7 @@ export function CaseDashboardPage(): JSX.Element {
           <CaseStatusBanner caseData={state.data} />
           <CaseHeaderSummary caseData={state.data} />
           {isDecisionEnabled(state.data) ? (
-            <CaseDecisionCard caseData={state.data} onDecision={handleDecision} />
+            <CaseDecisionCard caseData={state.data} onDecision={handleDecision} currentUser={session.user?.name} />
           ) : null}
           <ExportActionsCard evaluation={state.data} />
           <Grid container spacing={2}>

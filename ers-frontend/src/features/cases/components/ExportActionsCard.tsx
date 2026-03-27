@@ -55,7 +55,7 @@ export function ExportActionsCard({ evaluation }: ExportActionsCardProps): JSX.E
     <>
       <SectionCard
         title="Exportacion de informes"
-        subtitle="Flujo visual mock listo para integrarse a backend de generacion documental."
+        subtitle="Generacion documental real con persistencia de archivos y trazabilidad de exportacion."
       >
         <Stack spacing={2}>
           <Typography color="text.secondary">
@@ -63,8 +63,8 @@ export function ExportActionsCard({ evaluation }: ExportActionsCardProps): JSX.E
             timestamp de emision y soporte futuro para firma digital opcional.
           </Typography>
           <Alert severity="info">
-            El PDF real todavia no se genera en esta etapa. El sprint deja listo el flujo de solicitud,
-            nombres de archivo y feedback de exportacion.
+            Las exportaciones PDF y CSV ahora se generan desde backend, quedan registradas en auditoria y se
+            descargan desde archivos persistidos.
           </Alert>
           <List dense disablePadding>
             {[

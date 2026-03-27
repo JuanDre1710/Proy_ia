@@ -1,0 +1,22 @@
+[
+  {
+    "token_id": "RT-FAD60AC9BEFB",
+    "user_id": "usr-admin",
+    "token_hash": "860e7a0480d11ef057b7fe5066272beac4fdde2f28a949d280694f94f638a228",
+    "expires_at": "2026-03-27T15:13:39.593587",
+    "created_at": "2026-03-20T15:13:39.593601",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": "2026-03-20T15:13:39.595849",
+    "revoked_reason": "rotated"
+  },
+  {
+    "token_id": "RT-CE5724EE57E5",
+    "user_id": "usr-admin",
+    "token_hash": "07ad2144bc5c91403cb402b20447a9fb859a7d7c693056b13f3e24cea359d007",
+    "expires_at": "2026-03-27T15:13:39.596491",
+    "created_at": "2026-03-20T15:13:39.596505",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": "2026-03-20T15:13:39.597781",
+    "revoked_reason": "logout"
+  }
+]

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, HttpUrl
 
 
 IntegrationKind = Literal["API REST", "Webhook", "Batch", "Base de datos"]
-ProviderTypeApi = Literal["IDENTITY", "FINANCIAL", "RELATIONSHIP", "DOCUMENT"]
+ProviderTypeApi = Literal["IDENTITY", "FINANCIAL", "LABOR_FISCAL", "RELATIONSHIP", "DOCUMENT"]
 IntegrationRuntimeStatus = Literal["ACTIVE", "DEGRADED", "DISABLED", "TESTING"]
 AuthTypeApi = Literal["API Key", "OAuth2", "Basic", "Ninguna"]
 
@@ -63,4 +63,3 @@ class IntegrationConfigResponse(BaseModel):
     settings: dict[str, Any] = Field(default_factory=dict)
     updatedAt: str
     updatedBy: str | None = None
-

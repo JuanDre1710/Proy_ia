@@ -1,0 +1,444 @@
+[
+  {
+    "case_id": "30111444",
+    "created_at": "2026-03-26T13:07:31.310344",
+    "updated_at": "2026-03-26T13:07:31.312050",
+    "requested_by": "usr",
+    "source_channel": "dbg",
+    "processing_state": "excluded",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30111444",
+      "full_name": "Juan Perez",
+      "document_type": "DNI",
+      "document_number": "30111444",
+      "birth_date": "1989-04-19",
+      "age": 31,
+      "email": "titular1444@ers.local",
+      "phone": "+54-11-5555-4444",
+      "address": "Calle Compartida 100",
+      "locality": "Neuquen",
+      "province": "Neuquen",
+      "metadata": {
+        "ingestionOnly": false,
+        "normalized": true
+      }
+    },
+    "identity_status": {
+      "status": "VERIFIED",
+      "verified": true,
+      "deceased": false,
+      "source_reference": "RENAPER_LOCAL",
+      "source_timestamp": "2026-03-26T13:07:31.312050",
+      "inconsistencies": [],
+      "quality_score": 0.97
+    },
+    "financial_info": {
+      "credit_score": 547,
+      "debt_ratio": 0.22,
+      "bancarization_level": "Alta",
+      "active_loans": 2,
+      "bounced_checks": 1,
+      "monthly_income_estimate": "ARS 700000",
+      "observation": "Perfil financiero consolidado desde Nosis.",
+      "source_reference": "NOSIS",
+      "quality_score": 0.9,
+      "attributes": {
+        "partial": false,
+        "consultaId": "NOSIS-30111444"
+      }
+    },
+    "labor_fiscal_info": {
+      "tax_status": "Monotributo",
+      "main_activity": "Comercio",
+      "employer_or_company": "Empresa Vinculada SA",
+      "income_bracket": "Medio",
+      "registered_employees": 7,
+      "fiscal_observation": "Actividad y condicion fiscal consolidadas.",
+      "source_reference": "NOSIS",
+      "quality_score": 0.84,
+      "attributes": {
+        "partial": false,
+        "consultaId": "NOSIS-30111444",
+        "declaredProvince": "Cordoba"
+      }
+    },
+    "evidences": [
+      {
+        "evidence_id": "EVD-ID-30111444",
+        "source_type": "IDENTITY",
+        "provider_code": "RENAPER_LOCAL",
+        "title": "Identidad normalizada",
+        "summary": "Se consolidaron datos de identidad y contacto.",
+        "details": "Estado VERIFIED.",
+        "collected_at": "2026-03-26T13:07:31.312050",
+        "quality": "HIGH",
+        "quality_score": 0.97,
+        "related_keys": [
+          "identity",
+          "contact",
+          "subject"
+        ],
+        "attributes": {
+          "partial": false
+        },
+        "raw_reference_id": "INT-DF7048B5"
+      },
+      {
+        "evidence_id": "EVD-FIN-30111444",
+        "source_type": "FINANCIAL",
+        "provider_code": "NOSIS",
+        "title": "Perfil financiero normalizado",
+        "summary": "Se consolido el perfil financiero desde el segundo proveedor.",
+        "details": "Credit score 547, deuda 0.22, cheques rechazados 1.",
+        "collected_at": "2026-03-26T13:07:31.312050",
+        "quality": "HIGH",
+        "quality_score": 0.9,
+        "related_keys": [
+          "credit_score",
+          "debt_ratio",
+          "bounced_checks"
+        ],
+        "attributes": {
+          "consultaId": "NOSIS-30111444",
+          "partial": false
+        },
+        "raw_reference_id": "INT-8EAD9D8A"
+      },
+      {
+        "evidence_id": "EVD-LAB-30111444",
+        "source_type": "LABOR_FISCAL",
+        "provider_code": "NOSIS",
+        "title": "Perfil laboral y fiscal normalizado",
+        "summary": "Se consolido condicion fiscal y actividad economica.",
+        "details": "Condicion Monotributo, actividad Comercio, empleados registrados 7.",
+        "collected_at": "2026-03-26T13:07:31.312050",
+        "quality": "HIGH",
+        "quality_score": 0.84,
+        "related_keys": [
+          "tax_status",
+          "main_activity",
+          "income_bracket"
+        ],
+        "attributes": {
+          "consultaId": "NOSIS-30111444",
+          "partial": false
+        },
+        "raw_reference_id": "INT-8EAD9D8A"
+      }
+    ],
+    "alerts": [
+      {
+        "alert_id": "ALT-EVIDENCE-30111444",
+        "severity": "INFO",
+        "title": "Evidencia consolidada",
+        "short_description": "El caso quedo listo para reglas duras.",
+        "detail": "Se consolidaron fuentes de identidad y segundo proveedor financiero/laboral.",
+        "source_type": "SYSTEM",
+        "source_reference": "pipeline",
+        "related_variable": "evidence_bundle",
+        "recommendation_hint": "Continuar con reglas duras.",
+        "evidence_ids": []
+      },
+      {
+        "alert_id": "ALT-RULE-CRITICAL_CROSS_SOURCE_INCONSISTENCY-30111444",
+        "severity": "CRITICAL",
+        "title": "Se detecto una inconsistencia critica entre fuentes.",
+        "short_description": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "detail": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada. Efecto: exclude_case.",
+        "source_type": "INTERNAL_RULE",
+        "source_reference": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "related_variable": "hard_rule",
+        "recommendation_hint": "Revisar evidencia y politica aplicadas antes de continuar.",
+        "evidence_ids": [
+          "EVD-ID-30111444",
+          "EVD-LAB-30111444"
+        ]
+      }
+    ],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": null,
+    "consolidated_evidence": {
+      "bundle_id": "EVB-30111444",
+      "collected_at": "2026-03-26T13:07:31.312050",
+      "ready_for_rules": true,
+      "provider_statuses": {
+        "IDENTITY": "ok",
+        "FINANCIAL": "ok"
+      },
+      "warnings": [],
+      "evidence_ids": [
+        "EVD-ID-30111444",
+        "EVD-FIN-30111444",
+        "EVD-LAB-30111444"
+      ],
+      "metadata": {
+        "evidenceCount": 3
+      }
+    },
+    "hard_rule_evaluation": {
+      "evaluation_id": "HRE-30111444",
+      "evaluated_at": "2026-03-26T13:07:31.312846",
+      "findings": [
+        {
+          "code": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+          "severity": "CRITICAL",
+          "message": "Se detecto una inconsistencia critica entre fuentes.",
+          "justification": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada.",
+          "evidence_refs": [
+            "EVD-ID-30111444",
+            "EVD-LAB-30111444"
+          ],
+          "effect_on_pipeline": "exclude_case",
+          "metadata": {}
+        }
+      ],
+      "final_effect": "exclude_case",
+      "ready_for_reasoning": false,
+      "ready_for_scoring": false,
+      "metadata": {
+        "findingsCount": 1
+      }
+    },
+    "relationship_graph": null,
+    "latest_decision": null,
+    "tags": [
+      "hard-rules-excluded"
+    ],
+    "metadata": {
+      "pipelineStage": "hard_rules",
+      "validatedAt": "2026-03-26T13:07:31.310344",
+      "consolidatedAt": "2026-03-26T13:07:31.312050",
+      "hardRulesEvaluatedAt": "2026-03-26T13:07:31.312846",
+      "hardRuleFinalEffect": "exclude_case",
+      "analystSummary": "Las reglas duras excluyeron el caso antes de reasoning y scoring."
+    }
+  },
+  {
+    "case_id": "30111445",
+    "created_at": "2026-03-26T13:07:31.313647",
+    "updated_at": "2026-03-26T13:07:31.314589",
+    "requested_by": "usr",
+    "source_channel": "dbg",
+    "processing_state": "excluded",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "ok"
+    },
+    "subject": {
+      "person_id": "30111445",
+      "full_name": "Carla Diaz",
+      "document_type": "DNI",
+      "document_number": "30111445",
+      "birth_date": "1997-12-27",
+      "age": 39,
+      "email": "titular1445@ers.local",
+      "phone": "+54-11-5555-4444",
+      "address": "Calle Compartida 100",
+      "locality": "Rosario",
+      "province": "Santa Fe",
+      "metadata": {
+        "ingestionOnly": false,
+        "normalized": true
+      }
+    },
+    "identity_status": {
+      "status": "VERIFIED",
+      "verified": true,
+      "deceased": false,
+      "source_reference": "RENAPER_LOCAL",
+      "source_timestamp": "2026-03-26T13:07:31.314589",
+      "inconsistencies": [],
+      "quality_score": 0.97
+    },
+    "financial_info": {
+      "credit_score": 556,
+      "debt_ratio": 0.31,
+      "bancarization_level": "Alta",
+      "active_loans": 1,
+      "bounced_checks": 2,
+      "monthly_income_estimate": "ARS 250000",
+      "observation": "Perfil financiero consolidado desde Nosis.",
+      "source_reference": "NOSIS",
+      "quality_score": 0.9,
+      "attributes": {
+        "partial": false,
+        "consultaId": "NOSIS-30111445"
+      }
+    },
+    "labor_fiscal_info": {
+      "tax_status": "Responsable Inscripto",
+      "main_activity": "Servicios profesionales",
+      "employer_or_company": "Empresa Vinculada SA",
+      "income_bracket": "Medio",
+      "registered_employees": 16,
+      "fiscal_observation": "Actividad y condicion fiscal consolidadas.",
+      "source_reference": "NOSIS",
+      "quality_score": 0.84,
+      "attributes": {
+        "partial": false,
+        "consultaId": "NOSIS-30111445",
+        "declaredProvince": "Buenos Aires"
+      }
+    },
+    "evidences": [
+      {
+        "evidence_id": "EVD-ID-30111445",
+        "source_type": "IDENTITY",
+        "provider_code": "RENAPER_LOCAL",
+        "title": "Identidad normalizada",
+        "summary": "Se consolidaron datos de identidad y contacto.",
+        "details": "Estado VERIFIED.",
+        "collected_at": "2026-03-26T13:07:31.314589",
+        "quality": "HIGH",
+        "quality_score": 0.97,
+        "related_keys": [
+          "identity",
+          "contact",
+          "subject"
+        ],
+        "attributes": {
+          "partial": false
+        },
+        "raw_reference_id": "INT-DF7048B5"
+      },
+      {
+        "evidence_id": "EVD-FIN-30111445",
+        "source_type": "FINANCIAL",
+        "provider_code": "NOSIS",
+        "title": "Perfil financiero normalizado",
+        "summary": "Se consolido el perfil financiero desde el segundo proveedor.",
+        "details": "Credit score 556, deuda 0.31, cheques rechazados 2.",
+        "collected_at": "2026-03-26T13:07:31.314589",
+        "quality": "HIGH",
+        "quality_score": 0.9,
+        "related_keys": [
+          "credit_score",
+          "debt_ratio",
+          "bounced_checks"
+        ],
+        "attributes": {
+          "consultaId": "NOSIS-30111445",
+          "partial": false
+        },
+        "raw_reference_id": "INT-8EAD9D8A"
+      },
+      {
+        "evidence_id": "EVD-LAB-30111445",
+        "source_type": "LABOR_FISCAL",
+        "provider_code": "NOSIS",
+        "title": "Perfil laboral y fiscal normalizado",
+        "summary": "Se consolido condicion fiscal y actividad economica.",
+        "details": "Condicion Responsable Inscripto, actividad Servicios profesionales, empleados registrados 16.",
+        "collected_at": "2026-03-26T13:07:31.314589",
+        "quality": "HIGH",
+        "quality_score": 0.84,
+        "related_keys": [
+          "tax_status",
+          "main_activity",
+          "income_bracket"
+        ],
+        "attributes": {
+          "consultaId": "NOSIS-30111445",
+          "partial": false
+        },
+        "raw_reference_id": "INT-8EAD9D8A"
+      }
+    ],
+    "alerts": [
+      {
+        "alert_id": "ALT-EVIDENCE-30111445",
+        "severity": "INFO",
+        "title": "Evidencia consolidada",
+        "short_description": "El caso quedo listo para reglas duras.",
+        "detail": "Se consolidaron fuentes de identidad y segundo proveedor financiero/laboral.",
+        "source_type": "SYSTEM",
+        "source_reference": "pipeline",
+        "related_variable": "evidence_bundle",
+        "recommendation_hint": "Continuar con reglas duras.",
+        "evidence_ids": []
+      },
+      {
+        "alert_id": "ALT-RULE-CRITICAL_CROSS_SOURCE_INCONSISTENCY-30111445",
+        "severity": "CRITICAL",
+        "title": "Se detecto una inconsistencia critica entre fuentes.",
+        "short_description": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "detail": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada. Efecto: exclude_case.",
+        "source_type": "INTERNAL_RULE",
+        "source_reference": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+        "related_variable": "hard_rule",
+        "recommendation_hint": "Revisar evidencia y politica aplicadas antes de continuar.",
+        "evidence_ids": [
+          "EVD-ID-30111445",
+          "EVD-LAB-30111445"
+        ]
+      }
+    ],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": null,
+    "consolidated_evidence": {
+      "bundle_id": "EVB-30111445",
+      "collected_at": "2026-03-26T13:07:31.314589",
+      "ready_for_rules": true,
+      "provider_statuses": {
+        "IDENTITY": "ok",
+        "FINANCIAL": "ok"
+      },
+      "warnings": [],
+      "evidence_ids": [
+        "EVD-ID-30111445",
+        "EVD-FIN-30111445",
+        "EVD-LAB-30111445"
+      ],
+      "metadata": {
+        "evidenceCount": 3
+      }
+    },
+    "hard_rule_evaluation": {
+      "evaluation_id": "HRE-30111445",
+      "evaluated_at": "2026-03-26T13:07:31.315087",
+      "findings": [
+        {
+          "code": "CRITICAL_CROSS_SOURCE_INCONSISTENCY",
+          "severity": "CRITICAL",
+          "message": "Se detecto una inconsistencia critica entre fuentes.",
+          "justification": "La provincia declarada por el proveedor financiero no coincide con la identidad consolidada.",
+          "evidence_refs": [
+            "EVD-ID-30111445",
+            "EVD-LAB-30111445"
+          ],
+          "effect_on_pipeline": "exclude_case",
+          "metadata": {}
+        }
+      ],
+      "final_effect": "exclude_case",
+      "ready_for_reasoning": false,
+      "ready_for_scoring": false,
+      "metadata": {
+        "findingsCount": 1
+      }
+    },
+    "relationship_graph": null,
+    "latest_decision": null,
+    "tags": [
+      "hard-rules-excluded"
+    ],
+    "metadata": {
+      "pipelineStage": "hard_rules",
+      "validatedAt": "2026-03-26T13:07:31.313647",
+      "consolidatedAt": "2026-03-26T13:07:31.314589",
+      "hardRulesEvaluatedAt": "2026-03-26T13:07:31.315087",
+      "hardRuleFinalEffect": "exclude_case",
+      "analystSummary": "Las reglas duras excluyeron el caso antes de reasoning y scoring."
+    }
+  }
+]

@@ -13,6 +13,8 @@ import {
   SystemSetting
 } from '../models/admin';
 import { User } from '../models/auth';
+import { authService } from './authService';
+import { auditService } from './auditService';
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '');
 
@@ -82,6 +84,7 @@ async function tryFetchJson<T>(url: string, options?: RequestInit): Promise<T> {
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      ...authService.getActorHeaders(),
       ...(options?.headers ?? {})
     }
   });
@@ -122,6 +125,13 @@ export const adminService = {
       ...adminState,
       thresholds: withAudit({ ...payload, updatedAt: '', updatedBy: '' }, actor)
     };
+    await auditService.recordAdminChange({
+      action: 'thresholds_updated',
+      entityType: 'RiskThresholdConfig',
+      entityId: 'risk-thresholds',
+      detail: 'Threshold configuration updated from admin panel.',
+      metadata: payload
+    });
     return clone(adminState.thresholds);
   },
   async restoreThresholds(actor: User | null): Promise<RiskThresholdConfig> {
@@ -130,6 +140,12 @@ export const adminService = {
       ...adminState,
       thresholds: withAudit(clone(defaultRiskThresholdConfig), actor)
     };
+    await auditService.recordAdminChange({
+      action: 'thresholds_restored',
+      entityType: 'RiskThresholdConfig',
+      entityId: 'risk-thresholds',
+      detail: 'Threshold configuration restored to defaults.'
+    });
     return clone(adminState.thresholds);
   },
   async addRule(
@@ -147,6 +163,12 @@ export const adminService = {
       ...adminState,
       activeRules: [rule, ...adminState.activeRules]
     };
+    await auditService.recordAdminChange({
+      action: 'rule_created',
+      entityType: 'Rule',
+      entityId: rule.id,
+      detail: `Rule ${rule.name} created from admin panel.`
+    });
     return clone(adminState.activeRules);
   },
   async addIntegration(
@@ -180,6 +202,12 @@ export const adminService = {
         ...adminState,
         integrations: [integration, ...adminState.integrations.filter((item) => item.id !== integration.id)]
       };
+      await auditService.recordAdminChange({
+        action: 'integration_created',
+        entityType: 'IntegrationConfig',
+        entityId: integration.id,
+        detail: `Integration ${integration.name} created from admin panel.`
+      });
       return clone(adminState.integrations);
     } catch (_error) {
       await new Promise((resolve) => setTimeout(resolve, 450));
@@ -227,6 +255,12 @@ export const adminService = {
       ...adminState,
       integrations: adminState.integrations.map((item) => (item.id === integrationId ? mapped : item))
     };
+    await auditService.recordAdminChange({
+      action: 'integration_updated',
+      entityType: 'IntegrationConfig',
+      entityId: integrationId,
+      detail: `Integration ${mapped.name} updated from admin panel.`
+    });
     return clone(adminState.integrations);
   },
   async toggleIntegrationEnabled(
@@ -247,6 +281,12 @@ export const adminService = {
       ...adminState,
       integrations: adminState.integrations.map((item) => (item.id === integrationId ? mapped : item))
     };
+    await auditService.recordAdminChange({
+      action: 'integration_toggled',
+      entityType: 'IntegrationConfig',
+      entityId: integrationId,
+      detail: `Integration ${integrationId} ${enabled ? 'enabled' : 'disabled'} from admin panel.`
+    });
     return clone(mapped);
   },
   async testIntegrationConnectivity(integrationId: string, actor: User | null): Promise<{ success: boolean; message: string; latencyMs?: number | null }> {
@@ -276,6 +316,13 @@ export const adminService = {
       ...adminState,
       systemSettings: withAudit({ ...payload, updatedAt: '', updatedBy: '' }, actor)
     };
+    await auditService.recordAdminChange({
+      action: 'system_settings_updated',
+      entityType: 'SystemSetting',
+      entityId: 'system-settings',
+      detail: 'System settings updated from admin panel.',
+      metadata: payload
+    });
     return clone(adminState.systemSettings);
   },
   async restoreSystemSettings(actor: User | null): Promise<SystemSetting> {
@@ -284,6 +331,12 @@ export const adminService = {
       ...adminState,
       systemSettings: withAudit(clone(defaultSystemSetting), actor)
     };
+    await auditService.recordAdminChange({
+      action: 'system_settings_restored',
+      entityType: 'SystemSetting',
+      entityId: 'system-settings',
+      detail: 'System settings restored to defaults.'
+    });
     return clone(adminState.systemSettings);
   },
   async saveExportSettings(
@@ -295,6 +348,13 @@ export const adminService = {
       ...adminState,
       exportSettings: withAudit({ ...payload, updatedAt: '', updatedBy: '' }, actor)
     };
+    await auditService.recordAdminChange({
+      action: 'export_settings_updated',
+      entityType: 'ExportSetting',
+      entityId: 'export-settings',
+      detail: 'Export settings updated from admin panel.',
+      metadata: payload
+    });
     return clone(adminState.exportSettings);
   },
   async restoreExportSettings(actor: User | null): Promise<ExportSetting> {
@@ -303,6 +363,12 @@ export const adminService = {
       ...adminState,
       exportSettings: withAudit(clone(defaultExportSetting), actor)
     };
+    await auditService.recordAdminChange({
+      action: 'export_settings_restored',
+      entityType: 'ExportSetting',
+      entityId: 'export-settings',
+      detail: 'Export settings restored to defaults.'
+    });
     return clone(adminState.exportSettings);
   }
 };

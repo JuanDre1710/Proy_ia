@@ -4,23 +4,26 @@ import { authService } from '../services/authService';
 
 interface AuthContextValue {
   session: SessionState;
-  login: (request: LoginRequest) => boolean;
-  logout: () => void;
+  loading: boolean;
+  login: (request: LoginRequest) => Promise<boolean>;
+  logout: () => Promise<void>;
   hasAnyRole: (roles: Role[]) => boolean;
-  refreshSession: () => void;
+  refreshSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [session, setSession] = useState<SessionState>(() => authService.getSession());
+  const [loading, setLoading] = useState(true);
 
-  const refreshSession = (): void => {
-    setSession(authService.getSession());
+  const refreshSession = async (): Promise<void> => {
+    const nextSession = await authService.refreshSession();
+    setSession(nextSession);
   };
 
-  const login = (request: LoginRequest): boolean => {
-    const user = authService.login(request);
+  const login = async (request: LoginRequest): Promise<boolean> => {
+    const user = await authService.login(request);
     if (!user) {
       return false;
     }
@@ -28,20 +31,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
     return true;
   };
 
-  const logout = (): void => {
-    authService.logout();
+  const logout = async (): Promise<void> => {
+    await authService.logout();
     setSession({ authenticated: false, user: null });
   };
 
   const hasAnyRole = (roles: Role[]): boolean => authService.hasAnyRole(session.user, roles);
 
   useEffect(() => {
+    void refreshSession().finally(() => setLoading(false));
+
     const handleFocus = (): void => {
-      refreshSession();
+      void refreshSession();
     };
 
     const interval = window.setInterval(() => {
-      refreshSession();
+      void refreshSession();
     }, 30000);
 
     window.addEventListener('focus', handleFocus);
@@ -53,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, login, logout, hasAnyRole, refreshSession }}>
+    <AuthContext.Provider value={{ session, loading, login, logout, hasAnyRole, refreshSession }}>
       {children}
     </AuthContext.Provider>
   );

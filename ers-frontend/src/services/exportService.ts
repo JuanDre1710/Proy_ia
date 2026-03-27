@@ -1,6 +1,7 @@
 import { CaseEvaluation } from '../models/cases';
 import { RiskEvaluation } from '../models/domain';
 import { ExportRequest, ExportResult } from '../models/export';
+import { authService } from './authService';
 
 function sanitizeSegment(value: string): string {
   return value
@@ -175,12 +176,47 @@ function mapLegacyEvaluation(evaluation: RiskEvaluation): CaseEvaluation {
 
 export const exportService = {
   async exportEvaluation(request: ExportRequest): Promise<ExportResult> {
+    const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '');
+    try {
+      const createResponse = await fetch(`${apiBaseUrl}/cases/${request.evaluation.caseId}/exports/${request.format}`, {
+        method: 'POST',
+        headers: authService.getActorHeaders()
+      });
+      if (createResponse.ok) {
+        const payload = (await createResponse.json()) as {
+          exportId: string;
+          filename: string;
+          format: string;
+          downloadUrl: string;
+        };
+        const fileResponse = await fetch(`${apiBaseUrl}${payload.downloadUrl}`, {
+          headers: authService.getActorHeaders()
+        });
+        if (!fileResponse.ok) {
+          throw new Error('No se pudo descargar la exportacion generada.');
+        }
+        const blob = await fileResponse.blob();
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = payload.filename;
+        anchor.click();
+        URL.revokeObjectURL(url);
+        return {
+          success: true,
+          filename: payload.filename,
+          format: request.format,
+          message: `Informe ${request.format.toUpperCase()} exportado correctamente: ${payload.filename}`
+        };
+      }
+    } catch (_error) {
+      // keep fallback below during migration
+    }
+
     await new Promise((resolve) => setTimeout(resolve, request.format === 'pdf' ? 900 : 650));
 
     const filename = buildFilename(request);
-    const content = request.format === 'csv'
-      ? buildCsvContent(request.evaluation)
-      : buildMockPdfContent(request.evaluation);
+    const content = request.format === 'csv' ? buildCsvContent(request.evaluation) : buildMockPdfContent(request.evaluation);
     const type = request.format === 'csv' ? 'text/csv;charset=utf-8' : 'application/pdf';
 
     download(content, filename, type);

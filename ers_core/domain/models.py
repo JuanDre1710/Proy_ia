@@ -7,6 +7,7 @@ from typing import Any
 from .enums import (
     AlertSeverity,
     AuditActionType,
+    CaseProcessingState,
     AuditResultType,
     DecisionStatus,
     DocumentType,
@@ -110,6 +111,12 @@ class ReasoningResult:
     engine_version: str
     summary: str
     hypothesis: str
+    evidence_for_review: list[str] = field(default_factory=list)
+    evidence_against_fraud: list[str] = field(default_factory=list)
+    inconsistencies: list[str] = field(default_factory=list)
+    missing_evidence: list[str] = field(default_factory=list)
+    suggested_priority: str = "MEDIUM"
+    suggested_next_checks: list[str] = field(default_factory=list)
     supporting_evidence_ids: list[str] = field(default_factory=list)
     contradictory_evidence_ids: list[str] = field(default_factory=list)
     unresolved_questions: list[str] = field(default_factory=list)
@@ -125,7 +132,8 @@ class ScoreResult:
     model_version: str
     score_value: float
     risk_category: RiskCategory
-    top_factors: list[str] = field(default_factory=list)
+    confidence: float | None = None
+    top_factors: list[dict[str, Any]] = field(default_factory=list)
     feature_contributions: dict[str, float] = field(default_factory=dict)
     evaluated_at: datetime = field(default_factory=datetime.utcnow)
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -138,13 +146,92 @@ class FinalAssessment:
     risk_category: RiskCategory
     recommendation: RecommendationType
     executive_summary: str
-    requires_manual_review: bool
-    blocked_by_hard_rules: bool
+    requires_manual_review: bool = True
+    blocked_by_hard_rules: bool = False
+    final_status: str = "PENDING"
+    final_priority: str = "MEDIUM"
+    recommended_action: RecommendationType = RecommendationType.REVIEW
+    confidence: float | None = None
+    summary_for_analyst: str = ""
+    evidence_quality: str | None = None
+    pipeline_state: str | None = None
     hard_rule_reasons: list[str] = field(default_factory=list)
     alert_ids: list[str] = field(default_factory=list)
     reasoning_result_id: str | None = None
     score_result_id: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
     created_at: datetime = field(default_factory=datetime.utcnow)
+
+
+@dataclass(slots=True)
+class ConsolidatedEvidence:
+    bundle_id: str
+    collected_at: datetime
+    ready_for_rules: bool
+    provider_statuses: dict[str, str] = field(default_factory=dict)
+    warnings: list[str] = field(default_factory=list)
+    evidence_ids: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class HardRuleFinding:
+    code: str
+    severity: str
+    message: str
+    justification: str
+    evidence_refs: list[str] = field(default_factory=list)
+    effect_on_pipeline: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class HardRuleEvaluation:
+    evaluation_id: str
+    evaluated_at: datetime
+    findings: list[HardRuleFinding] = field(default_factory=list)
+    final_effect: str = ""
+    ready_for_reasoning: bool = False
+    ready_for_scoring: bool = False
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class RelationshipNode:
+    node_id: str
+    label: str
+    node_type: str
+    risk_level: str
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class RelationshipEdge:
+    edge_id: str
+    source: str
+    target: str
+    relationship_type: str
+    severity: str
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class RelationshipSignal:
+    code: str
+    severity: str
+    message: str
+    related_case_ids: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class RelationshipGraph:
+    graph_id: str
+    generated_at: datetime
+    nodes: list[RelationshipNode] = field(default_factory=list)
+    edges: list[RelationshipEdge] = field(default_factory=list)
+    signals: list[RelationshipSignal] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -153,6 +240,7 @@ class Decision:
     case_id: str
     status: DecisionStatus
     actor_id: str | None = None
+    actor_name: str | None = None
     actor_role: str | None = None
     comment: str | None = None
     rationale: str | None = None
@@ -172,6 +260,23 @@ class AuditLog:
     correlation_id: str | None = None
     timestamp: datetime = field(default_factory=datetime.utcnow)
     detail: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class ExportRecord:
+    export_id: str
+    case_id: str
+    format: str
+    filename: str
+    file_path: str
+    content_type: str
+    size_bytes: int
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_by_id: str | None = None
+    created_by_name: str | None = None
+    created_by_role: str | None = None
+    status: str = "READY"
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -203,8 +308,10 @@ class Case:
     updated_at: datetime
     requested_by: str | None
     source_channel: str
+    processing_state: CaseProcessingState
     subject: Person
     identity_status: IdentityStatus
+    validation_results: dict[str, str] = field(default_factory=dict)
     financial_info: FinancialInfo | None = None
     labor_fiscal_info: LaborFiscalInfo | None = None
     evidences: list[Evidence] = field(default_factory=list)
@@ -212,6 +319,10 @@ class Case:
     reasoning_result: ReasoningResult | None = None
     score_result: ScoreResult | None = None
     final_assessment: FinalAssessment | None = None
+    consolidated_evidence: ConsolidatedEvidence | None = None
+    hard_rule_evaluation: HardRuleEvaluation | None = None
+    relationship_graph: RelationshipGraph | None = None
     latest_decision: Decision | None = None
+    decision_history: list[Decision] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)

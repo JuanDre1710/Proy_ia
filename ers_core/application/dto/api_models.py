@@ -27,7 +27,9 @@ class ApiReasoningDto:
 class ApiScoreDto:
     score: float
     category: str
-    top_factors: list[str] = field(default_factory=list)
+    confidence: float | None = None
+    model_version: str | None = None
+    top_factors: list[dict[str, object]] = field(default_factory=list)
 
 
 @dataclass(slots=True)
@@ -68,4 +70,3 @@ class UiCaseViewModel:
     analyst_summary: str
     alerts_count: int
     decision_status: str | None
-

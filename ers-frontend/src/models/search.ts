@@ -13,6 +13,7 @@ export interface SearchRequest {
 }
 
 export interface SearchResponse {
+  caseId?: string;
   identifier: string;
   identifierType: IdentifierType;
   outcome: SearchOutcome;
@@ -22,6 +23,7 @@ export interface SearchResponse {
 
 export interface RecentSearch {
   id: string;
+  caseId?: string;
   identifier: string;
   identifierType: IdentifierType;
   searchedAt: string;
