@@ -6,10 +6,11 @@ import { StatusState } from '../../components/shared/StatusState';
 import { DailyLimitIndicator } from './components/DailyLimitIndicator';
 import { RecentSearchesCard } from './components/RecentSearchesCard';
 import { SearchForm } from './components/SearchForm';
+import { ActiveClaimsSelectionCard } from './components/ActiveClaimsSelectionCard';
 import { useSearchFlow } from './hooks/useSearchFlow';
 
 export function SearchPage(): JSX.Element {
-  const { flow, recentSearches, dailyUsage, validateInput, submitSearch, openRecentSearch } =
+  const { flow, recentSearches, dailyUsage, validateInput, submitSearch, selectClaim, openRecentSearch } =
     useSearchFlow();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export function SearchPage(): JSX.Element {
     <Stack spacing={3}>
       <PageHeader
         title="Busqueda y evaluacion"
-        subtitle="Inicia el flujo antifraude ingresando un DNI, CUIL o CUIT. La demo usa fuentes internas, ejecuta reglas, reasoning, scoring y habilita resolucion manual con auditoria."
+        subtitle="Inicia el flujo antifraude ingresando un DNI, CUIL o CUIT. El DNI puede venir con pocos digitos segun la base historica y la demo habilita resolucion manual con auditoria."
       />
 
       <Stack direction="row" gap={1} flexWrap="wrap">
@@ -43,6 +44,14 @@ export function SearchPage(): JSX.Element {
               <Alert severity={flow.response.outcome === 'not_found' ? 'info' : flow.response.outcome === 'integration_error' ? 'error' : 'warning'}>
                 {flow.response.message}
               </Alert>
+            ) : null}
+            {flow.response && flow.response.activeClaims.length > 0 ? (
+              <ActiveClaimsSelectionCard
+                person={flow.response.person}
+                claims={flow.response.activeClaims}
+                onSelect={selectClaim}
+                isLoading={flow.status === 'loading'}
+              />
             ) : null}
             {flow.status !== 'success' ? (
               <StatusState

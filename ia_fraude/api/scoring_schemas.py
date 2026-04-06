@@ -14,6 +14,7 @@ class ScoringPredictRequestDto(BaseModel):
     telefono_repetido_con_otro_cliente: bool
     proveedor_repetido: bool
     historial_fraude_confirmado: bool
+    credit_score: int = Field(default=0, ge=0, le=1000)
 
 
 class ScoringTopFactorDto(BaseModel):

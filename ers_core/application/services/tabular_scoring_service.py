@@ -42,22 +42,28 @@ class TabularScoringService:
         debt_ratio = float(case.financial_info.debt_ratio or 0)
         bounced_checks = int(case.financial_info.bounced_checks or 0)
         credit_score = int(case.financial_info.credit_score or 0) if case.financial_info else 0
-        previous_claims = int(case.financial_info.attributes.get("previousClaims", 0)) if case.financial_info else 0
-        recent_customer_months = 2 if debt_ratio > 0.55 else 24
+        previous_claims = int(case.metadata.get("previousClaimsCount", case.financial_info.attributes.get("previousClaims", 0))) if case.financial_info else int(case.metadata.get("previousClaimsCount", 0))
+        recent_customer_months = int(case.metadata.get("customerAntiquityMonths", 2 if debt_ratio > 0.55 else 24))
         provider_statuses = case.consolidated_evidence.provider_statuses if case.consolidated_evidence else {}
         hard_rule_codes = [item.code for item in case.hard_rule_evaluation.findings] if case.hard_rule_evaluation else []
+        claim_amount = float(case.metadata.get("claimAmount", 95000 + previous_claims * 12000 + bounced_checks * 5000))
+        high_risk_zone = bool(case.metadata.get("highRiskZone", bool(case.subject.province and case.subject.province.lower() in {"mendoza", "neuquen"})))
+        suspicious_images = bool(case.metadata.get("suspiciousImages", "CRITICAL_CROSS_SOURCE_INCONSISTENCY" in hard_rule_codes))
+        shared_phone_flag = bool(case.metadata.get("sharedPhoneFlag", bool(case.identity_status.inconsistencies)))
+        repeated_provider_flag = bool(case.metadata.get("repeatedProviderFlag", provider_statuses.get("FINANCIAL") == "partial"))
+        confirmed_fraud_history = bool(case.metadata.get("confirmedFraudHistory", "POLICY_BLOCK" in hard_rule_codes))
 
         return ScoringFeatures(
-            monto_reclamado=95000 + previous_claims * 12000 + bounced_checks * 5000,
+            monto_reclamado=claim_amount,
             cantidad_siniestros_previos=previous_claims,
             debt_ratio=debt_ratio,
             bounced_checks=bounced_checks,
             antiguedad_como_cliente_meses=recent_customer_months,
-            zona_de_riesgo=bool(case.subject.province and case.subject.province.lower() in {"mendoza", "neuquen"}),
-            imagenes_sospechosas="CRITICAL_CROSS_SOURCE_INCONSISTENCY" in hard_rule_codes,
-            telefono_repetido_con_otro_cliente=bool(case.identity_status.inconsistencies),
-            proveedor_repetido=provider_statuses.get("FINANCIAL") == "partial",
-            historial_fraude_confirmado="POLICY_BLOCK" in hard_rule_codes,
+            zona_de_riesgo=high_risk_zone,
+            imagenes_sospechosas=suspicious_images,
+            telefono_repetido_con_otro_cliente=shared_phone_flag,
+            proveedor_repetido=repeated_provider_flag,
+            historial_fraude_confirmado=confirmed_fraud_history,
             credit_score=credit_score,
             quality_flags={
                 "identity_quality": case.identity_status.quality_score,

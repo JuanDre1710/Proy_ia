@@ -11,11 +11,16 @@ from ers_core.adapters.repositories.file_integration_repository import FileInteg
 from ers_core.config.app_settings import get_settings
 from ers_core.application.services.case_decision_service import CaseDecisionError, CaseDecisionService
 from ers_core.application.services.case_ingestion_service import CaseIngestionService
+from ers_core.application.services.internal_case_analysis_service import (
+    InternalCaseAnalysisError,
+    InternalCaseAnalysisService,
+)
 from ers_core.application.services.case_pipeline_service import CasePipelineService
 from ers_core.application.services.integration_manager import IntegrationManager
 from ers_core.domain.enums import DocumentType
 from .case_schemas import (
     CaseAlertDto,
+    CaseClaimHistoryDto,
     CaseDecisionDto,
     CaseDecisionHistoryItemDto,
     CaseDecisionRequestDto,
@@ -33,6 +38,7 @@ from .case_schemas import (
     CaseReasoningDto,
     CaseScoreDto,
     CaseSubjectDto,
+    InternalCaseUploadRequestDto,
 )
 
 router = APIRouter(prefix="/cases", tags=["cases"])
@@ -44,6 +50,7 @@ _integration_repository = FileIntegrationConfigRepository(settings.data_dir / "i
 _integration_manager = IntegrationManager(_integration_repository, _audit_repository, IntegrationAdapterFactory())
 _case_service = CaseIngestionService(_case_repository, _audit_repository, _integration_manager)
 _case_pipeline_service = CasePipelineService(_case_repository, _audit_repository, _integration_manager)
+_internal_case_analysis_service = InternalCaseAnalysisService(_case_repository, _audit_repository, _case_pipeline_service)
 _case_decision_service = CaseDecisionService(_case_repository, _audit_repository)
 
 
@@ -87,14 +94,7 @@ def _message_for_status(status: str, identifier_type: str | None) -> str:
     return "El identificador no es valido."
 
 
-@router.post("/evaluate", response_model=CaseEvaluateResponseDto)
-def evaluate_case(payload: CaseEvaluateRequestDto) -> CaseEvaluateResponseDto:
-    case = _case_service.create_case_evaluation(
-        identifier=payload.identifier.strip(),
-        requested_by=payload.requestedBy.strip(),
-        source_channel=payload.sourceChannel,
-    )
-    case = _case_pipeline_service.consolidate_case_evidence(case)
+def _map_evaluate_response(case) -> CaseEvaluateResponseDto:
     identifier_type = None if case.subject.document_type == DocumentType.UNKNOWN else case.subject.document_type.value
     return CaseEvaluateResponseDto(
         caseId=case.case_id,
@@ -114,6 +114,30 @@ def evaluate_case(payload: CaseEvaluateRequestDto) -> CaseEvaluateResponseDto:
         validationResults=case.validation_results,
         requestedAt=case.created_at.isoformat(),
     )
+
+
+@router.post("/evaluate", response_model=CaseEvaluateResponseDto)
+def evaluate_case(payload: CaseEvaluateRequestDto) -> CaseEvaluateResponseDto:
+    case = _case_service.create_case_evaluation(
+        identifier=payload.identifier.strip(),
+        requested_by=payload.requestedBy.strip(),
+        source_channel=payload.sourceChannel,
+    )
+    case = _case_pipeline_service.consolidate_case_evidence(case)
+    return _map_evaluate_response(case)
+
+
+@router.post("/evaluate/internal-json", response_model=CaseEvaluateResponseDto)
+def evaluate_internal_json_case(payload: InternalCaseUploadRequestDto) -> CaseEvaluateResponseDto:
+    try:
+        case = _internal_case_analysis_service.analyze_internal_case(
+            payload=payload.caseData.model_dump(),
+            requested_by=payload.requestedBy.strip(),
+            source_channel=payload.sourceChannel,
+        )
+    except InternalCaseAnalysisError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return _map_evaluate_response(case)
 
 
 @router.get("/{case_id}", response_model=CaseReadResponseDto)
@@ -169,6 +193,19 @@ def get_case(case_id: str) -> CaseReadResponseDto:
             if case.labor_fiscal_info
             else None
         ),
+        claimsHistory=[
+            CaseClaimHistoryDto(
+                id=str(item.get("id", "")),
+                date=str(item.get("date", "N/D")),
+                type=str(item.get("type", "Sin tipo")),
+                amount=float(item.get("amount", 0.0) or 0.0),
+                status=str(item.get("status", "Observado")),
+                counterpart=str(item.get("counterpart", "N/D")),
+                notes=str(item.get("notes", "")),
+            )
+            for item in case.metadata.get("claimsHistory", [])
+            if isinstance(item, dict)
+        ],
         evidenceSummary=(
             CaseEvidenceSummaryDto(
                 readyForRules=case.consolidated_evidence.ready_for_rules,

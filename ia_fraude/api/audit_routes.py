@@ -38,6 +38,9 @@ def _map_action(value: str) -> str:
     mapping = {
         "AUTH_LOGIN": "Login",
         "AUTH_LOGOUT": "Logout",
+        "IDENTITY_SEARCHED": "Consulta de riesgo",
+        "CLAIM_SELECTED": "Consulta de riesgo",
+        "CASE_ASSEMBLED_FROM_CLAIM": "Consulta de riesgo",
         "CASE_CREATED": "Consulta de riesgo",
         "CASE_VALIDATED": "Consulta de riesgo",
         "CASE_EVALUATED": "Consulta de riesgo",
@@ -72,6 +75,9 @@ def _map_stage(value: str) -> str:
         "EXPORT_REQUESTED": "Exportacion",
         "AUTH_LOGIN": "Autenticacion",
         "AUTH_LOGOUT": "Autenticacion",
+        "IDENTITY_SEARCHED": "Busqueda por identidad",
+        "CLAIM_SELECTED": "Seleccion de siniestro",
+        "CASE_ASSEMBLED_FROM_CLAIM": "Armado del caso",
         "ADMIN_CONFIGURATION_CHANGED": "Administracion",
         "INTEGRATION_CONFIGURATION_CHANGED": "Administracion",
     }
@@ -141,7 +147,7 @@ def get_audit_logs(
             for row in rows
             if row.action.value
             in {"CASE_EVALUATED", "INTEGRATION_CONSUMED", "HARD_RULES_EXECUTED", "REASONING_EXECUTED", "SCORING_EXECUTED"}
-            or row.action.value in {"CASE_CREATED", "CASE_VALIDATED", "FINAL_ASSESSMENT_GENERATED"}
+            or row.action.value in {"IDENTITY_SEARCHED", "CLAIM_SELECTED", "CASE_ASSEMBLED_FROM_CLAIM", "CASE_CREATED", "CASE_VALIDATED", "FINAL_ASSESSMENT_GENERATED"}
         ]
         total = len(rows)
     if export_format_filter or risk_action_filter:

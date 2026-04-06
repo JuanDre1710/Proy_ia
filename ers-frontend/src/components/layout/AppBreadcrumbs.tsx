@@ -6,6 +6,12 @@ function getCrumbs(pathname: string): Array<{ label: string; to?: string }> {
   if (pathname === '/search') {
     return [{ label: 'Busqueda' }];
   }
+  if (pathname === '/cases/upload-json') {
+    return [
+      { label: 'Busqueda', to: '/search' },
+      { label: 'Carga JSON' }
+    ];
+  }
   if (pathname.startsWith('/cases/')) {
     const caseId = pathname.split('/')[2];
     return [
@@ -29,6 +35,9 @@ function getCrumbs(pathname: string): Array<{ label: string; to?: string }> {
 export function getRouteTitle(pathname: string): string {
   if (pathname === '/search') {
     return 'ERS | Busqueda';
+  }
+  if (pathname === '/cases/upload-json') {
+    return 'ERS | Carga JSON';
   }
   if (pathname.startsWith('/cases/')) {
     return `ERS | Caso ${pathname.split('/')[2]}`;

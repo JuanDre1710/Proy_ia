@@ -1,10 +1,12 @@
 import { IdentifierType } from '../models/domain';
 import {
+  ActiveClaimSummary,
   IdentifierValidationResult,
   RecentSearch,
   SearchRequest,
   SearchResponse
 } from '../models/search';
+import { apiBaseUrls } from '../config/apiBaseUrls';
 import { runtimeFlags } from '../config/runtimeFlags';
 import { mockSearchOutcomes, mockRecentSearchesSeed } from '../mocks/searchMock';
 import { authService } from './authService';
@@ -12,7 +14,7 @@ import { validateIdentifierWithFeedback } from '../utils/identifier';
 
 const dailyLimit = 12;
 let recentSearchesState: RecentSearch[] = [...mockRecentSearchesSeed];
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '');
+const sqlApiBaseUrl = apiBaseUrls.sqlBackend;
 
 function buildSummary(outcome: SearchResponse['outcome']): string {
   switch (outcome) {
@@ -28,6 +30,16 @@ function buildSummary(outcome: SearchResponse['outcome']): string {
     default:
       return 'No se encontro informacion asociada.';
   }
+}
+
+function mapOutcome(searchStatus: SearchResponse['searchStatus']): SearchResponse['outcome'] {
+  if (searchStatus === 'single_claim' || searchStatus === 'multiple_claims') {
+    return 'found';
+  }
+  if (searchStatus === 'person_without_claims') {
+    return 'insufficient_data';
+  }
+  return 'not_found';
 }
 
 function buildMessage(outcome: SearchResponse['outcome'], type: IdentifierType): string {
@@ -73,51 +85,69 @@ export const searchService = {
 
     if (runtimeFlags.useBackendSearch) {
       try {
-        const backendResponse = await fetch(`${apiBaseUrl}/cases/evaluate`, {
+        const identityResponse = await fetch(`${sqlApiBaseUrl}/identity/search`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             ...authService.getActorHeaders()
           },
           body: JSON.stringify({
-            identifier: validation.normalizedValue,
-            requestedBy: request.requestedBy,
-            sourceChannel: 'frontend'
+            document: validation.normalizedValue,
+            documentType: validation.identifierType
           })
         });
 
-        if (!backendResponse.ok) {
-          throw new Error(`HTTP ${backendResponse.status}`);
+        if (!identityResponse.ok) {
+          throw new Error(`HTTP ${identityResponse.status}`);
         }
 
-        const payload = (await backendResponse.json()) as {
-          caseId: string;
-          identifier: string;
-          identifierType?: IdentifierType;
-          status: string;
+        const payload = (await identityResponse.json()) as {
+          searchStatus: SearchResponse['searchStatus'];
+          person?: SearchResponse['person'];
+          claims: Array<{
+            claimId: string;
+            claimNumber: string;
+            claimDate?: string | null;
+            statusCode: string;
+            statusLabel: string;
+            claimType?: string | null;
+            claimAmount?: number | null;
+            claimedAmount?: number | null;
+            policyNumber?: string | null;
+            certificateNumber?: string | null;
+          }>;
+          totalClaims: number;
+          hasSingleClaim: boolean;
+          requiresClaimSelection: boolean;
           message: string;
-          canOpenDashboard: boolean;
         };
 
-        const outcome: SearchResponse['outcome'] =
-          payload.status === 'accepted_for_processing' ||
-          payload.status === 'ready_for_rules' ||
-          payload.status === 'ready_for_reasoning' ||
-          payload.status === 'scored'
-            ? 'found'
-            : payload.status === 'waiting_for_enrichment'
-              ? 'insufficient_data'
-              : payload.status === 'daily_limit_reached'
-                ? 'integration_error'
-                : 'not_found';
+        const mappedClaims: ActiveClaimSummary[] = payload.claims.map((claim) => ({
+          claimId: claim.claimId,
+          claimNumber: claim.claimNumber,
+          occurredAt: claim.claimDate,
+          statusCode: claim.statusCode,
+          statusLabel: claim.statusLabel,
+          claimedAmount: claim.claimedAmount,
+          estimatedAmount: claim.claimAmount,
+          claimTypeId: claim.claimType,
+          policyNumber: claim.policyNumber,
+          certificateNumber: claim.certificateNumber
+        }));
 
         const response: SearchResponse = {
-          caseId: payload.caseId,
-          identifier: payload.identifier,
-          identifierType: payload.identifierType ?? validation.identifierType,
-          outcome,
+          caseId: undefined,
+          identifier: validation.normalizedValue,
+          identifierType: validation.identifierType,
+          searchStatus: payload.searchStatus,
+          outcome: mapOutcome(payload.searchStatus),
           message: payload.message,
-          canOpenDashboard: payload.canOpenDashboard
+          canOpenDashboard: false,
+          person: payload.person,
+          activeClaims: mappedClaims,
+          totalClaims: payload.totalClaims,
+          canAutoAnalyze: false,
+          requiresClaimSelection: payload.requiresClaimSelection || mappedClaims.length > 0
         };
 
         registerRecentSearch({
@@ -145,10 +175,16 @@ export const searchService = {
       caseId: validation.normalizedValue,
       identifier: validation.normalizedValue,
       identifierType: validation.identifierType,
+      searchStatus: outcome === 'found' ? 'single_claim' : 'not_found',
       outcome,
       message: buildMessage(outcome, validation.identifierType),
       canOpenDashboard:
-        outcome === 'found' || outcome === 'deceased' || outcome === 'insufficient_data'
+        outcome === 'found' || outcome === 'deceased' || outcome === 'insufficient_data',
+      person: null,
+      activeClaims: [],
+      totalClaims: 0,
+      canAutoAnalyze: outcome === 'found',
+      requiresClaimSelection: false
     };
 
     registerRecentSearch({

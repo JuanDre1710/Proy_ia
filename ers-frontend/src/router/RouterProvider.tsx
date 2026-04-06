@@ -4,6 +4,7 @@ import { LoginPage } from '../features/auth/LoginPage';
 import { AdminPage } from '../features/admin/AdminPage';
 import { AuditLogsPage } from '../features/audit/AuditLogsPage';
 import { CaseDashboardPage } from '../features/cases/CaseDashboardPage';
+import { InternalCaseUploadPage } from '../features/cases/InternalCaseUploadPage';
 import { AccessDeniedPage } from '../features/errors/AccessDeniedPage';
 import { NotFoundPage } from '../features/errors/NotFoundPage';
 import { SearchPage } from '../features/search/SearchPage';
@@ -17,6 +18,7 @@ export function RouterProvider(): JSX.Element {
         <Route element={<AppShell />}>
           <Route path="/" element={<Navigate to="/search" replace />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/cases/upload-json" element={<InternalCaseUploadPage />} />
           <Route path="/dashboard" element={<Navigate to="/search" replace />} />
           <Route path="/dashboard/:identifier" element={<LegacyCaseRedirect />} />
           <Route path="/cases/:caseId" element={<CaseDashboardPage />} />

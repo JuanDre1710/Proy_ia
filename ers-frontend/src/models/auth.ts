@@ -17,4 +17,5 @@ export interface SessionState {
   authenticated: boolean;
   user: User | null;
   expiresAt?: string;
+  mode?: 'mock' | 'real';
 }

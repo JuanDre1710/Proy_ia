@@ -20,6 +20,7 @@ import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TravelExploreRoundedIcon from '@mui/icons-material/TravelExploreRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../state/AuthContext';
 import { AppBreadcrumbs, getRouteTitle } from './AppBreadcrumbs';
@@ -37,6 +38,7 @@ export function AppShell(): JSX.Element {
 
   const items = [
     { to: '/search', label: 'Busqueda', icon: <SearchRoundedIcon /> },
+    { to: '/cases/upload-json', label: 'Carga JSON', icon: <UploadFileRoundedIcon /> },
     { to: '/cases/30111222', label: 'Dashboard ejemplo', icon: <DashboardRoundedIcon /> },
     ...(canAccessAudit ? [{ to: '/audit/logs', label: 'Auditoria', icon: <ReceiptLongRoundedIcon /> }] : []),
     ...(canAccessAdmin
@@ -177,7 +179,7 @@ export function AppShell(): JSX.Element {
         <Box sx={{ mb: 2 }}>
           <AppBreadcrumbs />
         </Box>
-        {session.expiresAt ? (
+        {session.mode === 'mock' && session.expiresAt ? (
           <Alert severity="info" sx={{ mb: 3 }}>
             Sesion mock activa hasta {new Date(session.expiresAt).toLocaleTimeString()}.
           </Alert>

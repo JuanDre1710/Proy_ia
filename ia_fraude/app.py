@@ -17,6 +17,7 @@ from .api.audit_routes import router as audit_router
 from .api.auth_routes import router as auth_router
 from .api.case_routes import router as case_router
 from .api.export_routes import router as export_router
+from .api.identity_routes import router as identity_router
 from .api.integration_routes import router as integration_router
 from .api.scoring_routes import router as scoring_router
 from .utils.schema import EvaluacionInput
@@ -34,6 +35,10 @@ OPENAPI_TAGS = [
     {
         "name": "cases",
         "description": "Creacion, evaluacion, detalle y resolucion manual de casos antifraude.",
+    },
+    {
+        "name": "identity-search",
+        "description": "Busqueda desacoplada por identidad y armado de casos desde siniestros.",
     },
     {
         "name": "audit",
@@ -129,6 +134,7 @@ def create_app() -> FastAPI:
     app.include_router(integration_router)
     app.include_router(auth_router)
     app.include_router(audit_router)
+    app.include_router(identity_router)
     app.include_router(case_router)
     app.include_router(export_router)
     app.include_router(scoring_router)

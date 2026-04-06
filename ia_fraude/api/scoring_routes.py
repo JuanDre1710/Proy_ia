@@ -23,6 +23,7 @@ def predict(payload: ScoringPredictRequestDto) -> ScoringPredictResponseDto:
             telefono_repetido_con_otro_cliente=payload.telefono_repetido_con_otro_cliente,
             proveedor_repetido=payload.proveedor_repetido,
             historial_fraude_confirmado=payload.historial_fraude_confirmado,
+            credit_score=payload.credit_score,
         )
     )
     return ScoringPredictResponseDto(**result)

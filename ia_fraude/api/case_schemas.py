@@ -132,6 +132,16 @@ class CaseLaborFiscalInfoDto(BaseModel):
     fiscalObservation: str | None = None
 
 
+class CaseClaimHistoryDto(BaseModel):
+    id: str
+    date: str
+    type: str
+    amount: float
+    status: str
+    counterpart: str
+    notes: str
+
+
 class CaseEvidenceSummaryDto(BaseModel):
     readyForRules: bool
     providerStatuses: dict[str, str] = Field(default_factory=dict)
@@ -175,6 +185,72 @@ class CaseEvaluateRequestDto(BaseModel):
     sourceChannel: str = Field(default="frontend")
 
 
+class InternalCaseSubjectInputDto(BaseModel):
+    fullName: str = Field(min_length=1, max_length=160)
+    birthDate: str | None = None
+    age: int | None = Field(default=None, ge=0, le=120)
+    email: str | None = Field(default=None, max_length=160)
+    phone: str | None = Field(default=None, max_length=40)
+    address: str | None = Field(default=None, max_length=200)
+    locality: str | None = Field(default=None, max_length=120)
+    province: str | None = Field(default=None, max_length=120)
+    verified: bool = True
+    deceased: bool = False
+
+
+class InternalCaseFinancialInputDto(BaseModel):
+    creditScore: int = Field(default=0, ge=0, le=1000)
+    debtRatio: float = Field(default=0.0, ge=0.0, le=5.0)
+    bancarizationLevel: str | None = Field(default=None, max_length=40)
+    activeLoans: int = Field(default=0, ge=0, le=100)
+    bouncedChecks: int = Field(default=0, ge=0, le=100)
+    monthlyIncomeEstimate: str | None = Field(default=None, max_length=80)
+    observation: str | None = Field(default=None, max_length=300)
+
+
+class InternalCaseLaborFiscalInputDto(BaseModel):
+    taxStatus: str | None = Field(default=None, max_length=80)
+    mainActivity: str | None = Field(default=None, max_length=120)
+    employerOrCompany: str | None = Field(default=None, max_length=160)
+    incomeBracket: str | None = Field(default=None, max_length=80)
+    registeredEmployees: int | None = Field(default=None, ge=0, le=100000)
+    fiscalObservation: str | None = Field(default=None, max_length=300)
+    declaredProvince: str | None = Field(default=None, max_length=120)
+
+
+class InternalCaseClaimInputDto(BaseModel):
+    claimReference: str | None = Field(default=None, max_length=80)
+    claimDate: str | None = None
+    claimType: str | None = Field(default=None, max_length=80)
+    claimedAmount: float = Field(default=0.0, ge=0.0)
+    previousClaimsCount: int = Field(default=0, ge=0, le=100)
+    customerAntiquityMonths: int = Field(default=0, ge=0, le=1200)
+    suspiciousImages: bool = False
+    sharedPhoneWithOtherCustomer: bool = False
+    repeatedProvider: bool = False
+    confirmedFraudHistory: bool = False
+    highRiskZone: bool = False
+    notes: str | None = Field(default=None, max_length=500)
+
+
+class InternalCaseInputDto(BaseModel):
+    identifier: str = Field(min_length=1, max_length=20)
+    subject: InternalCaseSubjectInputDto
+    financialInfo: InternalCaseFinancialInputDto = Field(default_factory=InternalCaseFinancialInputDto)
+    laborFiscalInfo: InternalCaseLaborFiscalInputDto = Field(default_factory=InternalCaseLaborFiscalInputDto)
+    claim: InternalCaseClaimInputDto = Field(default_factory=InternalCaseClaimInputDto)
+    inconsistencies: list[str] = Field(default_factory=list)
+    missingEvidence: list[str] = Field(default_factory=list)
+    evidenceForReview: list[str] = Field(default_factory=list)
+    evidenceAgainstFraud: list[str] = Field(default_factory=list)
+
+
+class InternalCaseUploadRequestDto(BaseModel):
+    requestedBy: str = Field(min_length=1, max_length=80)
+    sourceChannel: str = Field(default="frontend-upload")
+    caseData: InternalCaseInputDto
+
+
 class CaseEvaluateResponseDto(BaseModel):
     caseId: str
     identifier: str
@@ -199,6 +275,7 @@ class CaseReadResponseDto(BaseModel):
     subject: CaseSubjectDto
     financialInfo: CaseFinancialInfoDto | None = None
     laborFiscalInfo: CaseLaborFiscalInfoDto | None = None
+    claimsHistory: list[CaseClaimHistoryDto] = Field(default_factory=list)
     evidenceSummary: CaseEvidenceSummaryDto | None = None
     alerts: list[CaseAlertDto] = Field(default_factory=list)
     score: CaseScoreDto | None = None

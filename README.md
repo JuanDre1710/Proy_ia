@@ -34,8 +34,25 @@ Variables principales:
 - `ERS_LOG_LEVEL`
 - `ERS_STRUCTURED_LOGS`
 - `ERS_ENABLE_MODEL_WATCHER`
+- `ERS_IDENTITY_DATA_PROVIDER`
+- `ERS_ACTIVE_CLAIM_STATUS_CODES`
+- `ERS_ENTERPRISE_SQLSERVER_CONNECTION_STRING`
 
 En produccion no debe usarse el secreto JWT por defecto.
+
+Busqueda por identidad:
+
+- `ERS_IDENTITY_DATA_PROVIDER=demo` activa el provider interno local.
+- `ERS_IDENTITY_DATA_PROVIDER=sqlserver` deja preparado el contrato empresarial.
+- `ERS_ACTIVE_CLAIM_STATUS_CODES` define que estados se consideran activos.
+
+Nota de arquitectura:
+
+- Este repo backend corre sobre FastAPI/Python.
+- El modo empresa pedido para SQL Server con `UseSqlServer(cfg.GetConnectionString("DefaultConnection"))`
+  debe implementarse en un componente .NET externo que respete los contratos desacoplados del backend.
+- En este sprint el backend Python queda listo para consumir ese provider sin acoplar dominio ni frontend
+  a EF Core.
 
 ## Levantar backend
 
@@ -91,6 +108,8 @@ npm.cmd run build
 5. Registrar decision manual.
 6. Validar auditoria en `/audit/logs`.
 7. Generar exportaciones PDF y CSV.
+8. Para el flujo nuevo, consultar `/identity/search` y luego `/identity/cases/from-claim` cuando haya un
+   siniestro unico o uno seleccionado manualmente.
 
 ## Usuarios seed
 

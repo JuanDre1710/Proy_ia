@@ -39,7 +39,7 @@ export function SearchForm({ isLoading, onValidate, onSubmit }: SearchFormProps)
           <Box>
             <Typography variant="h6">Buscar persona o entidad</Typography>
             <Typography color="text.secondary">
-              Ingresa un DNI, CUIL o CUIT. El tipo se detecta automaticamente y se valida antes de consultar.
+              Ingresa un DNI, CUIL o CUIT. El DNI puede ser corto y el tipo se detecta automaticamente antes de consultar.
             </Typography>
           </Box>
 
@@ -47,7 +47,7 @@ export function SearchForm({ isLoading, onValidate, onSubmit }: SearchFormProps)
             <TextField
               fullWidth
               label="DNI, CUIL o CUIT"
-              placeholder="Ej. 30111222 o 20333444556"
+              placeholder="Ej. 2, 30111222 o 20333444556"
               value={value}
               onChange={(event) => setValue(event.target.value)}
               error={showValidationError}

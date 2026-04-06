@@ -1,0 +1,59 @@
+{
+  "identifier": "30111245",
+  "subject": {
+    "fullName": "Marcela Quiroga",
+    "birthDate": "1986-09-14",
+    "age": 39,
+    "email": "marcela.quiroga@demo.local",
+    "phone": "+54 9 351 555 1010",
+    "address": "Av. Colon 1450",
+    "locality": "Cordoba",
+    "province": "Cordoba",
+    "verified": true,
+    "deceased": false
+  },
+  "financialInfo": {
+    "creditScore": 612,
+    "debtRatio": 0.46,
+    "bancarizationLevel": "Media",
+    "activeLoans": 2,
+    "bouncedChecks": 1,
+    "monthlyIncomeEstimate": "900000-1200000",
+    "observation": "Cliente con actividad bancaria regular."
+  },
+  "laborFiscalInfo": {
+    "taxStatus": "Monotributo",
+    "mainActivity": "Comercio minorista",
+    "employerOrCompany": "MQ Hogar",
+    "incomeBracket": "Medio",
+    "registeredEmployees": 1,
+    "fiscalObservation": "Actividad consistente con la declaracion del siniestro.",
+    "declaredProvince": "Cordoba"
+  },
+  "claim": {
+    "claimReference": "SIN-2026-00045",
+    "claimDate": "2026-03-28",
+    "claimType": "Robo parcial",
+    "claimedAmount": 185000,
+    "previousClaimsCount": 2,
+    "customerAntiquityMonths": 28,
+    "suspiciousImages": false,
+    "sharedPhoneWithOtherCustomer": false,
+    "repeatedProvider": true,
+    "confirmedFraudHistory": false,
+    "highRiskZone": false,
+    "notes": "Carga demo para probar instancia 1 con datos internos."
+  },
+  "inconsistencies": [
+    "La factura adjunta no tiene validacion definitiva."
+  ],
+  "missingEvidence": [
+    "Falta informe pericial final."
+  ],
+  "evidenceForReview": [
+    "Proveedor repetido en dos siniestros recientes."
+  ],
+  "evidenceAgainstFraud": [
+    "Identidad y domicilio consistentes en el sistema core."
+  ]
+}

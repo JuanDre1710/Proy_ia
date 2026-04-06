@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UiStatus } from '../../../models/domain';
 import { IdentifierValidationResult, RecentSearch, SearchResponse } from '../../../models/search';
+import { caseService } from '../../../services/caseService';
 import { searchService } from '../../../services/searchService';
 import { useAuth } from '../../../state/AuthContext';
 
@@ -17,6 +18,7 @@ export function useSearchFlow(): {
   dailyUsage: { used: number; limit: number; remaining: number };
   validateInput: (value: string) => IdentifierValidationResult;
   submitSearch: (identifier: string) => Promise<void>;
+  selectClaim: (claimId: string) => Promise<void>;
   openRecentSearch: (search: RecentSearch) => void;
 } {
   const { session } = useAuth();
@@ -74,7 +76,12 @@ export function useSearchFlow(): {
       }
 
       setFlow({
-        status: response.outcome === 'not_found' ? 'empty' : 'error',
+        status:
+          response.activeClaims.length > 0
+            ? 'success'
+            : response.outcome === 'not_found'
+              ? 'empty'
+              : 'error',
         response,
         error: response.message
       });
@@ -86,6 +93,45 @@ export function useSearchFlow(): {
         error: message
       });
     }
+  };
+
+  const selectClaim = async (claimId: string): Promise<void> => {
+    setFlow((current) => ({
+      ...current,
+      status: 'loading',
+      error: null
+    }));
+
+    const result = await caseService.createCaseFromClaim({
+      claimId,
+      requestedBy: userId,
+      sourceChannel: 'frontend-manual'
+    });
+
+    if (result.status === 'success' && result.data) {
+      const createdCase = result.data;
+      setFlow((current) => ({
+        status: 'success',
+        response: current.response
+          ? {
+              ...current.response,
+              caseId: createdCase.caseId,
+              canOpenDashboard: createdCase.canOpenDashboard
+            }
+          : null,
+        error: null
+      }));
+      if (createdCase.canOpenDashboard) {
+        navigate(`/cases/${createdCase.caseId}`);
+      }
+      return;
+    }
+
+    setFlow((current) => ({
+      ...current,
+      status: 'error',
+      error: result.error ?? 'No se pudo crear el caso desde el siniestro seleccionado.'
+    }));
   };
 
   const openRecentSearch = (search: RecentSearch): void => {
@@ -103,9 +149,15 @@ export function useSearchFlow(): {
       response: {
         identifier: search.identifier,
         identifierType: search.identifierType,
+        searchStatus: 'not_found',
         outcome: search.outcome,
         message: search.summary,
-        canOpenDashboard: false
+        canOpenDashboard: false,
+        person: null,
+        activeClaims: [],
+        totalClaims: 0,
+        canAutoAnalyze: false,
+        requiresClaimSelection: false
       },
       error: search.summary
     });
@@ -117,6 +169,7 @@ export function useSearchFlow(): {
     dailyUsage,
     validateInput: searchService.validateIdentifier,
     submitSearch,
+    selectClaim,
     openRecentSearch
   };
 }

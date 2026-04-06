@@ -3,7 +3,7 @@ import { IdentifierValidationResult } from '../models/search';
 
 export function inferIdentifierType(identifier: string): IdentifierType | null {
   const normalized = identifier.replace(/\D/g, '');
-  if (/^\d{8}$/.test(normalized)) {
+  if (/^\d{1,10}$/.test(normalized)) {
     return 'DNI';
   }
   if (/^\d{11}$/.test(normalized)) {
@@ -40,12 +40,12 @@ export function validateIdentifierWithFeedback(value: string): IdentifierValidat
     };
   }
 
-  if (![8, 11].includes(normalized.length)) {
+  if (normalized.length > 11) {
     return {
       isValid: false,
       normalizedValue: normalized,
       identifierType: null,
-      error: 'El identificador debe tener 8 u 11 digitos.'
+      error: 'El identificador no puede superar 11 digitos.'
     };
   }
 

@@ -24,6 +24,9 @@ class AppSettings:
     enable_model_watcher: bool
     app_name: str
     app_version: str
+    identity_data_provider: str
+    active_claim_status_codes: tuple[str, ...]
+    enterprise_sqlserver_connection_string: str | None
 
     @property
     def is_production(self) -> bool:
@@ -37,6 +40,7 @@ class AppSettings:
 @lru_cache(maxsize=1)
 def get_settings() -> AppSettings:
     origins_raw = os.getenv("ERS_CORS_ORIGINS", "http://localhost:4200,http://localhost:5173")
+    active_claim_statuses_raw = os.getenv("ERS_ACTIVE_CLAIM_STATUS_CODES", "OPEN,IN_REVIEW,PENDING_ANALYSIS")
     settings = AppSettings(
         env=os.getenv("ERS_ENV", "dev"),
         data_dir=Path(os.getenv("ERS_DATA_DIR", "data")),
@@ -50,6 +54,11 @@ def get_settings() -> AppSettings:
         enable_model_watcher=os.getenv("ERS_ENABLE_MODEL_WATCHER", "true").lower() != "false",
         app_name=os.getenv("ERS_APP_NAME", "ERS - IA Microservicio River"),
         app_version=os.getenv("ERS_APP_VERSION", "1.0"),
+        identity_data_provider=os.getenv("ERS_IDENTITY_DATA_PROVIDER", "demo").strip().lower(),
+        active_claim_status_codes=tuple(
+            item.strip().upper() for item in active_claim_statuses_raw.split(",") if item.strip()
+        ),
+        enterprise_sqlserver_connection_string=os.getenv("ERS_ENTERPRISE_SQLSERVER_CONNECTION_STRING") or None,
     )
     settings.validate()
     settings.data_dir.mkdir(parents=True, exist_ok=True)

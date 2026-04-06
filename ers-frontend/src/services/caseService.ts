@@ -1,5 +1,6 @@
 import { ApiState } from '../models/domain';
 import { CaseDecisionAction, CaseEvaluation, CaseResolution } from '../models/cases';
+import { apiBaseUrls } from '../config/apiBaseUrls';
 import { runtimeFlags } from '../config/runtimeFlags';
 import { mockCases } from '../mocks/casesMock';
 import { IdentifierType } from '../models/domain';
@@ -17,7 +18,12 @@ function withDefaultResolution(caseData: CaseEvaluation): CaseEvaluation {
 }
 
 const caseStore = cloneCaseMap(mockCases);
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '');
+const apiBaseUrl = apiBaseUrls.backend;
+const sqlApiBaseUrl = apiBaseUrls.sqlBackend;
+
+function isSqlCaseId(caseId: string): boolean {
+  return /^CASE-/i.test(caseId);
+}
 
 function mapIdentifierType(value?: string): IdentifierType {
   if (value === 'CUIL' || value === 'CUIT' || value === 'DNI') {
@@ -247,6 +253,15 @@ function mapBackendCase(payload: {
     registeredEmployees?: number | null;
     fiscalObservation?: string | null;
   } | null;
+  claimsHistory?: Array<{
+    id: string;
+    date: string;
+    type: string;
+    amount: number;
+    status: 'Aprobado' | 'Observado' | 'Rechazado';
+    counterpart: string;
+    notes: string;
+  }>;
   evidenceSummary?: {
     readyForRules: boolean;
     providerStatuses: Record<string, string>;
@@ -455,7 +470,7 @@ function mapBackendCase(payload: {
       registeredEmployees: payload.laborFiscalInfo?.registeredEmployees ?? undefined,
       fiscalObservation: payload.laborFiscalInfo?.fiscalObservation ?? 'Sin observaciones'
     },
-    claimsHistory: [],
+    claimsHistory: payload.claimsHistory ?? [],
     resolution: payload.decision
       ? {
           status:
@@ -493,16 +508,129 @@ type DecisionRequest = {
   comment: string;
 };
 
+type InternalJsonUploadRequest = {
+  requestedBy: string;
+  sourceChannel?: string;
+  caseData: Record<string, unknown>;
+};
+
+type InternalJsonUploadResponse = {
+  caseId: string;
+  identifier: string;
+  status: string;
+  message: string;
+};
+
+type CaseFromClaimResponse = {
+  caseKey: string;
+  message: string;
+};
+
+type CaseFromClaimUiResponse = {
+  caseId: string;
+  claimId: string;
+  status: string;
+  message: string;
+  canOpenDashboard: boolean;
+};
+
 export const caseService = {
+  async createCaseFromClaim(request: {
+    claimId: string;
+    requestedBy: string;
+    sourceChannel?: string;
+  }): Promise<ApiState<CaseFromClaimUiResponse>> {
+    try {
+      const response = await fetch(`${sqlApiBaseUrl}/cases/from-claim`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authService.getActorHeaders()
+        },
+        body: JSON.stringify({
+          claimId: request.claimId,
+          requestedBy: request.requestedBy,
+          sourceChannel: request.sourceChannel ?? 'frontend'
+        })
+      });
+
+      if (response.ok) {
+        const payload = (await response.json()) as CaseFromClaimResponse;
+        return {
+          status: 'success',
+          data: {
+            caseId: payload.caseKey,
+            claimId: request.claimId,
+            status: 'assembled',
+            message: payload.message,
+            canOpenDashboard: true
+          },
+          error: null
+        };
+      }
+
+      const errorPayload = (await response.json().catch(() => null)) as { detail?: string; error?: { message?: string } } | null;
+      return {
+        status: 'error',
+        data: null,
+        error: errorPayload?.detail ?? errorPayload?.error?.message ?? 'No se pudo armar el caso desde el siniestro seleccionado.'
+      };
+    } catch (_error) {
+      return {
+        status: 'error',
+        data: null,
+        error: 'No se pudo conectar con el backend para armar el caso desde el siniestro.'
+      };
+    }
+  },
+  async uploadInternalJsonCase(request: InternalJsonUploadRequest): Promise<ApiState<InternalJsonUploadResponse>> {
+    try {
+      const response = await fetch(`${apiBaseUrl}/cases/evaluate/internal-json`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...authService.getActorHeaders()
+        },
+        body: JSON.stringify({
+          requestedBy: request.requestedBy,
+          sourceChannel: request.sourceChannel ?? 'frontend-upload',
+          caseData: request.caseData
+        })
+      });
+
+      if (response.ok) {
+        const payload = (await response.json()) as InternalJsonUploadResponse;
+        return {
+          status: 'success',
+          data: payload,
+          error: null
+        };
+      }
+
+      const errorPayload = (await response.json().catch(() => null)) as { detail?: string; error?: { message?: string } } | null;
+      return {
+        status: 'error',
+        data: null,
+        error: errorPayload?.detail ?? errorPayload?.error?.message ?? 'No se pudo crear el caso interno desde JSON.'
+      };
+    } catch (_error) {
+      return {
+        status: 'error',
+        data: null,
+        error: 'No se pudo conectar con el backend demo para cargar el caso JSON.'
+      };
+    }
+  },
   async getCaseById(caseId: string): Promise<ApiState<CaseEvaluation>> {
     if (runtimeFlags.useBackendCases) {
       try {
         const headers = authService.getActorHeaders();
+        const baseUrl = isSqlCaseId(caseId) ? sqlApiBaseUrl : apiBaseUrl;
         const [caseResponse, graphResponse] = await Promise.all([
-          fetch(`${apiBaseUrl}/cases/${caseId}`, {
+          fetch(`${baseUrl}/cases/${caseId}`, {
             headers
           }),
-          fetch(`${apiBaseUrl}/cases/${caseId}/graph`, {
+          fetch(`${baseUrl}/cases/${caseId}/graph`, {
             headers
           })
         ]);

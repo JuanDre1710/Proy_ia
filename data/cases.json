@@ -1,1 +1,626 @@
-[]
+[
+  {
+    "case_id": "30111201",
+    "created_at": "2026-03-30T14:27:01.880921",
+    "updated_at": "2026-03-30T14:27:01.880921",
+    "requested_by": "usr-supervisor",
+    "source_channel": "swagger",
+    "processing_state": "waiting_for_enrichment",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "missing:IDENTITY,FINANCIAL"
+    },
+    "subject": {
+      "person_id": "30111201",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "DNI",
+      "document_number": "30111201",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "financial_info": null,
+    "labor_fiscal_info": null,
+    "evidences": [],
+    "alerts": [],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": null,
+    "consolidated_evidence": null,
+    "hard_rule_evaluation": null,
+    "relationship_graph": null,
+    "latest_decision": null,
+    "decision_history": [],
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-30T14:27:01.880921"
+    }
+  },
+  {
+    "case_id": "INT-30111245-56BACB",
+    "created_at": "2026-03-30T15:53:52.854576",
+    "updated_at": "2026-03-30T15:53:52.854576",
+    "requested_by": "usr-admin",
+    "source_channel": "frontend-upload",
+    "processing_state": "scored",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "analysisStage": "internal_claim_only",
+      "externalEnrichment": "not_requested"
+    },
+    "subject": {
+      "person_id": "30111245",
+      "full_name": "Marcela Quiroga",
+      "document_type": "DNI",
+      "document_number": "30111245",
+      "birth_date": "1986-09-14",
+      "age": 39,
+      "email": "marcela.quiroga@demo.local",
+      "phone": "+54 9 351 555 1010",
+      "address": "Av. Colon 1450",
+      "locality": "Cordoba",
+      "province": "Cordoba",
+      "metadata": {
+        "source": "internal_claim_json",
+        "stage": "instance_1_internal"
+      }
+    },
+    "identity_status": {
+      "status": "VERIFIED",
+      "verified": true,
+      "deceased": false,
+      "source_reference": "internal-claim-db-demo",
+      "source_timestamp": "2026-03-30T15:53:52.854576",
+      "inconsistencies": [
+        "La factura adjunta no tiene validacion definitiva."
+      ],
+      "quality_score": 0.65
+    },
+    "financial_info": {
+      "credit_score": 612,
+      "debt_ratio": 0.46,
+      "bancarization_level": "Media",
+      "active_loans": 2,
+      "bounced_checks": 1,
+      "monthly_income_estimate": "900000-1200000",
+      "observation": "Cliente con actividad bancaria regular.",
+      "source_reference": "internal-claim-db-demo",
+      "quality_score": 0.6,
+      "attributes": {
+        "previousClaims": 2
+      }
+    },
+    "labor_fiscal_info": {
+      "tax_status": "Monotributo",
+      "main_activity": "Comercio minorista",
+      "employer_or_company": "MQ Hogar",
+      "income_bracket": "Medio",
+      "registered_employees": 1,
+      "fiscal_observation": "Actividad consistente con la declaracion del siniestro.",
+      "source_reference": "internal-claim-db-demo",
+      "quality_score": 0.6,
+      "attributes": {
+        "declaredProvince": "Cordoba"
+      }
+    },
+    "evidences": [
+      {
+        "evidence_id": "EVI-SUBJECT-INT-30111245-56BACB",
+        "source_type": "SYSTEM",
+        "provider_code": "INTERNAL_CLAIM_DB",
+        "title": "Ficha interna del asegurado",
+        "summary": "Datos del titular y del expediente obtenidos del sistema core.",
+        "details": "Titular Marcela Quiroga. Identificador 30111245.",
+        "collected_at": "2026-03-30T15:53:52.854576",
+        "quality": "MEDIUM",
+        "quality_score": 0.7,
+        "related_keys": [
+          "subject",
+          "claim"
+        ],
+        "attributes": {
+          "stage": "instance_1_internal"
+        },
+        "raw_reference_id": null
+      },
+      {
+        "evidence_id": "EVI-FIN-INT-30111245-56BACB",
+        "source_type": "FINANCIAL",
+        "provider_code": "INTERNAL_CLAIM_DB",
+        "title": "Variables financieras internas",
+        "summary": "Variables financieras disponibles dentro del sistema demo.",
+        "details": "Credit score 612, debt ratio 0.46.",
+        "collected_at": "2026-03-30T15:53:52.854576",
+        "quality": "MEDIUM",
+        "quality_score": 0.6,
+        "related_keys": [
+          "financialInfo"
+        ],
+        "attributes": {
+          "stage": "instance_1_internal"
+        },
+        "raw_reference_id": null
+      },
+      {
+        "evidence_id": "EVI-LAB-INT-30111245-56BACB",
+        "source_type": "LABOR_FISCAL",
+        "provider_code": "INTERNAL_CLAIM_DB",
+        "title": "Variables laborales y fiscales internas",
+        "summary": "Datos laborales/fiscales disponibles en la instancia interna demo.",
+        "details": "Actividad principal: Comercio minorista.",
+        "collected_at": "2026-03-30T15:53:52.854576",
+        "quality": "MEDIUM",
+        "quality_score": 0.6,
+        "related_keys": [
+          "laborFiscalInfo"
+        ],
+        "attributes": {
+          "stage": "instance_1_internal"
+        },
+        "raw_reference_id": null
+      }
+    ],
+    "alerts": [
+      {
+        "alert_id": "ALT-INC-INT-30111245-56BACB-1",
+        "severity": "WARNING",
+        "title": "Inconsistencia interna detectada",
+        "short_description": "La factura adjunta no tiene validacion definitiva.",
+        "detail": "La factura adjunta no tiene validacion definitiva.",
+        "source_type": "SYSTEM",
+        "source_reference": "internal_case_upload",
+        "related_variable": "inconsistency",
+        "recommendation_hint": "Validar el expediente antes de enriquecer con fuentes externas.",
+        "evidence_ids": [
+          "EVI-SUBJECT-INT-30111245-56BACB"
+        ]
+      },
+      {
+        "alert_id": "ALT-MISSING-INT-30111245-56BACB-1",
+        "severity": "INFO",
+        "title": "Evidencia pendiente",
+        "short_description": "Falta informe pericial final.",
+        "detail": "Falta informe pericial final.",
+        "source_type": "SYSTEM",
+        "source_reference": "internal_case_upload",
+        "related_variable": "missing_evidence",
+        "recommendation_hint": "Resolver el faltante si la instancia 1 no alcanza para decidir.",
+        "evidence_ids": []
+      }
+    ],
+    "reasoning_result": {
+      "reasoning_id": "RSN-INT-30111245-56BACB",
+      "engine_version": "demo-contextual-reasoning-v2",
+      "summary": "Reasoning demo contextual generado con 1 senales para revision, 1 atenuantes y 1 faltantes de evidencia.",
+      "hypothesis": "El caso puede continuar con evaluacion contextual basada en evidencia demo interna, priorizando consistencia operativa, calidad de enrichment y senales financieras.",
+      "evidence_for_review": [
+        "La factura adjunta no tiene validacion definitiva."
+      ],
+      "evidence_against_fraud": [
+        "La fuente laboral/fiscal devolvio dotacion registrada."
+      ],
+      "inconsistencies": [
+        "Inconsistencia de identidad: La factura adjunta no tiene validacion definitiva.."
+      ],
+      "missing_evidence": [
+        "Falta informe pericial final."
+      ],
+      "suggested_priority": "HIGH",
+      "suggested_next_checks": [
+        "Validar manualmente las inconsistencias de identidad o cruce de fuentes.",
+        "Completar o reintentar enrichment demo antes de profundizar el analisis.",
+        "Revisar capacidad financiera y consistencia entre deuda e ingresos."
+      ],
+      "supporting_evidence_ids": [
+        "EVI-SUBJECT-INT-30111245-56BACB",
+        "EVI-FIN-INT-30111245-56BACB",
+        "EVI-LAB-INT-30111245-56BACB"
+      ],
+      "contradictory_evidence_ids": [],
+      "unresolved_questions": [
+        "Falta informe pericial final."
+      ],
+      "confidence": 0.7,
+      "generated_at": "2026-03-30T15:53:52.868211",
+      "metadata": {
+        "alertsCount": 2,
+        "hardRuleEffect": "continue_to_reasoning",
+        "reasoningSummary": "Reasoning demo contextual generado con 1 senales para revision, 1 atenuantes y 1 faltantes de evidencia.",
+        "reasoningMode": "demo_internal",
+        "replaceableBy": "future_llm_reasoning_engine"
+      }
+    },
+    "score_result": {
+      "score_id": "SCORE-INT-30111245-56BACB",
+      "model_name": "DemoTabularLogisticBaseline",
+      "model_version": "demo-tabular-baseline-v1",
+      "score_value": 99.23,
+      "risk_category": "FRAUD_SUSPECT",
+      "confidence": 0.9846,
+      "top_factors": [
+        {
+          "feature": "debt_ratio",
+          "label": "relacion deuda/ingresos",
+          "impact": "Presion financiera",
+          "weight": 0.727
+        },
+        {
+          "feature": "bounced_checks",
+          "label": "cheques rechazados",
+          "impact": "Cheques rechazados",
+          "weight": 0.0712
+        },
+        {
+          "feature": "zona_de_riesgo",
+          "label": "zona de riesgo",
+          "impact": "Impulsa riesgo",
+          "weight": 0.0689
+        },
+        {
+          "feature": "antiguedad_como_cliente_meses",
+          "label": "antiguedad como cliente",
+          "impact": "Atenua riesgo",
+          "weight": 0.0526
+        },
+        {
+          "feature": "proveedor_repetido",
+          "label": "proveedor repetido o evidencia parcial",
+          "impact": "Evidencia parcial o repetida",
+          "weight": 0.0402
+        }
+      ],
+      "feature_contributions": {
+        "debt_ratio": 72.7,
+        "bounced_checks": 7.12,
+        "zona_de_riesgo": 6.890000000000001,
+        "antiguedad_como_cliente_meses": 5.26,
+        "proveedor_repetido": 4.02
+      },
+      "evaluated_at": "2026-03-30T15:53:55.768399",
+      "metadata": {
+        "qualityFlags": {
+          "identity_quality": 0.65,
+          "financial_quality": 0.6,
+          "evidence_count": 3
+        }
+      }
+    },
+    "final_assessment": {
+      "assessment_id": "FAS-INT-30111245-56BACB",
+      "case_id": "INT-30111245-56BACB",
+      "risk_category": "FRAUD_SUSPECT",
+      "recommendation": "ESCALATE",
+      "executive_summary": "Estado final REVIEW_REQUIRED con score 99.23. Prioridad HIGH. Accion sugerida: ESCALATE. Calidad de evidencia MEDIUM. Reasoning demo contextual generado con 1 senales para revision, 1 atenuantes y 1 faltantes de evidencia.",
+      "final_status": "REVIEW_REQUIRED",
+      "final_priority": "HIGH",
+      "recommended_action": "ESCALATE",
+      "confidence": 0.99,
+      "summary_for_analyst": "Estado final REVIEW_REQUIRED con score 99.23. Prioridad HIGH. Accion sugerida: ESCALATE. Calidad de evidencia MEDIUM. Reasoning demo contextual generado con 1 senales para revision, 1 atenuantes y 1 faltantes de evidencia.",
+      "evidence_quality": "MEDIUM",
+      "pipeline_state": "scored",
+      "requires_manual_review": true,
+      "blocked_by_hard_rules": false,
+      "hard_rule_reasons": [],
+      "alert_ids": [
+        "ALT-INC-INT-30111245-56BACB-1",
+        "ALT-MISSING-INT-30111245-56BACB-1"
+      ],
+      "reasoning_result_id": "RSN-INT-30111245-56BACB",
+      "score_result_id": "SCORE-INT-30111245-56BACB",
+      "metadata": {
+        "alertCount": 2,
+        "evidenceCount": 3,
+        "relationshipSignals": 0,
+        "providerStatuses": {
+          "IDENTITY": "ok",
+          "FINANCIAL": "ok",
+          "LABOR_FISCAL": "ok"
+        },
+        "generatedAt": "2026-03-30T15:53:55.771251"
+      },
+      "created_at": "2026-03-30T15:53:55.771276"
+    },
+    "consolidated_evidence": {
+      "bundle_id": "EVB-INT-30111245-56BACB",
+      "collected_at": "2026-03-30T15:53:52.854576",
+      "ready_for_rules": true,
+      "provider_statuses": {
+        "IDENTITY": "ok",
+        "FINANCIAL": "ok",
+        "LABOR_FISCAL": "ok"
+      },
+      "warnings": [
+        "Falta informe pericial final."
+      ],
+      "evidence_ids": [
+        "EVI-SUBJECT-INT-30111245-56BACB",
+        "EVI-FIN-INT-30111245-56BACB",
+        "EVI-LAB-INT-30111245-56BACB"
+      ],
+      "metadata": {
+        "mode": "internal_claim_analysis",
+        "stage": "instance_1_internal",
+        "futureEnrichmentMode": "conditional_instance_2"
+      }
+    },
+    "hard_rule_evaluation": {
+      "evaluation_id": "HRE-INT-30111245-56BACB",
+      "evaluated_at": "2026-03-30T15:53:52.863414",
+      "findings": [],
+      "final_effect": "continue_to_reasoning",
+      "ready_for_reasoning": true,
+      "ready_for_scoring": false,
+      "metadata": {
+        "findingsCount": 0
+      }
+    },
+    "relationship_graph": {
+      "graph_id": "RLG-INT-30111245-56BACB",
+      "generated_at": "2026-03-30T15:53:55.771078",
+      "nodes": [
+        {
+          "node_id": "case:INT-30111245-56BACB",
+          "label": "Caso INT-30111245-56BACB",
+          "node_type": "Siniestro",
+          "risk_level": "medium",
+          "metadata": {
+            "caseId": "INT-30111245-56BACB"
+          }
+        },
+        {
+          "node_id": "person:INT-30111245-56BACB",
+          "label": "Marcela Quiroga",
+          "node_type": "Persona",
+          "risk_level": "medium",
+          "metadata": {
+            "document": "30111245"
+          }
+        },
+        {
+          "node_id": "phone:+54-9-351-555-1010",
+          "label": "+54 9 351 555 1010",
+          "node_type": "Cuenta",
+          "risk_level": "high",
+          "metadata": {
+            "type": "phone"
+          }
+        },
+        {
+          "node_id": "address:av-colon-1450",
+          "label": "Av. Colon 1450",
+          "node_type": "Familiar",
+          "risk_level": "medium",
+          "metadata": {
+            "type": "address"
+          }
+        },
+        {
+          "node_id": "company:mq-hogar",
+          "label": "MQ Hogar",
+          "node_type": "Empresa",
+          "risk_level": "medium",
+          "metadata": {
+            "type": "company"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "edge_id": "edge:case:INT-30111245-56BACB:subject",
+          "source": "case:INT-30111245-56BACB",
+          "target": "person:INT-30111245-56BACB",
+          "relationship_type": "titular",
+          "severity": "medium",
+          "metadata": {}
+        },
+        {
+          "edge_id": "edge:person:INT-30111245-56BACB:phone",
+          "source": "person:INT-30111245-56BACB",
+          "target": "phone:+54-9-351-555-1010",
+          "relationship_type": "usa telefono",
+          "severity": "high",
+          "metadata": {}
+        },
+        {
+          "edge_id": "edge:person:INT-30111245-56BACB:address",
+          "source": "person:INT-30111245-56BACB",
+          "target": "address:av-colon-1450",
+          "relationship_type": "declara domicilio",
+          "severity": "medium",
+          "metadata": {}
+        },
+        {
+          "edge_id": "edge:person:INT-30111245-56BACB:company",
+          "source": "person:INT-30111245-56BACB",
+          "target": "company:mq-hogar",
+          "relationship_type": "vinculo empresa",
+          "severity": "medium",
+          "metadata": {}
+        }
+      ],
+      "signals": [],
+      "metadata": {
+        "nodeCount": 5,
+        "edgeCount": 4
+      }
+    },
+    "latest_decision": null,
+    "decision_history": [],
+    "tags": [
+      "internal-claim-analysis",
+      "instance-1-ready",
+      "final-assessment-ready"
+    ],
+    "metadata": {
+      "pipelineStage": "final_assessment",
+      "validatedAt": "2026-03-30T15:53:52.854576",
+      "analysisMode": "two_stage_demo",
+      "currentInstance": "instance_1_internal",
+      "nextInstance": "instance_2_conditional_enrichment",
+      "claimAmount": 185000.0,
+      "previousClaimsCount": 2,
+      "customerAntiquityMonths": 28,
+      "highRiskZone": false,
+      "suspiciousImages": false,
+      "sharedPhoneFlag": false,
+      "repeatedProviderFlag": true,
+      "confirmedFraudHistory": false,
+      "claimReference": "SIN-2026-00045",
+      "claimDate": "2026-03-28",
+      "claimType": "Robo parcial",
+      "claimNotes": "Carga demo para probar instancia 1 con datos internos.",
+      "evidenceForReview": [
+        "Proveedor repetido en dos siniestros recientes."
+      ],
+      "evidenceAgainstFraud": [
+        "Identidad y domicilio consistentes en el sistema core."
+      ],
+      "hardRulesEvaluatedAt": "2026-03-30T15:53:52.863414",
+      "hardRuleFinalEffect": "continue_to_reasoning",
+      "analystSummary": "Estado final REVIEW_REQUIRED con score 99.23. Prioridad HIGH. Accion sugerida: ESCALATE. Calidad de evidencia MEDIUM. Reasoning demo contextual generado con 1 senales para revision, 1 atenuantes y 1 faltantes de evidencia.",
+      "reasoningGeneratedAt": "2026-03-30T15:53:52.868211",
+      "scoredAt": "2026-03-30T15:53:55.768399",
+      "modelVersion": "demo-tabular-baseline-v1",
+      "relationshipGraphGeneratedAt": "2026-03-30T15:53:55.771078",
+      "finalAssessedAt": "2026-03-30T15:53:55.771276"
+    }
+  },
+  {
+    "case_id": "27123456789",
+    "created_at": "2026-03-31T12:50:21.237933",
+    "updated_at": "2026-03-31T12:50:21.237933",
+    "requested_by": "usr-admin",
+    "source_channel": "frontend",
+    "processing_state": "waiting_for_enrichment",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "missing:IDENTITY,FINANCIAL"
+    },
+    "subject": {
+      "person_id": "27123456789",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "CUIL",
+      "document_number": "27123456789",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "financial_info": null,
+    "labor_fiscal_info": null,
+    "evidences": [],
+    "alerts": [],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": null,
+    "consolidated_evidence": null,
+    "hard_rule_evaluation": null,
+    "relationship_graph": null,
+    "latest_decision": null,
+    "decision_history": [],
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-31T12:50:21.237933"
+    }
+  },
+  {
+    "case_id": "30111205",
+    "created_at": "2026-03-31T14:55:24.529763",
+    "updated_at": "2026-03-31T14:55:24.529763",
+    "requested_by": "usr-admin",
+    "source_channel": "frontend",
+    "processing_state": "waiting_for_enrichment",
+    "validation_results": {
+      "identifier": "valid",
+      "required_input": "valid",
+      "daily_limit": "ok",
+      "required_integrations": "missing:IDENTITY,FINANCIAL"
+    },
+    "subject": {
+      "person_id": "30111205",
+      "full_name": "Pendiente de enrichment",
+      "document_type": "DNI",
+      "document_number": "30111205",
+      "birth_date": null,
+      "age": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "locality": null,
+      "province": null,
+      "metadata": {
+        "ingestionOnly": true
+      }
+    },
+    "identity_status": {
+      "status": "UNVERIFIED",
+      "verified": false,
+      "deceased": false,
+      "source_reference": null,
+      "source_timestamp": null,
+      "inconsistencies": [],
+      "quality_score": null
+    },
+    "financial_info": null,
+    "labor_fiscal_info": null,
+    "evidences": [],
+    "alerts": [],
+    "reasoning_result": null,
+    "score_result": null,
+    "final_assessment": null,
+    "consolidated_evidence": null,
+    "hard_rule_evaluation": null,
+    "relationship_graph": null,
+    "latest_decision": null,
+    "decision_history": [],
+    "tags": [
+      "ingestion-only"
+    ],
+    "metadata": {
+      "pipelineStage": "ingestion_validation",
+      "validatedAt": "2026-03-31T14:55:24.529763"
+    }
+  }
+]

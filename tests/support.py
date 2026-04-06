@@ -27,6 +27,7 @@ def bootstrap_test_client() -> tuple[TestClient, Path]:
         "ia_fraude.app",
         "ia_fraude.api.auth_routes",
         "ia_fraude.api.case_routes",
+        "ia_fraude.api.identity_routes",
         "ia_fraude.api.integration_routes",
         "ia_fraude.api.audit_routes",
         "ia_fraude.api.export_routes",

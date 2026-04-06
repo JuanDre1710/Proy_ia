@@ -1,10 +1,11 @@
 import { LoginRequest, Role, SessionState, User } from '../models/auth';
 import { mockUsers } from '../mocks/authMock';
+import { apiBaseUrls } from '../config/apiBaseUrls';
 
 const sessionKey = 'ers-session';
 const expiredKey = 'ers-session-expired';
 const sessionDurationMs = 1000 * 60 * 30;
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '');
+const apiBaseUrl = apiBaseUrls.backend;
 
 type StoredSession = {
   user: User;
@@ -145,13 +146,13 @@ export const authService = {
 
     if (new Date(parsed.expiresAt).getTime() <= Date.now()) {
       if (parsed.mode === 'real' && parsed.refreshToken) {
-        return { authenticated: false, user: null, expiresAt: parsed.expiresAt };
+        return { authenticated: false, user: null, expiresAt: parsed.expiresAt, mode: parsed.mode };
       }
       window.localStorage.removeItem(sessionKey);
       window.sessionStorage.setItem(expiredKey, 'true');
       return { authenticated: false, user: null };
     }
-    return { authenticated: true, user: parsed.user, expiresAt: parsed.expiresAt };
+    return { authenticated: true, user: parsed.user, expiresAt: parsed.expiresAt, mode: parsed.mode };
   },
   async refreshSession(): Promise<SessionState> {
     const stored = loadStoredSession();
@@ -179,7 +180,8 @@ export const authService = {
         return {
           authenticated: true,
           user: nextSession.user,
-          expiresAt: nextSession.expiresAt
+          expiresAt: nextSession.expiresAt,
+          mode: nextSession.mode
         };
       }
 
@@ -206,7 +208,8 @@ export const authService = {
       return {
         authenticated: true,
         user: nextSession.user,
-        expiresAt: nextSession.expiresAt
+        expiresAt: nextSession.expiresAt,
+        mode: nextSession.mode
       };
     } catch (_error) {
       window.localStorage.removeItem(sessionKey);
