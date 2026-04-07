@@ -22,52 +22,7 @@ public sealed class SqlServerIdentityClaimProvider :
         IdentitySearchQuery query,
         CancellationToken cancellationToken = default)
     {
-        var normalizedIdentifier = query.Identifier.Trim();
-        var normalizedDocumentType = query.DocumentTypeHint?.Trim();
-        var sql = """
-            SELECT TOP (1)
-                cli.CLI_ID AS CliId,
-                CONVERT(nvarchar(100), cli.CLI_IDENTE) AS CliIdente,
-                CONVERT(nvarchar(50), cli.VDO_TIPODOC) AS VdoTipoDoc,
-                CONVERT(nvarchar(50), cli.CLI_NRODOC) AS CliNroDoc,
-                CONVERT(nvarchar(50), cli.CLI_CUITL) AS CliCuitl,
-                CONVERT(nvarchar(120), cli.CLI_APELLIDO) AS CliApellido,
-                CONVERT(nvarchar(120), cli.CLI_NOMBRE) AS CliNombre,
-                CONVERT(nvarchar(160), cli.CLI_RAZONSOCIAL) AS CliRazonSocial,
-                CONVERT(nvarchar(160), cli.CLI_EMAIL) AS CliEmail
-            FROM EXT_CLIENTES cli
-            WHERE
-                (
-                    CONVERT(nvarchar(50), cli.CLI_NRODOC) = @identifier
-                    OR CONVERT(nvarchar(50), cli.CLI_CUITL) = @identifier
-                )
-                AND (@documentType IS NULL OR CONVERT(nvarchar(50), cli.VDO_TIPODOC) = @documentType)
-            """;
-
-        var rows = await _dbContext.ClientIdentityLookup
-            .FromSqlRaw(
-                sql,
-                new SqlParameter("@identifier", normalizedIdentifier),
-                new SqlParameter("@documentType", (object?)TryParseDocumentTypeCode(normalizedDocumentType)?.ToString() ?? DBNull.Value))
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-
-        var row = rows.FirstOrDefault();
-        if (row is null)
-        {
-            return null;
-        }
-
-        return new PersonIdentityRecord(
-            row.CliId.ToString(),
-            row.CliCuitl ?? row.CliNroDoc ?? normalizedIdentifier,
-            string.IsNullOrWhiteSpace(row.CliCuitl) ? "DNI" : "CUIT",
-            row.VdoTipoDoc,
-            row.CliNroDoc,
-            row.CliCuitl,
-            BuildDisplayName(row.CliApellido, row.CliNombre, row.CliRazonSocial),
-            row.CliEmail
-        );
+        return await SearchPersonWithoutClaimsAsync(query, cancellationToken);
     }
 
     public async Task<IReadOnlyList<ClaimSelectionRecord>> ListClaimsByPersonAsync(
@@ -75,54 +30,41 @@ public sealed class SqlServerIdentityClaimProvider :
         CancellationToken cancellationToken = default)
     {
         var parsedPersonId = int.Parse(personId);
-        var sql = """
-            SELECT
-                sin.SIN_ID AS ClaimId,
-                psi.CLI_ID AS PersonId,
-                CONVERT(nvarchar(80), sin.SIN_NUMERO) AS ClaimNumber,
-                sin.SIN_FECHAHORA AS OccurredAt,
-                COALESCE(CONVERT(nvarchar(50), sin.VDO_IDESTADO_SIN), CONVERT(nvarchar(50), psi.PSI_ESTADO), N'UNKNOWN') AS StatusCode,
-                COALESCE(CONVERT(nvarchar(50), sin.VDO_IDESTADO_SIN), CONVERT(nvarchar(50), psi.PSI_ESTADO), N'UNKNOWN') AS StatusLabel,
-                sin.SIN_IMPORTE AS ClaimAmount,
-                sin.SIN_IMP_RECLAMO AS ClaimedAmount,
-                CONVERT(nvarchar(50), sin.TSI_ID) AS ClaimTypeId,
-                CONVERT(nvarchar(80), pvi.PVI_NROPOL) AS PolicyNumber,
-                CONVERT(nvarchar(80), pvi.PVI_NROCER) AS CertificateNumber,
-                CONVERT(nvarchar(50), pza.PZA_ESTADO) AS PolicyStatus,
-                CONVERT(nvarchar(50), psi.PSI_ESTADO) AS LinkStatus,
-                pza.PZA_FECALTA AS PolicyCreatedAt,
-                pvi.PVI_PREMIO AS PolicyPremium
-            FROM POLIZAS_SINIESTROS psi
-            INNER JOIN SINIESTROS sin ON sin.PSI_ID = psi.PSI_ID
-            INNER JOIN POLIZAS pza ON pza.PZA_NROSOL = psi.PZA_NROSOL
-            LEFT JOIN PZA_VIGENCIAS pvi ON pvi.PZA_NROSOL = pza.PZA_NROSOL
-            WHERE psi.CLI_ID = @personId
-            ORDER BY sin.SIN_FECHAHORA DESC, sin.SIN_ID DESC
-            """;
-
-        var rows = await _dbContext.ClaimSelectionLookup
-            .FromSqlRaw(sql, new SqlParameter("@personId", parsedPersonId))
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var rows = await LoadOfficialClaimRowsAsync(
+            "AND base.FkCliente = @personId",
+            cancellationToken,
+            new SqlParameter("@personId", parsedPersonId));
 
         return rows
-            .Select(row => new ClaimSelectionRecord(
-                row.ClaimId.ToString(),
-                row.PersonId.ToString(),
-                row.ClaimNumber ?? row.ClaimId.ToString(),
-                row.OccurredAt,
-                row.StatusCode ?? "UNKNOWN",
-                row.StatusLabel ?? "UNKNOWN",
-                row.ClaimAmount,
-                row.ClaimedAmount,
-                row.ClaimTypeId,
-                row.PolicyNumber,
-                row.CertificateNumber,
-                row.PolicyStatus,
-                row.LinkStatus,
-                row.PolicyCreatedAt,
-                row.PolicyPremium
-            ))
+            .GroupBy(row => row.PkSiniestro)
+            .Select(group =>
+            {
+                var row = group
+                    .OrderByDescending(item => item.SinFechaHora)
+                    .ThenByDescending(item => item.FkPolizaVigencia ?? 0)
+                    .ThenByDescending(item => item.PkSiniestro)
+                    .First();
+
+                return new ClaimSelectionRecord(
+                    row.PkSiniestro.ToString(),
+                    row.FkCliente.ToString(),
+                    row.NroSiniestro ?? row.PkSiniestro.ToString(),
+                    row.SinFechaHora,
+                    row.VdoIdEstadoSin ?? row.PsiEstado ?? "UNKNOWN",
+                    row.VdoIdEstadoSin ?? row.PsiEstado ?? "UNKNOWN",
+                    row.SinImporte,
+                    row.SinImpReclamo,
+                    row.TsiId,
+                    row.NroPoliza,
+                    row.NroCertificado,
+                    row.PzaEstado,
+                    row.PsiEstado,
+                    row.PzaFecAlta,
+                    row.PviPremio
+                );
+            })
+            .OrderByDescending(item => item.OccurredAt)
+            .ThenByDescending(item => item.ClaimId)
             .ToList();
     }
 
@@ -130,66 +72,307 @@ public sealed class SqlServerIdentityClaimProvider :
         string claimId,
         CancellationToken cancellationToken = default)
     {
-        var parsedClaimId = long.Parse(claimId);
-        var sql = """
-            SELECT TOP (1)
-                sin.SIN_ID AS ClaimId,
-                cli.CLI_ID AS PersonId,
-                CONVERT(nvarchar(80), sin.SIN_NUMERO) AS ClaimNumber,
-                CONVERT(nvarchar(80), pvi.PVI_NROPOL) AS PolicyNumber,
-                CONVERT(nvarchar(80), pvi.PVI_NROCER) AS CertificateNumber,
-                COALESCE(CONVERT(nvarchar(50), sin.VDO_IDESTADO_SIN), CONVERT(nvarchar(50), psi.PSI_ESTADO), N'UNKNOWN') AS StatusCode,
-                CONVERT(nvarchar(50), sin.TSI_ID) AS ClaimTypeId,
-                sin.SIN_FECHAHORA AS OccurredAt,
-                sin.SIN_IMPORTE AS ClaimAmount,
-                sin.SIN_IMP_RECLAMO AS ClaimedAmount,
-                LTRIM(RTRIM(COALESCE(CONVERT(nvarchar(120), cli.CLI_APELLIDO), N'') + N' ' + COALESCE(CONVERT(nvarchar(120), cli.CLI_NOMBRE), N''))) AS PersonDisplayName,
-                CONVERT(nvarchar(50), cli.CLI_NRODOC) AS DocumentNumber,
-                CONVERT(nvarchar(50), cli.CLI_CUITL) AS TaxId,
-                CONVERT(nvarchar(160), cli.CLI_EMAIL) AS Email,
-                CONVERT(nvarchar(50), pza.PZA_ESTADO) AS PolicyStatus,
-                CONVERT(nvarchar(50), psi.PSI_ESTADO) AS LinkStatus,
-                pza.PZA_FECALTA AS PolicyCreatedAt,
-                pvi.PVI_PREMIO AS PolicyPremium
-            FROM SINIESTROS sin
-            INNER JOIN POLIZAS_SINIESTROS psi ON psi.PSI_ID = sin.PSI_ID
-            INNER JOIN EXT_CLIENTES cli ON cli.CLI_ID = psi.CLI_ID
-            INNER JOIN POLIZAS pza ON pza.PZA_NROSOL = psi.PZA_NROSOL
-            LEFT JOIN PZA_VIGENCIAS pvi ON pvi.PZA_NROSOL = pza.PZA_NROSOL
-            WHERE sin.SIN_ID = @claimId
-            """;
+        var parsedClaimId = int.Parse(claimId);
+        var rows = await LoadOfficialClaimRowsAsync(
+            "AND base.PkSiniestro = @claimId",
+            cancellationToken,
+            new SqlParameter("@claimId", parsedClaimId));
 
-        var rows = await _dbContext.ClaimCaseLookup
-            .FromSqlRaw(sql, new SqlParameter("@claimId", parsedClaimId))
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
+        var row = rows
+            .OrderByDescending(item => item.SinFechaHora)
+            .ThenByDescending(item => item.FkPolizaVigencia ?? 0)
+            .ThenByDescending(item => item.PkSiniestro)
+            .FirstOrDefault();
 
-        var row = rows.FirstOrDefault();
         if (row is null)
         {
             return null;
         }
 
         return new ClaimCaseRecord(
-            row.ClaimId.ToString(),
-            row.PersonId.ToString(),
-            row.ClaimNumber ?? row.ClaimId.ToString(),
-            row.PolicyNumber,
-            row.CertificateNumber,
-            row.StatusCode ?? "UNKNOWN",
-            row.ClaimTypeId,
-            row.OccurredAt,
-            row.ClaimAmount,
-            row.ClaimedAmount,
-            BuildDisplayNameFromSql(row.PersonDisplayName),
-            row.DocumentNumber,
-            row.TaxId,
-            row.Email,
-            row.PolicyStatus,
-            row.LinkStatus,
-            row.PolicyCreatedAt,
-            row.PolicyPremium
+            row.PkSiniestro.ToString(),
+            row.FkCliente.ToString(),
+            row.NroSiniestro ?? row.PkSiniestro.ToString(),
+            row.NroPoliza,
+            row.NroCertificado,
+            row.VdoIdEstadoSin ?? row.PsiEstado ?? "UNKNOWN",
+            row.TsiId,
+            row.SinFechaHora,
+            row.SinImporte,
+            row.SinImpReclamo,
+            BuildDisplayName(row.CliApellido, row.CliNombre, row.CliRazonSocial),
+            row.CliNroDoc,
+            row.CliCuitl,
+            row.CliEmail,
+            row.CliFecNac,
+            row.EcdCalle,
+            row.EcdNumero,
+            row.EcdCodPos,
+            row.EcdCiudad,
+            row.VdoProvincia,
+            row.VdoTipoPersona,
+            row.VdoIdSexo,
+            row.VdoEstCivil,
+            row.VdoActividad,
+            row.CliEstado,
+            row.CliPep,
+            row.FkPropuesta,
+            row.PzaEstado,
+            row.PsiEstado,
+            row.PzaFecAlta,
+            row.PviPremio,
+            row.PviFecIniVig,
+            row.PviFecFinVig,
+            row.PviEstado,
+            row.PzaPremioCalc,
+            row.SinContacto,
+            row.SinTeContactoSiniestros,
+            row.SinCbu,
+            row.VdoIdCanalIngreso,
+            row.SinDomicilioOcurrencia,
+            row.FkPolizaSiniestro.ToString(),
+            row.FkPolizaVigencia?.ToString()
         );
+    }
+
+    private async Task<PersonIdentityRecord?> SearchPersonWithoutClaimsAsync(
+        IdentitySearchQuery query,
+        CancellationToken cancellationToken)
+    {
+        var normalizedIdentifier = query.Identifier.Trim();
+        var baseSql = """
+            SELECT TOP (1)
+                CONVERT(nvarchar(50), cli.CLI_ID) AS PersonId,
+                CONVERT(nvarchar(200), cli.CLI_APELLIDO) AS CliApellido,
+                CONVERT(nvarchar(200), cli.CLI_NOMBRE) AS CliNombre,
+                CONVERT(nvarchar(200), cli.CLI_RAZONSOCIAL) AS CliRazonSocial,
+                CONVERT(nvarchar(50), cli.VDO_TIPODOC) AS VdoTipoDoc,
+                CONVERT(nvarchar(50), cli.CLI_NRODOC) AS CliNroDoc,
+                CONVERT(nvarchar(50), cli.CLI_CUITL) AS CliCuitl,
+                CONVERT(nvarchar(160), cli.CLI_EMAIL) AS CliEmail,
+                cli.CLI_FECNAC AS CliFecNac,
+                CONVERT(nvarchar(160), dom.ECD_CALLE) AS EcdCalle,
+                CONVERT(nvarchar(50), dom.ECD_NUMERO) AS EcdNumero,
+                CONVERT(nvarchar(120), dom.ECD_CIUDAD) AS EcdCiudad,
+                CONVERT(nvarchar(120), dom.VDO_PROVINCIA) AS VdoProvincia
+            FROM EXT_CLIENTES cli
+            OUTER APPLY (
+                SELECT TOP (1)
+                    dom.ECD_CALLE,
+                    dom.ECD_NUMERO,
+                    dom.ECD_CIUDAD,
+                    dom.VDO_PROVINCIA
+                FROM EXT_CLIENTES_DOMICILIO dom
+                WHERE dom.CLI_ID = cli.CLI_ID
+                  AND dom.ECD_ESTADO = 1
+                ORDER BY dom.ECD_ID DESC
+            ) dom
+            """;
+
+        var documentType = NormalizeDocumentTypeHint(query.DocumentTypeHint);
+
+        var row = await TrySearchPersonByColumnAsync(
+            baseSql,
+            "cli.CLI_NRODOC = @identifier",
+            normalizedIdentifier,
+            documentType,
+            cancellationToken);
+
+        row ??= await TrySearchPersonByColumnAsync(
+            baseSql,
+            "cli.CLI_CUITL = @identifier",
+            normalizedIdentifier,
+            documentType,
+            cancellationToken);
+
+        if (row is null)
+        {
+            return null;
+        }
+
+        return new PersonIdentityRecord(
+            row.PersonId ?? string.Empty,
+            row.CliCuitl ?? row.CliNroDoc ?? normalizedIdentifier,
+            string.IsNullOrWhiteSpace(row.CliCuitl) ? "DNI" : "CUIT",
+            row.VdoTipoDoc,
+            row.CliNroDoc,
+            row.CliCuitl,
+            BuildDisplayName(row.CliApellido, row.CliNombre, row.CliRazonSocial),
+            row.CliEmail,
+            row.CliFecNac,
+            BuildAddress(row.EcdCalle, row.EcdNumero),
+            row.EcdCiudad,
+            row.VdoProvincia
+        );
+    }
+
+    private async Task<PersonWithoutClaimsLookupRow?> TrySearchPersonByColumnAsync(
+        string baseSql,
+        string identifierPredicate,
+        string identifier,
+        string? documentType,
+        CancellationToken cancellationToken)
+    {
+        var sql = $"""
+            {baseSql}
+            WHERE {identifierPredicate}
+              AND (@documentType IS NULL OR cli.VDO_TIPODOC = @documentType)
+            """;
+
+        return await _dbContext.PersonWithoutClaimsLookup
+            .FromSqlRaw(
+                sql,
+                new SqlParameter("@identifier", identifier),
+                new SqlParameter("@documentType", (object?)documentType ?? DBNull.Value))
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    private async Task<List<OfficialClaimSearchRow>> LoadOfficialClaimRowsAsync(
+        string extraWhereClause,
+        CancellationToken cancellationToken,
+        params SqlParameter[] parameters)
+    {
+        var sql = BuildOfficialBaseSql(extraWhereClause);
+        return await _dbContext.OfficialClaimSearch
+            .FromSqlRaw(sql, parameters)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
+    private static string BuildOfficialBaseSql(string extraWhereClause)
+    {
+        return $$"""
+            SELECT
+                sin.SIN_ID AS PkSiniestro,
+                psi.PSI_ID AS FkPolizaSiniestro,
+                pvi.PVI_ID AS FkPolizaVigencia,
+                CONVERT(nvarchar(50), pza.PZA_NROSOL) AS FkPropuesta,
+                cli.CLI_ID AS FkCliente,
+                CONVERT(nvarchar(80), pvi.PVI_NROPOL) AS NroPoliza,
+                CONVERT(nvarchar(80), pvi.PVI_NROCER) AS NroCertificado,
+                CONVERT(nvarchar(80), sin.SIN_NUMERO) AS NroSiniestro,
+                CONVERT(nvarchar(50), cli.CLI_IDENTE) AS CliIdente,
+                CONVERT(nvarchar(50), cli.VDO_TIPODOC) AS VdoTipoDoc,
+                CONVERT(nvarchar(50), cli.CLI_NRODOC) AS CliNroDoc,
+                CONVERT(nvarchar(50), cli.CLI_CUITL) AS CliCuitl,
+                CONVERT(nvarchar(120), cli.CLI_APELLIDO) AS CliApellido,
+                CONVERT(nvarchar(120), cli.CLI_NOMBRE) AS CliNombre,
+                CONVERT(nvarchar(160), cli.CLI_RAZONSOCIAL) AS CliRazonSocial,
+                cli.CLI_FECNAC AS CliFecNac,
+                CONVERT(nvarchar(50), cli.VDO_TIPO_PERSONA) AS VdoTipoPersona,
+                CONVERT(nvarchar(50), cli.VDO_IDSEXO) AS VdoIdSexo,
+                CONVERT(nvarchar(50), cli.VDO_ESTCIVIL) AS VdoEstCivil,
+                CONVERT(nvarchar(50), cli.VDO_ACTIVIDAD) AS VdoActividad,
+                CONVERT(nvarchar(50), cli.CLI_ESTADO) AS CliEstado,
+                CONVERT(nvarchar(50), cli.CLI_PEP) AS CliPep,
+                CONVERT(nvarchar(160), cli.CLI_EMAIL) AS CliEmail,
+                dom.EcdCalle,
+                dom.EcdNumero,
+                dom.EcdCodPos,
+                dom.EcdCiudad,
+                dom.VdoProvincia,
+                pza.PZA_FECALTA AS PzaFecAlta,
+                CONVERT(nvarchar(50), pza.PZA_ESTADO) AS PzaEstado,
+                pza.PZA_PREMIOCALC AS PzaPremioCalc,
+                CONVERT(nvarchar(50), pza.PLA_ID) AS PlaId,
+                CONVERT(nvarchar(50), pza.VDO_IDCANALVENTA) AS VdoIdCanalVenta,
+                CONVERT(nvarchar(50), pza.SUC_VENTA) AS SucVenta,
+                CONVERT(nvarchar(50), pza.SUC_ASIG) AS SucAsig,
+                CONVERT(nvarchar(50), pza.ZON_ID) AS ZonId,
+                pvi.PVI_FECINIVIG AS PviFecIniVig,
+                pvi.PVI_FECFINVIG AS PviFecFinVig,
+                pvi.PVI_PREMIO AS PviPremio,
+                CONVERT(nvarchar(50), pvi.PVI_ESTADO) AS PviEstado,
+                pvi.PVI_SOBREPRECIO AS PviSobreprecio,
+                CONVERT(nvarchar(50), pvi.PVI_CANCUO) AS PviCancuo,
+                CONVERT(nvarchar(50), psi.PSI_ESTADO) AS PsiEstado,
+                psi.PSI_FECREAL AS PsiFecReal,
+                CONVERT(nvarchar(50), psi.MON_ID) AS MonId,
+                CONVERT(nvarchar(50), psi.PMC_ID) AS PmcId,
+                CONVERT(nvarchar(50), psi.CIA_ID) AS CiaId,
+                CONVERT(nvarchar(50), psi.SUC_ID) AS SucId,
+                CONVERT(nvarchar(50), psi.PRO_ID) AS ProId,
+                CONVERT(nvarchar(50), psi.LPR_ID) AS LprId,
+                sin.SIN_FECHAHORA AS SinFechaHora,
+                sin.SIN_IMPORTE AS SinImporte,
+                sin.SIN_IMP_RECLAMO AS SinImpReclamo,
+                CONVERT(nvarchar(120), sin.SIN_CHEQUE) AS SinCheque,
+                CONVERT(nvarchar(160), sin.SIN_CONTACTO) AS SinContacto,
+                CONVERT(nvarchar(120), sin.SIN_CBU) AS SinCbu,
+                CONVERT(nvarchar(50), sin.VDO_IDESTADO_SIN) AS VdoIdEstadoSin,
+                sin.SIN_FECCONTA AS SinFecConta,
+                sin.SIN_FEC_CARGA AS SinFecCarga,
+                sin.SIN_FEC_OPERACION AS SinFecOperacion,
+                CONVERT(nvarchar(80), sin.SIN_TE_CONTACTO_SINIESTROS) AS SinTeContactoSiniestros,
+                CONVERT(nvarchar(50), sin.VDO_ID_CANAL_INGRESO) AS VdoIdCanalIngreso,
+                CONVERT(nvarchar(200), sin.SIN_DOMICILIO_OCURRENCIA) AS SinDomicilioOcurrencia,
+                CONVERT(nvarchar(50), sin.SNL_ID) AS SnlId,
+                CONVERT(nvarchar(50), sin.TSI_ID) AS TsiId
+            FROM EXT_CLIENTES cli
+            OUTER APPLY (
+                SELECT TOP (1)
+                    CONVERT(nvarchar(160), dom.ECD_CALLE) AS EcdCalle,
+                    CONVERT(nvarchar(50), dom.ECD_NUMERO) AS EcdNumero,
+                    CONVERT(nvarchar(50), dom.ECD_CODPOS) AS EcdCodPos,
+                    CONVERT(nvarchar(120), dom.ECD_CIUDAD) AS EcdCiudad,
+                    CONVERT(nvarchar(120), dom.VDO_PROVINCIA) AS VdoProvincia
+                FROM EXT_CLIENTES_DOMICILIO dom
+                WHERE dom.CLI_ID = cli.CLI_ID
+                  AND dom.ECD_ESTADO = 1
+                ORDER BY dom.ECD_ID DESC
+            ) dom
+            INNER JOIN POLIZAS pza
+                ON pza.CLI_IDTITULAR = cli.CLI_ID
+            OUTER APPLY (
+                SELECT TOP (1)
+                    pviInner.PVI_ID,
+                    pviInner.PVI_NROPOL,
+                    pviInner.PVI_NROCER,
+                    pviInner.PVI_FECINIVIG,
+                    pviInner.PVI_FECFINVIG,
+                    pviInner.PVI_PREMIO,
+                    pviInner.PVI_ESTADO,
+                    pviInner.PVI_SOBREPRECIO,
+                    pviInner.PVI_CANCUO
+                FROM PZA_VIGENCIAS pviInner
+                WHERE pviInner.PZA_NROSOL = pza.PZA_NROSOL
+                ORDER BY
+                    ISNULL(pviInner.PVI_FECFINVIG, pviInner.PVI_FECINIVIG) DESC,
+                    pviInner.PVI_ID DESC
+            ) pvi
+            INNER JOIN POLIZAS_SINIESTROS psi
+                ON psi.PZA_NROSOL = pza.PZA_NROSOL
+               AND psi.CLI_ID = cli.CLI_ID
+            INNER JOIN SINIESTROS sin
+                ON sin.PSI_ID = psi.PSI_ID
+            CROSS APPLY (
+                SELECT
+                    sin.SIN_ID AS PkSiniestro,
+                    psi.PSI_ID AS FkPolizaSiniestro,
+                    pvi.PVI_ID AS FkPolizaVigencia,
+                    pza.PZA_NROSOL AS FkPropuesta,
+                    cli.CLI_ID AS FkCliente,
+                    CONVERT(nvarchar(50), cli.VDO_TIPODOC) AS VdoTipoDoc,
+                    CONVERT(nvarchar(50), cli.CLI_NRODOC) AS CliNroDoc,
+                    CONVERT(nvarchar(50), cli.CLI_CUITL) AS CliCuitl,
+                    sin.SIN_FECHAHORA AS SinFechaHora
+            ) base
+            WHERE sin.SIN_ID IS NOT NULL
+            {{extraWhereClause}}
+            """;
+    }
+
+    private static string? NormalizeDocumentTypeHint(string? rawValue)
+    {
+        if (string.IsNullOrWhiteSpace(rawValue))
+        {
+            return null;
+        }
+
+        return int.TryParse(rawValue.Trim(), out var numericCode)
+            ? numericCode.ToString()
+            : null;
     }
 
     private static string BuildDisplayName(string? apellido, string? nombre, string? razonSocial)
@@ -203,23 +386,16 @@ public sealed class SqlServerIdentityClaimProvider :
         return !string.IsNullOrWhiteSpace(razonSocial) ? razonSocial : "Cliente sin nombre";
     }
 
-    private static int? TryParseDocumentTypeCode(string? rawValue)
+    private static string? BuildAddress(string? street, string? number)
     {
-        if (string.IsNullOrWhiteSpace(rawValue))
+        var streetValue = street?.Trim();
+        var numberValue = number?.Trim();
+
+        if (string.IsNullOrWhiteSpace(streetValue) && string.IsNullOrWhiteSpace(numberValue))
         {
             return null;
         }
 
-        return int.TryParse(rawValue, out var parsedValue) ? parsedValue : null;
-    }
-
-    private static string BuildDisplayNameFromSql(string? value)
-    {
-        if (!string.IsNullOrWhiteSpace(value))
-        {
-            return value.Trim();
-        }
-
-        return "Cliente sin nombre";
+        return string.Join(" ", new[] { streetValue, numberValue }.Where(value => !string.IsNullOrWhiteSpace(value)));
     }
 }

@@ -95,15 +95,34 @@ public sealed class CaseAssemblyService
                 selectedClaim.PersonDisplayName,
                 selectedClaim.DocumentNumber,
                 selectedClaim.TaxId,
-                selectedClaim.Email
+                selectedClaim.Email,
+                selectedClaim.BirthDate,
+                selectedClaim.PersonType,
+                selectedClaim.Gender,
+                selectedClaim.CivilStatus,
+                selectedClaim.Activity,
+                selectedClaim.ClientStatus,
+                selectedClaim.PepFlag
+            ),
+            new CaseAddress(
+                selectedClaim.AddressStreet,
+                selectedClaim.AddressNumber,
+                selectedClaim.PostalCode,
+                selectedClaim.Locality,
+                selectedClaim.Province
             ),
             new CasePolicy(
                 selectedClaim.PolicyNumber,
                 selectedClaim.CertificateNumber,
+                selectedClaim.ProposalNumber,
                 selectedClaim.PolicyStatus,
                 selectedClaim.LinkStatus,
                 selectedClaim.PolicyCreatedAt,
-                selectedClaim.PolicyPremium
+                selectedClaim.PolicyPremium,
+                selectedClaim.ValidityStartAt,
+                selectedClaim.ValidityEndAt,
+                selectedClaim.ValidityStatus,
+                selectedClaim.CalculatedPremium
             ),
             new CaseClaim(
                 selectedClaim.ClaimId,
@@ -112,7 +131,19 @@ public sealed class CaseAssemblyService
                 selectedClaim.StatusCode,
                 selectedClaim.ClaimTypeId,
                 selectedClaim.ClaimAmount,
-                selectedClaim.ClaimedAmount
+                selectedClaim.ClaimedAmount,
+                selectedClaim.ClaimContact,
+                selectedClaim.ClaimPhone,
+                selectedClaim.ClaimCbu,
+                selectedClaim.ClaimEntryChannelId,
+                selectedClaim.ClaimOccurrenceAddress
+            ),
+            new CaseTraceability(
+                selectedClaim.PersonId,
+                selectedClaim.ClaimId,
+                selectedClaim.PolicyClaimLinkId,
+                selectedClaim.PolicyValidityId,
+                selectedClaim.ProposalNumber
             ),
             orderedHistory,
             new CaseHistoricalFeatures(
@@ -134,15 +165,34 @@ public sealed class CaseAssemblyService
                 model.Person.DisplayName,
                 model.Person.DocumentNumber,
                 model.Person.TaxId,
-                model.Person.Email
+                model.Person.Email,
+                model.Person.BirthDate,
+                model.Person.PersonType,
+                model.Person.Gender,
+                model.Person.CivilStatus,
+                model.Person.Activity,
+                model.Person.ClientStatus,
+                model.Person.PepFlag
+            ),
+            new CaseAddressDto(
+                model.ActiveAddress.Street,
+                model.ActiveAddress.Number,
+                model.ActiveAddress.PostalCode,
+                model.ActiveAddress.Locality,
+                model.ActiveAddress.Province
             ),
             new CasePolicyDto(
                 model.Policy.PolicyNumber,
                 model.Policy.CertificateNumber,
+                model.Policy.ProposalNumber,
                 model.Policy.PolicyStatus,
                 model.Policy.LinkStatus,
                 model.Policy.PolicyCreatedAt,
-                model.Policy.PolicyPremium
+                model.Policy.PolicyPremium,
+                model.Policy.ValidityStartAt,
+                model.Policy.ValidityEndAt,
+                model.Policy.ValidityStatus,
+                model.Policy.CalculatedPremium
             ),
             new CaseClaimDto(
                 model.SelectedClaim.ClaimId,
@@ -151,7 +201,19 @@ public sealed class CaseAssemblyService
                 model.SelectedClaim.StatusCode,
                 model.SelectedClaim.ClaimType,
                 model.SelectedClaim.ClaimAmount,
-                model.SelectedClaim.ClaimedAmount
+                model.SelectedClaim.ClaimedAmount,
+                model.SelectedClaim.ContactName,
+                model.SelectedClaim.ContactPhone,
+                model.SelectedClaim.ContactCbu,
+                model.SelectedClaim.EntryChannelId,
+                model.SelectedClaim.OccurrenceAddress
+            ),
+            new CaseTraceabilityDto(
+                model.Traceability.PersonId,
+                model.Traceability.ClaimId,
+                model.Traceability.PolicyClaimLinkId,
+                model.Traceability.PolicyValidityId,
+                model.Traceability.ProposalNumber
             ),
             model.ClaimHistory
                 .Select(item => new HistoricalClaimDto(

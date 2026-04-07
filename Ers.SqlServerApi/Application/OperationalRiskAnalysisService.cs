@@ -126,7 +126,7 @@ public sealed class OperationalRiskAnalysisService
                 "SHORT_TIME_BETWEEN_CLAIMS",
                 "WARNING",
                 "Siniestros cercanos en el tiempo",
-                $"El ultimo siniestro previo ocurrio hace {features.DaysSincePreviousClaim.Value} dias.",
+                $"El siniestro anterior ocurrio {features.DaysSincePreviousClaim.Value} dias antes.",
                 "rules"));
         }
 

@@ -10,6 +10,19 @@ import {
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import { FraudAlert } from '../../../models/cases';
 
+function translateSeverityLabel(value: FraudAlert['severity']): string {
+  switch (value) {
+    case 'error':
+      return 'Critica';
+    case 'warning':
+      return 'Advertencia';
+    case 'info':
+      return 'Informativa';
+    default:
+      return 'Normal';
+  }
+}
+
 export function AlertItemCard({ alert }: { alert: FraudAlert }): JSX.Element {
   return (
     <Accordion disableGutters sx={{ borderRadius: 3, overflow: 'hidden', '&:before': { display: 'none' } }}>
@@ -22,7 +35,7 @@ export function AlertItemCard({ alert }: { alert: FraudAlert }): JSX.Element {
             </Stack>
             <Stack direction="row" gap={1} flexWrap="wrap">
               <Chip label={alert.type} size="small" variant="outlined" />
-              <Chip label={alert.severity} size="small" color={alert.severity} />
+              <Chip label={translateSeverityLabel(alert.severity)} size="small" color={alert.severity} />
             </Stack>
           </Stack>
         </Stack>

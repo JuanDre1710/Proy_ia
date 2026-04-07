@@ -14,6 +14,8 @@ export function AIExplanationPanel({
   const missingEvidence = explanation.missingEvidence ?? [];
   const suggestedNextChecks = explanation.suggestedNextChecks ?? [];
   const suggestedPriority = explanation.suggestedPriority ?? 'MEDIUM';
+  const suggestedPriorityLabel =
+    suggestedPriority === 'HIGH' ? 'Alta' : suggestedPriority === 'LOW' ? 'Baja' : 'Media';
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -27,7 +29,7 @@ export function AIExplanationPanel({
           </Stack>
 
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} justifyContent="space-between">
-            <Typography variant="h4">{suggestedPriority}</Typography>
+            <Typography variant="h4">{suggestedPriorityLabel}</Typography>
             <RiskScoreBadge category={explanation.textualClassification} />
           </Stack>
 

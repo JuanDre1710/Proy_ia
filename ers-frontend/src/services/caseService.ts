@@ -32,6 +32,113 @@ function mapIdentifierType(value?: string): IdentifierType {
   return 'DNI';
 }
 
+function translatePriority(value?: 'HIGH' | 'MEDIUM' | 'LOW'): 'HIGH' | 'MEDIUM' | 'LOW' {
+  return value ?? 'MEDIUM';
+}
+
+function translateAlertSource(value?: string): string {
+  switch (value) {
+    case 'IDENTITY':
+      return 'Validacion de identidad';
+    case 'INTERNAL_RULE':
+      return 'Regla interna';
+    case 'FINANCIAL':
+      return 'Perfil financiero';
+    case 'LABOR_FISCAL':
+      return 'Perfil laboral y fiscal';
+    case 'validation':
+      return 'Validacion del caso';
+    case 'rules':
+      return 'Reglas operativas';
+    default:
+      return value ?? 'Motor operativo';
+  }
+}
+
+function translateRelatedVariable(value?: string | null): string {
+  const normalized = (value ?? '').trim().toLowerCase();
+  switch (normalized) {
+    case 'pipeline':
+      return 'flujo_del_caso';
+    case 'ingestion_status':
+      return 'estado_de_ingesta';
+    case 'total_claims':
+      return 'cantidad_total_de_siniestros';
+    case 'claims_last_365_days':
+      return 'siniestros_ultimos_365_dias';
+    case 'average_historical_amount':
+      return 'monto_promedio_historico';
+    case 'days_since_previous_claim':
+      return 'dias_desde_siniestro_anterior';
+    case 'days_between_policy_creation_and_claim':
+      return 'dias_entre_alta_de_poliza_y_siniestro';
+    case 'selected_claim_amount':
+      return 'monto_del_siniestro_seleccionado';
+    case 'operational_score':
+      return 'puntaje_operativo';
+    case 'high_claim_frequency':
+      return 'frecuencia_alta_de_siniestros';
+    case 'short_time_between_claims':
+      return 'intervalo_corto_entre_siniestros';
+    case 'early_claim_after_policy_start':
+      return 'siniestro_temprano_post_alta';
+    case 'claim_amount_above_history':
+      return 'monto_superior_al_historico';
+    case 'inactive_policy_reference':
+      return 'referencia_a_poliza_no_vigente';
+    case 'missing_claim_date':
+      return 'fecha_de_siniestro_faltante';
+    case 'missing_policy_reference':
+      return 'referencia_de_poliza_faltante';
+    case 'case_not_evaluable':
+      return 'caso_no_evaluable';
+    default:
+      return normalized || 'flujo_del_caso';
+  }
+}
+
+function translateHeatmapLabel(key: string): string {
+  switch (key) {
+    case 'total_claims':
+      return 'Cantidad total de siniestros';
+    case 'claims_last_365_days':
+      return 'Siniestros en los ultimos 365 dias';
+    case 'average_historical_amount':
+      return 'Monto promedio historico';
+    case 'days_since_previous_claim':
+      return 'Dias desde el siniestro anterior';
+    case 'days_between_policy_creation_and_claim':
+      return 'Dias entre alta de poliza y siniestro';
+    case 'selected_claim_amount':
+      return 'Monto del siniestro seleccionado';
+    case 'operational_score':
+      return 'Puntaje operativo';
+    default:
+      return key.replace(/_/g, ' ');
+  }
+}
+
+function buildHeatmapDescription(key: string, value: number): string {
+  switch (key) {
+    case 'total_claims':
+      return `Cantidad historica total registrada: ${value}.`;
+    case 'claims_last_365_days':
+      return `Siniestros registrados durante los ultimos 365 dias: ${value}.`;
+    case 'average_historical_amount':
+      return `Monto promedio historico observado: ${value}.`;
+    case 'days_since_previous_claim':
+      return `Dias transcurridos desde el siniestro anterior: ${value}.`;
+    case 'days_between_policy_creation_and_claim':
+      return `Dias entre el alta de la poliza y el siniestro: ${value}.`;
+    case 'selected_claim_amount':
+      return `Monto informado para el siniestro seleccionado: ${value}.`;
+    case 'operational_score':
+      return `Puntaje operativo calculado para este caso: ${value}.`;
+    default:
+      return `Contribucion relativa ${value}.`;
+  }
+}
+
 function mapRiskCategory(value?: string): CaseEvaluation['riskScore']['category'] {
   if (value === 'FRAUD_SUSPECT') {
     return 'Sospechoso de fraude';
@@ -379,8 +486,8 @@ function mapBackendCase(payload: {
       title: alert.title,
       shortDescription: alert.shortDescription,
       detail: alert.detail,
-      source: alert.source,
-      relatedVariable: alert.relatedVariable ?? 'pipeline',
+      source: translateAlertSource(alert.source),
+      relatedVariable: translateRelatedVariable(alert.relatedVariable),
       recommendation: alert.recommendation ?? undefined
     })),
     aiExplanation: {
@@ -406,7 +513,7 @@ function mapBackendCase(payload: {
       evidenceAgainstFraud: payload.reasoning?.evidenceAgainstFraud ?? [],
       inconsistencies: payload.reasoning?.inconsistencies ?? [],
       missingEvidence: payload.reasoning?.missingEvidence ?? [],
-      suggestedPriority: payload.reasoning?.suggestedPriority ?? 'MEDIUM',
+      suggestedPriority: translatePriority(payload.reasoning?.suggestedPriority),
       suggestedNextChecks: payload.reasoning?.suggestedNextChecks ?? [],
       evaluatorRecommendation:
         payload.finalAssessment?.recommendedAction
@@ -429,11 +536,11 @@ function mapBackendCase(payload: {
     },
     riskHeatmap: Object.entries(payload.score?.featureContributions ?? {}).map(([key, value]) => ({
       key,
-      label: key.replace(/_/g, ' '),
+      label: translateHeatmapLabel(key),
       value: typeof value === 'number' ? value.toFixed(2) : value,
       impactLevel: value >= 18 ? 'critical' : value >= 12 ? 'high' : value >= 6 ? 'medium' : 'low',
       impactScore: value,
-      description: `Contribucion relativa ${value}`
+      description: buildHeatmapDescription(key, value)
     })),
     relationshipGraph: {
       nodes: [],

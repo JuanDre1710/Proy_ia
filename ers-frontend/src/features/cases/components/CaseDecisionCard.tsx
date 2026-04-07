@@ -24,6 +24,21 @@ const DECISION_LABEL: Record<CaseDecisionAction, string> = {
   escalate: 'Escalar caso'
 };
 
+function translatePriorityLabel(value?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'): string {
+  switch (value) {
+    case 'LOW':
+      return 'Baja';
+    case 'MEDIUM':
+      return 'Media';
+    case 'HIGH':
+      return 'Alta';
+    case 'CRITICAL':
+      return 'Critica';
+    default:
+      return 'N/D';
+  }
+}
+
 function formatTimestamp(value?: string): string | null {
   if (!value) {
     return null;
@@ -112,7 +127,7 @@ export function CaseDecisionCard({ caseData, onDecision, currentUser }: CaseDeci
                 Recomendacion operativa: {caseData.finalAssessment?.recommendedAction ?? 'N/D'}
               </Typography>
               <Typography>
-                Prioridad: {caseData.finalAssessment?.finalPriority ?? 'N/D'} | Calidad de evidencia:{' '}
+                Prioridad: {translatePriorityLabel(caseData.finalAssessment?.finalPriority)} | Calidad de evidencia:{' '}
                 {caseData.finalAssessment?.evidenceQuality ?? 'N/D'}
               </Typography>
               {currentUser ? <Typography>Usuario actual: {currentUser}</Typography> : null}

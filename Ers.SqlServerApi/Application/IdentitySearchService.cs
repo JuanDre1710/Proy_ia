@@ -88,7 +88,11 @@ public sealed class IdentitySearchService
                 person.DocumentNumber,
                 person.TaxId,
                 person.DisplayName,
-                person.Email
+                person.Email,
+                person.BirthDate,
+                person.Address,
+                person.Locality,
+                person.Province
             ),
             policyDtos,
             claimDtos,

@@ -127,7 +127,10 @@ public sealed class CaseDashboardService
             ["caseOrigin"] = "sql_server_operational",
             ["policyNumber"] = caseModel.Policy.PolicyNumber ?? string.Empty,
             ["certificateNumber"] = caseModel.Policy.CertificateNumber ?? string.Empty,
-            ["claimNumber"] = caseModel.SelectedClaim.ClaimNumber
+            ["claimNumber"] = caseModel.SelectedClaim.ClaimNumber,
+            ["proposalNumber"] = caseModel.Traceability.ProposalNumber ?? string.Empty,
+            ["policyClaimLinkId"] = caseModel.Traceability.PolicyClaimLinkId ?? string.Empty,
+            ["policyValidityId"] = caseModel.Traceability.PolicyValidityId ?? string.Empty
         };
 
         return new SqlCaseDashboardResponseDto(
@@ -140,13 +143,15 @@ public sealed class CaseDashboardService
             metadata,
             new SqlCaseSubjectDto(
                 caseModel.Person.DisplayName,
-                null,
-                null,
+                caseModel.Person.BirthDate?.ToString("yyyy-MM-dd"),
+                caseModel.Person.BirthDate.HasValue
+                    ? Math.Max(0, DateTime.UtcNow.Year - caseModel.Person.BirthDate.Value.Year)
+                    : null,
                 caseModel.Person.Email,
                 null,
-                null,
-                null,
-                null,
+                string.Join(" ", new[] { caseModel.ActiveAddress.Street, caseModel.ActiveAddress.Number }.Where(value => !string.IsNullOrWhiteSpace(value))),
+                caseModel.ActiveAddress.Locality,
+                caseModel.ActiveAddress.Province,
                 true,
                 false
             ),

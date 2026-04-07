@@ -15,15 +15,13 @@ public sealed class DevelopmentClaimsDbContext : DbContext
     public DbSet<PzaVigenciaEntity> PzaVigencias => Set<PzaVigenciaEntity>();
     public DbSet<PolizaSiniestroEntity> PolizasSiniestros => Set<PolizaSiniestroEntity>();
     public DbSet<SiniestroEntity> Siniestros => Set<SiniestroEntity>();
-    public DbSet<ClientIdentityLookupRow> ClientIdentityLookup => Set<ClientIdentityLookupRow>();
-    public DbSet<ClaimSelectionLookupRow> ClaimSelectionLookup => Set<ClaimSelectionLookupRow>();
-    public DbSet<ClaimCaseLookupRow> ClaimCaseLookup => Set<ClaimCaseLookupRow>();
+    public DbSet<OfficialClaimSearchRow> OfficialClaimSearch => Set<OfficialClaimSearchRow>();
+    public DbSet<PersonWithoutClaimsLookupRow> PersonWithoutClaimsLookup => Set<PersonWithoutClaimsLookupRow>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DevelopmentClaimsDbContext).Assembly);
-        modelBuilder.Entity<ClientIdentityLookupRow>().HasNoKey().ToView(null);
-        modelBuilder.Entity<ClaimSelectionLookupRow>().HasNoKey().ToView(null);
-        modelBuilder.Entity<ClaimCaseLookupRow>().HasNoKey().ToView(null);
+        modelBuilder.Entity<OfficialClaimSearchRow>().HasNoKey().ToView(null);
+        modelBuilder.Entity<PersonWithoutClaimsLookupRow>().HasNoKey().ToView(null);
     }
 }

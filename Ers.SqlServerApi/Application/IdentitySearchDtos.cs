@@ -13,7 +13,11 @@ public sealed record PersonSearchDto(
     string? DocumentNumber,
     string? TaxId,
     string DisplayName,
-    string? Email
+    string? Email,
+    DateTime? BirthDate,
+    string? Address,
+    string? Locality,
+    string? Province
 );
 
 public sealed record PolicySummaryDto(

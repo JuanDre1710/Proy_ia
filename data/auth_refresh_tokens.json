@@ -208,5 +208,55 @@
     "created_by_ip": "127.0.0.1",
     "revoked_at": null,
     "revoked_reason": null
+  },
+  {
+    "token_id": "RT-EC10E7586C1A",
+    "user_id": "usr-admin",
+    "token_hash": "fe6019b972992335b8c4ebd8f247121ada08ecce16757fad4481fb30309dc626",
+    "expires_at": "2026-04-14T12:03:56.935329",
+    "created_at": "2026-04-07T12:03:56.935341",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": null,
+    "revoked_reason": null
+  },
+  {
+    "token_id": "RT-26BF9C50D2F3",
+    "user_id": "usr-admin",
+    "token_hash": "3a714b108d62455bfb682083f89c0256ccbe96f315de91403170e5a64d23a67f",
+    "expires_at": "2026-04-14T12:43:00.433173",
+    "created_at": "2026-04-07T12:43:00.433224",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": null,
+    "revoked_reason": null
+  },
+  {
+    "token_id": "RT-A79ACF8D5331",
+    "user_id": "usr-admin",
+    "token_hash": "6e09ade75b2d9caf1972d4e11819db1330013acff10a77ada04012f0fc935094",
+    "expires_at": "2026-04-14T13:00:49.172426",
+    "created_at": "2026-04-07T13:00:49.172442",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": null,
+    "revoked_reason": null
+  },
+  {
+    "token_id": "RT-7799106B7133",
+    "user_id": "usr-admin",
+    "token_hash": "c54903b2ca6f5eb7d8b2f6657df8edb1bd0805de1bb88c885698a74ef35ef0d2",
+    "expires_at": "2026-04-14T13:22:36.643712",
+    "created_at": "2026-04-07T13:22:36.643726",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": null,
+    "revoked_reason": null
+  },
+  {
+    "token_id": "RT-D8329ECBA2A9",
+    "user_id": "usr-admin",
+    "token_hash": "46db00150951e04bc7f37c678e1cfb0c1f648e80ce29f07dc06ed04d6a00ddc9",
+    "expires_at": "2026-04-14T13:37:45.201961",
+    "created_at": "2026-04-07T13:37:45.201976",
+    "created_by_ip": "127.0.0.1",
+    "revoked_at": null,
+    "revoked_reason": null
   }
 ]

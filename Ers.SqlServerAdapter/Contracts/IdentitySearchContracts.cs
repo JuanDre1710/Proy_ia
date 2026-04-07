@@ -14,7 +14,11 @@ public sealed record PersonIdentityRecord(
     string? DocumentNumber,
     string? TaxId,
     string DisplayName,
-    string? Email
+    string? Email,
+    DateTime? BirthDate,
+    string? Address,
+    string? Locality,
+    string? Province
 );
 
 public sealed record ClaimSelectionRecord(
@@ -50,10 +54,34 @@ public sealed record ClaimCaseRecord(
     string? DocumentNumber,
     string? TaxId,
     string? Email,
+    DateTime? BirthDate,
+    string? AddressStreet,
+    string? AddressNumber,
+    string? PostalCode,
+    string? Locality,
+    string? Province,
+    string? PersonType,
+    string? Gender,
+    string? CivilStatus,
+    string? Activity,
+    string? ClientStatus,
+    string? PepFlag,
+    string? ProposalNumber,
     string? PolicyStatus,
     string? LinkStatus,
     DateTime? PolicyCreatedAt,
-    decimal? PolicyPremium
+    decimal? PolicyPremium,
+    DateTime? ValidityStartAt,
+    DateTime? ValidityEndAt,
+    string? ValidityStatus,
+    decimal? CalculatedPremium,
+    string? ClaimContact,
+    string? ClaimPhone,
+    string? ClaimCbu,
+    string? ClaimEntryChannelId,
+    string? ClaimOccurrenceAddress,
+    string? PolicyClaimLinkId,
+    string? PolicyValidityId
 );
 
 public interface IPersonSearchProvider
