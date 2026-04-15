@@ -1,20 +1,12 @@
 import { ApiState } from '../models/domain';
-import { CaseDecisionAction, CaseEvaluation, CaseResolution } from '../models/cases';
+import { CaseDecisionAction, CaseEvaluation, CaseResolution, MonitoredCaseListItem } from '../models/cases';
 import { apiBaseUrls } from '../config/apiBaseUrls';
-import { runtimeFlags } from '../config/runtimeFlags';
 import { mockCases } from '../mocks/casesMock';
 import { IdentifierType } from '../models/domain';
 import { authService } from './authService';
 
 function cloneCaseMap(data: Record<string, CaseEvaluation>): Record<string, CaseEvaluation> {
   return JSON.parse(JSON.stringify(data)) as Record<string, CaseEvaluation>;
-}
-
-function withDefaultResolution(caseData: CaseEvaluation): CaseEvaluation {
-  return {
-    ...caseData,
-    resolution: caseData.resolution ?? { status: 'Pendiente' }
-  };
 }
 
 const caseStore = cloneCaseMap(mockCases);
@@ -160,35 +152,6 @@ function mapAlertSeverity(value?: string): CaseEvaluation['alerts'][number]['sev
     return 'info';
   }
   return 'success';
-}
-
-function mapGraphNodeType(value: string): CaseEvaluation['relationshipGraph']['nodes'][number]['type'] {
-  if (value === 'Empresa') {
-    return 'Empresa';
-  }
-  if (value === 'Siniestro') {
-    return 'Siniestro';
-  }
-  if (value === 'Cuenta') {
-    return 'Cuenta';
-  }
-  if (value === 'Familiar') {
-    return 'Familiar';
-  }
-  return 'Persona';
-}
-
-function mapGraphRiskLevel(value: string): CaseEvaluation['relationshipGraph']['nodes'][number]['riskLevel'] {
-  if (value === 'critical') {
-    return 'critical';
-  }
-  if (value === 'high') {
-    return 'high';
-  }
-  if (value === 'medium') {
-    return 'medium';
-  }
-  return 'low';
 }
 
 function mapGeneralStatus(status: string, category?: string): CaseEvaluation['generalStatus'] {
@@ -578,22 +541,13 @@ function mapBackendCase(payload: {
       fiscalObservation: payload.laborFiscalInfo?.fiscalObservation ?? 'Sin observaciones'
     },
     claimsHistory: payload.claimsHistory ?? [],
-    resolution: payload.decision
-      ? {
-          status:
-            payload.decision.status === 'ACCEPTED'
-              ? 'Aceptado'
-              : payload.decision.status === 'DENIED'
-                ? 'Denegado'
-                : payload.decision.status === 'ESCALATED'
-                  ? 'Escalado'
-                  : 'Pendiente',
-          decidedAt: payload.decision.decidedAt,
-          decidedBy: payload.decision.decidedBy ?? payload.decision.decidedById ?? undefined,
-          decidedByRole: payload.decision.decidedByRole ?? undefined,
-          comment: payload.decision.comment ?? undefined
-        }
-      : { status: 'Pendiente' },
+    resolution: mapDecisionValueToResolution(payload.decision?.status, {
+      decidedAt: payload.decision?.decidedAt,
+      decidedBy: payload.decision?.decidedBy ?? payload.decision?.decidedById ?? undefined,
+      decidedByRole: payload.decision?.decidedByRole ?? undefined,
+      comment: payload.decision?.comment ?? undefined
+    }),
+    operationalCaseStatus: undefined,
     finalAssessment: payload.finalAssessment
       ? {
           finalStatus: payload.finalAssessment.finalStatus,
@@ -612,7 +566,12 @@ function mapBackendCase(payload: {
 
 type DecisionRequest = {
   action: CaseDecisionAction;
-  comment: string;
+  comment?: string;
+};
+
+type ResolutionRequest = {
+  fraudeConfirmado: boolean;
+  comment?: string;
 };
 
 type InternalJsonUploadRequest = {
@@ -641,7 +600,520 @@ type CaseFromClaimUiResponse = {
   canOpenDashboard: boolean;
 };
 
+type MonitoredCaseApiResponse = {
+  caseId?: string;
+  case_id?: string;
+  sinId?: number;
+  sin_id?: number;
+  nroSiniestro?: string | null;
+  nro_siniestro?: string | null;
+  cliente?: string | null;
+  customerName?: string | null;
+  customer_name?: string | null;
+  fechaSiniestro?: string | null;
+  fecha_siniestro?: string | null;
+  score?: number | null;
+  nivelRiesgo?: string | null;
+  nivel_riesgo?: string | null;
+  prioridad?: string | null;
+  priority?: string | null;
+  estadoCaso?: string | null;
+  estado_caso?: string | null;
+  resumenPreview?: string | null;
+  resumen_preview?: string | null;
+  principalesAlertas?: string | null;
+  principales_alertas?: string | null;
+  topAlerts?: string[] | null;
+  top_alerts?: string[] | null;
+  recommendedAction?: string | null;
+  recommended_action?: string | null;
+  isPersisted?: boolean | null;
+  isPendingAnalysis?: boolean | null;
+};
+
+type MonitoredCaseDetailApiResponse = {
+  caseId: string;
+  sinId: number;
+  cliId?: number | null;
+  cliente?: string | null;
+  pzaNroSol?: string | null;
+  pviId?: string | null;
+  psiId?: string | null;
+  nroSiniestro?: string | null;
+  nroPoliza?: string | null;
+  nroCertificado?: string | null;
+  fechaSiniestro?: string | null;
+  montoReclamo?: number | null;
+  montoPagado?: number | null;
+  score: number;
+  nivelRiesgo?: string | null;
+  prioridad?: string | null;
+  estadoCaso?: string | null;
+  decision?: string | null;
+  fraudeConfirmado?: boolean | null;
+  usuarioDecision?: string | null;
+  fechaDecision?: string | null;
+  comentario?: string | null;
+  resumenPreview?: string | null;
+  alertas?: Array<{
+    code: string;
+    severity: string;
+    title: string;
+    detail: string;
+    source: string;
+  }>;
+  recommendedAction?: string | null;
+  caseSnapshot?: {
+    caseKey: string;
+    person: {
+      personId: string;
+      displayName: string;
+      documentNumber?: string | null;
+      taxId?: string | null;
+      email?: string | null;
+      birthDate?: string | null;
+      activity?: string | null;
+      clientStatus?: string | null;
+    };
+    activeAddress: {
+      street?: string | null;
+      number?: string | null;
+      locality?: string | null;
+      province?: string | null;
+      postalCode?: string | null;
+    };
+    policy: {
+      policyNumber?: string | null;
+      certificateNumber?: string | null;
+      proposalNumber?: string | null;
+      policyStatus?: string | null;
+      linkStatus?: string | null;
+      policyPremium?: number | null;
+    };
+    selectedClaim: {
+      claimId: string;
+      claimNumber: string;
+      claimDate?: string | null;
+      statusCode: string;
+      claimType?: string | null;
+      claimAmount?: number | null;
+      claimedAmount?: number | null;
+      occurrenceAddress?: string | null;
+    };
+    claimHistory?: Array<{
+      claimId: string;
+      claimNumber: string;
+      claimDate?: string | null;
+      statusCode: string;
+      claimType?: string | null;
+      claimAmount?: number | null;
+      claimedAmount?: number | null;
+      policyNumber?: string | null;
+      certificateNumber?: string | null;
+    }>;
+    historicalFeatures?: {
+      totalClaims: number;
+    };
+  } | null;
+  analysisSnapshot?: {
+    processingState: string;
+    score: number;
+    riskClass: string;
+    alerts: Array<{
+      code: string;
+      severity: string;
+      title: string;
+      detail: string;
+      source: string;
+    }>;
+    summaryForAnalyst: string;
+    recommendedAction: string;
+    isEvaluable: boolean;
+  } | null;
+};
+
+function normalizeRiskLevel(value?: string | null): MonitoredCaseListItem['riskLevel'] {
+  const normalized = (value ?? '').trim().toUpperCase();
+
+  if (normalized.includes('CRIT')) {
+    return 'CRITICO';
+  }
+  if (normalized.includes('MED')) {
+    return 'MEDIO';
+  }
+  if (normalized.includes('LEV')) {
+    return 'LEVE';
+  }
+
+  return 'NORMAL';
+}
+
+function resolveReviewBadge(
+  riskLevel: MonitoredCaseListItem['riskLevel']
+): MonitoredCaseListItem['reviewBadge'] {
+  if (riskLevel === 'CRITICO') {
+    return 'Sospechoso';
+  }
+
+  if (riskLevel === 'MEDIO' || riskLevel === 'LEVE') {
+    return 'Requiere revision';
+  }
+
+  return 'Normal';
+}
+
+function normalizeAlerts(payload: MonitoredCaseApiResponse): string[] {
+  const rawArray = payload.topAlerts ?? payload.top_alerts;
+  if (Array.isArray(rawArray)) {
+    return rawArray.filter((item): item is string => Boolean(item && item.trim()));
+  }
+
+  const rawString = payload.principalesAlertas ?? payload.principales_alertas;
+  if (!rawString) {
+    return [];
+  }
+
+  return rawString
+    .split(';')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function formatCurrency(value?: number | null): string {
+  if (value === null || value === undefined || Number.isNaN(value)) {
+    return 'N/D';
+  }
+
+  return new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    maximumFractionDigits: 0
+  }).format(value);
+}
+
+function formatDateTime(value?: string | null): string {
+  if (!value) {
+    return 'N/D';
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleString('es-AR');
+}
+
+function mapRiskClassToCategory(value?: string | null): CaseEvaluation['riskScore']['category'] {
+  const normalized = (value ?? '').trim().toLowerCase();
+  if (normalized.includes('sospech')) {
+    return 'Sospechoso de fraude';
+  }
+  if (normalized.includes('revision')) {
+    return 'Requiere revision';
+  }
+  return 'Normal';
+}
+
+function mapDecisionActionToBackendValue(action: CaseDecisionAction): string {
+  switch (action) {
+    case 'accept':
+      return 'aceptado';
+    case 'deny':
+      return 'denegado';
+    case 'review':
+      return 'revisar';
+    default:
+      return action;
+  }
+}
+
+function mapDecisionValueToResolution(
+  decision?: string | null,
+  metadata?: {
+    decidedAt?: string | null;
+    decidedBy?: string | null;
+    decidedByRole?: string | null;
+    comment?: string | null;
+    fraudOutcome?: boolean | null;
+  }
+): CaseResolution {
+  const normalized = (decision ?? '').trim().toLowerCase();
+  const fraudOutcome =
+    metadata?.fraudOutcome === true ? 'FRAUDE' : metadata?.fraudOutcome === false ? 'NO FRAUDE' : undefined;
+
+  if (normalized === 'aceptado' || normalized === 'accepted' || normalized === 'accept') {
+    return {
+      status: 'Cerrado',
+      decision: 'Aceptado',
+      fraudOutcome,
+      decidedAt: metadata?.decidedAt ?? undefined,
+      decidedBy: metadata?.decidedBy ?? undefined,
+      decidedByRole: metadata?.decidedByRole ?? undefined,
+      comment: metadata?.comment ?? undefined
+    };
+  }
+
+  if (normalized === 'denegado' || normalized === 'denied' || normalized === 'deny') {
+    return {
+      status: 'Cerrado',
+      decision: 'Denegado',
+      fraudOutcome,
+      decidedAt: metadata?.decidedAt ?? undefined,
+      decidedBy: metadata?.decidedBy ?? undefined,
+      decidedByRole: metadata?.decidedByRole ?? undefined,
+      comment: metadata?.comment ?? undefined
+    };
+  }
+
+  if (normalized === 'revisar' || normalized === 'review' || normalized === 'in_review') {
+    return {
+      status: 'En revision',
+      decision: 'Revisar',
+      fraudOutcome,
+      decidedAt: metadata?.decidedAt ?? undefined,
+      decidedBy: metadata?.decidedBy ?? undefined,
+      decidedByRole: metadata?.decidedByRole ?? undefined,
+      comment: metadata?.comment ?? undefined
+    };
+  }
+
+  return {
+    status: 'Pendiente',
+    fraudOutcome,
+    decidedAt: metadata?.decidedAt ?? undefined,
+    decidedBy: metadata?.decidedBy ?? undefined,
+    decidedByRole: metadata?.decidedByRole ?? undefined,
+    comment: metadata?.comment ?? undefined
+  };
+}
+
+function mapOperationalGeneralStatus(payload: MonitoredCaseDetailApiResponse): CaseEvaluation['generalStatus'] {
+  if (payload.analysisSnapshot?.isEvaluable === false) {
+    return 'No evaluable';
+  }
+
+  const normalizedRisk = (payload.nivelRiesgo ?? '').trim().toLowerCase();
+  if (normalizedRisk.includes('crit')) {
+    return 'En revision prioritaria';
+  }
+
+  return 'Evaluable';
+}
+
+function mapMonitoredCaseDetail(payload: MonitoredCaseDetailApiResponse): CaseEvaluation {
+  const snapshot = payload.caseSnapshot;
+  const analysis = payload.analysisSnapshot;
+  const alerts = (payload.alertas ?? analysis?.alerts ?? []).map((alert, index) => ({
+    id: `${alert.code}-${index + 1}`,
+    type: alert.source === 'validation' ? 'Integridad' : 'Siniestros',
+    severity: mapAlertSeverity(alert.severity),
+    title: alert.title,
+    shortDescription: alert.title,
+    detail: alert.detail,
+    source: translateAlertSource(alert.source),
+    relatedVariable: translateRelatedVariable(alert.code),
+    recommendation: undefined
+  })) as CaseEvaluation['alerts'];
+
+  const claimHistory = (snapshot?.claimHistory ?? []).map((claim) => ({
+    id: claim.claimId,
+    date: claim.claimDate ? formatDateTime(claim.claimDate) : 'N/D',
+    type: claim.claimType ?? 'Siniestro',
+    amount: Number(claim.claimedAmount ?? claim.claimAmount ?? 0),
+    status:
+      claim.statusCode?.toUpperCase() === 'RECHAZADO'
+        ? 'Rechazado'
+        : claim.statusCode?.toUpperCase() === 'OBSERVADO'
+          ? 'Observado'
+          : 'Aprobado',
+    counterpart: claim.policyNumber ?? 'Poliza no informada',
+    notes: claim.certificateNumber ?? 'Sin certificado'
+  })) as CaseEvaluation['claimsHistory'];
+
+  return {
+    caseId: payload.caseId,
+    sinId: payload.sinId,
+    requestedAt: formatDateTime(payload.fechaSiniestro),
+    analystSummary: analysis?.summaryForAnalyst ?? payload.resumenPreview ?? 'Sin resumen disponible.',
+    generalStatus: mapOperationalGeneralStatus(payload),
+    riskScore: {
+      score: Math.round(analysis?.score ?? payload.score ?? 0),
+      category: mapRiskClassToCategory(analysis?.riskClass ?? payload.nivelRiesgo),
+      explanation: analysis?.summaryForAnalyst ?? payload.resumenPreview ?? 'Sin explicacion disponible.'
+    },
+    alerts,
+    aiExplanation: {
+      totalScore: Math.round(analysis?.score ?? payload.score ?? 0),
+      textualClassification: mapRiskClassToCategory(analysis?.riskClass ?? payload.nivelRiesgo),
+      executiveSummary: analysis?.summaryForAnalyst ?? payload.resumenPreview ?? 'Sin resumen disponible.',
+      variables: [],
+      evidenceForReview: alerts.map((alert) => alert.title),
+      evidenceAgainstFraud: [],
+      inconsistencies: [],
+      missingEvidence: [],
+      suggestedPriority:
+        payload.prioridad?.toLowerCase() === 'critica'
+          ? 'HIGH'
+          : payload.prioridad?.toLowerCase() === 'baja'
+            ? 'LOW'
+            : 'MEDIUM',
+      suggestedNextChecks: analysis?.recommendedAction ? [analysis.recommendedAction] : [],
+      evaluatorRecommendation: analysis?.recommendedAction ?? payload.recommendedAction ?? 'Sin accion sugerida.'
+    },
+    riskHeatmap: [],
+    relationshipGraph: {
+      nodes: [],
+      edges: []
+    },
+    operationalInfo: {
+      policyNumber: snapshot?.policy.policyNumber ?? payload.nroPoliza ?? 'N/D',
+      certificateNumber: snapshot?.policy.certificateNumber ?? payload.nroCertificado ?? 'N/D',
+      proposalNumber: snapshot?.policy.proposalNumber ?? payload.pzaNroSol ?? 'N/D',
+      policyStatus: snapshot?.policy.policyStatus ?? 'N/D',
+      linkStatus: snapshot?.policy.linkStatus ?? 'N/D',
+      claimNumber: snapshot?.selectedClaim.claimNumber ?? payload.nroSiniestro ?? 'N/D',
+      claimDate: snapshot?.selectedClaim.claimDate ? formatDateTime(snapshot.selectedClaim.claimDate) : formatDateTime(payload.fechaSiniestro),
+      claimType: snapshot?.selectedClaim.claimType ?? 'N/D',
+      claimStatus: snapshot?.selectedClaim.statusCode ?? payload.estadoCaso ?? 'N/D',
+      claimedAmount: formatCurrency(snapshot?.selectedClaim.claimedAmount ?? payload.montoReclamo),
+      paidAmount: formatCurrency(snapshot?.selectedClaim.claimAmount ?? payload.montoPagado),
+      occurrenceAddress: snapshot?.selectedClaim.occurrenceAddress ?? 'N/D'
+    },
+    personalInfo: {
+      fullName: snapshot?.person.displayName ?? payload.cliente ?? 'Cliente sin nombre',
+      document: snapshot?.person.documentNumber ?? snapshot?.person.taxId ?? String(payload.cliId ?? 'N/D'),
+      documentType: snapshot?.person.documentNumber ? 'DNI' : 'CUIT',
+      birthDate: snapshot?.person.birthDate ? formatDateTime(snapshot.person.birthDate) : 'N/D',
+      age: 0,
+      verified: true,
+      deceased: false,
+      address: [snapshot?.activeAddress.street, snapshot?.activeAddress.number].filter(Boolean).join(' ') || 'N/D',
+      locality: snapshot?.activeAddress.locality ?? 'N/D',
+      province: snapshot?.activeAddress.province ?? 'N/D',
+      phone: 'N/D',
+      email: snapshot?.person.email ?? 'N/D'
+    },
+    financialInfo: {
+      creditScore: 0,
+      debtRatio: 0,
+      bancarizationLevel: 'Baja',
+      activeLoans: 0,
+      bouncedChecks: 0,
+      monthlyIncomeEstimate: snapshot?.policy.policyPremium ? formatCurrency(snapshot.policy.policyPremium) : 'Sin datos',
+      observation: `Poliza ${snapshot?.policy.policyStatus ?? 'sin estado'} y vinculo ${snapshot?.policy.linkStatus ?? 'sin estado'}.`
+    },
+    laborFiscalInfo: {
+      taxStatus: snapshot?.person.clientStatus ?? 'Sin datos',
+      mainActivity: snapshot?.person.activity ?? 'Sin datos',
+      employerOrCompany: payload.cliente ?? snapshot?.person.displayName ?? 'Sin datos',
+      incomeBracket: 'Sin datos',
+      fiscalObservation: 'Detalle operativo reconstruido desde el backend SQL.'
+    },
+    claimsHistory: claimHistory,
+    resolution: mapDecisionValueToResolution(payload.decision, {
+      decidedAt: payload.fechaDecision,
+      decidedBy: payload.usuarioDecision,
+      decidedByRole: 'Supervisor',
+      comment: payload.comentario,
+      fraudOutcome: payload.fraudeConfirmado
+    }),
+    operationalCaseStatus: payload.estadoCaso ?? undefined,
+    finalAssessment: {
+      finalStatus: analysis?.riskClass ?? payload.nivelRiesgo ?? 'Normal',
+      finalPriority:
+        payload.prioridad?.toLowerCase() === 'critica'
+          ? 'CRITICAL'
+          : payload.prioridad?.toLowerCase() === 'alta'
+            ? 'HIGH'
+            : payload.prioridad?.toLowerCase() === 'baja'
+              ? 'LOW'
+              : 'MEDIUM',
+      recommendedAction: analysis?.recommendedAction ?? payload.recommendedAction ?? 'Sin accion sugerida',
+      confidence: 0.7,
+      summaryForAnalyst: analysis?.summaryForAnalyst ?? payload.resumenPreview ?? 'Sin resumen disponible.',
+      evidenceQuality: 'MEDIA',
+      requiresManualReview: true,
+      blockedByHardRules: false,
+      hardRuleReasons: []
+    }
+  };
+}
+
+function mapMonitoredCase(payload: MonitoredCaseApiResponse): MonitoredCaseListItem {
+  const riskLevel = normalizeRiskLevel(payload.nivelRiesgo ?? payload.nivel_riesgo);
+  const alerts = normalizeAlerts(payload);
+  const isPersisted = Boolean(payload.isPersisted);
+  const isPendingAnalysis = Boolean(payload.isPendingAnalysis);
+
+  return {
+    caseId: payload.caseId ?? payload.case_id ?? String(payload.sinId ?? payload.sin_id ?? ''),
+    sinId: Number(payload.sinId ?? payload.sin_id ?? 0),
+    claimNumber: payload.nroSiniestro ?? payload.nro_siniestro ?? 'Sin numero',
+    customerName: payload.cliente ?? payload.customerName ?? payload.customer_name ?? 'Cliente sin nombre',
+    claimDate: payload.fechaSiniestro ?? payload.fecha_siniestro ?? null,
+    score: Number(payload.score ?? 0),
+    riskLevel,
+    reviewBadge: resolveReviewBadge(riskLevel),
+    priority: payload.prioridad ?? payload.priority ?? 'sin prioridad',
+    caseStatus: payload.estadoCaso ?? payload.estado_caso ?? 'pendiente',
+    summaryPreview:
+      payload.resumenPreview ??
+      payload.resumen_preview ??
+      (isPendingAnalysis ? 'Siniestro pendiente de analisis automatico.' : 'Sin resumen disponible.'),
+    topAlerts: alerts.slice(0, 2),
+    allAlerts: alerts,
+    suggestedAction:
+      payload.recommendedAction ??
+      payload.recommended_action ??
+      (isPendingAnalysis ? 'Registrar decision operativa o pasar a revision.' : 'Sin accion sugerida'),
+    isPersisted,
+    isPendingAnalysis
+  };
+}
+
 export const caseService = {
+  async getMonitoredCases(): Promise<ApiState<MonitoredCaseListItem[]>> {
+    const headers = authService.getActorHeaders();
+    const urls = [`${sqlApiBaseUrl}/cases`, `${sqlApiBaseUrl}/monitoring/cases`];
+
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { headers });
+        if (!response.ok) {
+          continue;
+        }
+
+        const payload = (await response.json()) as MonitoredCaseApiResponse[];
+        const data = payload
+          .map(mapMonitoredCase)
+          .sort((left, right) => {
+            const priorityCompare = left.priority.localeCompare(right.priority, 'es', { sensitivity: 'base' });
+            if (priorityCompare !== 0) {
+              return priorityCompare;
+            }
+
+            const leftTime = left.claimDate ? new Date(left.claimDate).getTime() : 0;
+            const rightTime = right.claimDate ? new Date(right.claimDate).getTime() : 0;
+            return rightTime - leftTime;
+          });
+
+        return {
+          status: data.length === 0 ? 'empty' : 'success',
+          data,
+          error: null
+        };
+      } catch (_error) {
+        continue;
+      }
+    }
+
+    return {
+      status: 'error',
+      data: null,
+      error: 'No se pudo recuperar la bandeja de casos antifraude desde el backend.'
+    };
+  },
   async createCaseFromClaim(request: {
     claimId: string;
     requestedBy: string;
@@ -729,189 +1201,207 @@ export const caseService = {
     }
   },
   async getCaseById(caseId: string): Promise<ApiState<CaseEvaluation>> {
-    if (runtimeFlags.useBackendCases) {
-      try {
-        const headers = authService.getActorHeaders();
-        const baseUrl = isSqlCaseId(caseId) ? sqlApiBaseUrl : apiBaseUrl;
-        const [caseResponse, graphResponse] = await Promise.all([
-          fetch(`${baseUrl}/cases/${caseId}`, {
-            headers
-          }),
-          fetch(`${baseUrl}/cases/${caseId}/graph`, {
-            headers
-          })
-        ]);
-        if (caseResponse.ok) {
-          const payload = (await caseResponse.json()) as Parameters<typeof mapBackendCase>[0];
-          const graphPayload = graphResponse.ok
-            ? (await graphResponse.json()) as {
-                caseId: string;
-                nodes: Array<{
-                  id: string;
-                  label: string;
-                  type: string;
-                  riskLevel: string;
-                  metadata: Record<string, string | number | boolean | undefined>;
-                }>;
-                edges: Array<{
-                  id: string;
-                  source: string;
-                  target: string;
-                  relationshipType: string;
-                  severity: 'low' | 'medium' | 'high' | 'critical';
-                }>;
-              }
-            : null;
-          const mapped = mapBackendCase(payload);
-          const relationshipGraph = graphPayload
-            ? {
-                nodes: graphPayload.nodes.map((node) => ({
-                  id: node.id,
-                  label: node.label,
-                  type: mapGraphNodeType(node.type),
-                  riskLevel: mapGraphRiskLevel(node.riskLevel),
-                  metadata: node.metadata
-                })),
-                edges: graphPayload.edges.map((edge) => ({
-                  id: edge.id,
-                  source: edge.source,
-                  target: edge.target,
-                  relationshipType: edge.relationshipType,
-                  severity: edge.severity
-                }))
-              }
-            : mapped.relationshipGraph;
+    try {
+      const headers = authService.getActorHeaders();
+      const baseUrl = isSqlCaseId(caseId) ? sqlApiBaseUrl : sqlApiBaseUrl;
+      const response = await fetch(`${baseUrl}/cases/${caseId}`, {
+        headers
+      });
 
-          return {
-            status: 'success',
-            data: {
-              ...mapped,
-              relationshipGraph
-            },
-            error: null
-          };
-        }
-      } catch (_error) {
-        if (!runtimeFlags.allowMockCaseFallback) {
-          return {
-            status: 'error',
-            data: null,
-            error: 'No se pudo recuperar el detalle del caso desde el backend demo.'
-          };
-        }
+      if (response.status === 404) {
+        return {
+          status: 'empty',
+          data: null,
+          error: 'No se encontro un caso consolidado para el identificador solicitado.'
+        };
       }
-    }
 
-    await new Promise((resolve) => setTimeout(resolve, 350));
-    const found = caseStore[caseId];
+      if (!response.ok) {
+        return {
+          status: 'error',
+          data: null,
+          error: 'No se pudo recuperar el detalle del caso desde el backend.'
+        };
+      }
 
-    if (!found) {
+      const payload = (await response.json()) as Parameters<typeof mapBackendCase>[0] | MonitoredCaseDetailApiResponse;
+      const mapped =
+        'subject' in payload || 'score' in payload && 'metadata' in payload
+          ? mapBackendCase(payload as Parameters<typeof mapBackendCase>[0])
+          : mapMonitoredCaseDetail(payload as MonitoredCaseDetailApiResponse);
+
       return {
-        status: 'empty',
+        status: 'success',
+        data: mapped,
+        error: null
+      };
+    } catch (_error) {
+      return {
+        status: 'error',
         data: null,
-        error: 'No se encontro un caso consolidado para el identificador solicitado.'
+        error: 'No se pudo conectar con el backend para recuperar el detalle del caso.'
       };
     }
-
-    return {
-      status: 'success',
-      data: withDefaultResolution(found),
-      error: null
-    };
   },
-  async decideCase(caseId: string, request: DecisionRequest): Promise<ApiState<CaseResolution>> {
+  async decideCase(caseId: string | number, request: DecisionRequest): Promise<ApiState<CaseResolution>> {
     const session = authService.getSession();
     const actor = session.user;
+    const normalizedCaseId = String(caseId);
+    const urls = [
+      `${sqlApiBaseUrl}/cases/${normalizedCaseId}/decision`,
+      `${sqlApiBaseUrl}/monitoring/cases/${normalizedCaseId}/decision`
+    ];
 
-    if (runtimeFlags.useBackendCaseDecision) {
+    for (const url of urls) {
       try {
-        const response = await fetch(`${apiBaseUrl}/cases/${caseId}/decision`, {
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             ...authService.getActorHeaders()
           },
           body: JSON.stringify({
+            decision: mapDecisionActionToBackendValue(request.action),
             action: request.action,
-            comment: request.comment,
+            comment: request.comment?.trim() || null,
+            comentario: request.comment?.trim() || null,
+            actorId: actor?.id ?? 'frontend-user',
+            actorName: actor?.name ?? 'Usuario frontend',
+            actorRole: actor?.role ?? 'Supervisor',
+            usuarioDecision: actor?.name ?? 'Usuario frontend',
+            usuario: actor?.name ?? 'Usuario frontend'
+          })
+        });
+
+        if (response.status === 404) {
+          continue;
+        }
+
+        if (!response.ok) {
+          const errorPayload = (await response.json().catch(() => null)) as { detail?: string; message?: string } | null;
+          return {
+            status: 'error',
+            data: null,
+            error: errorPayload?.detail ?? errorPayload?.message ?? 'No se pudo registrar la decision del caso.'
+          };
+        }
+
+        const payload = (await response.json().catch(() => null)) as
+          | {
+              decision?: string | null;
+              status?: string | null;
+              workflowStatus?: string | null;
+              decidedAt?: string | null;
+              fechaDecision?: string | null;
+              decidedBy?: string | null;
+              usuarioDecision?: string | null;
+              decidedByRole?: string | null;
+              comment?: string | null;
+              comentario?: string | null;
+            }
+          | null;
+
+        return {
+          status: 'success',
+          data: mapDecisionValueToResolution(payload?.decision ?? payload?.status ?? request.action, {
+            decidedAt: payload?.decidedAt ?? payload?.fechaDecision ?? new Date().toISOString(),
+            decidedBy: payload?.decidedBy ?? payload?.usuarioDecision ?? actor?.name ?? 'Usuario frontend',
+            decidedByRole: payload?.decidedByRole ?? actor?.role ?? 'Supervisor',
+            comment: payload?.comment ?? payload?.comentario ?? request.comment ?? undefined
+          }),
+          error: null
+        };
+      } catch (_error) {
+        continue;
+      }
+    }
+
+    return {
+      status: 'error',
+      data: null,
+      error: 'No se pudo registrar la decision del caso en el backend.'
+    };
+  },
+  async resolveCase(caseId: string | number, request: ResolutionRequest): Promise<ApiState<CaseResolution>> {
+    const session = authService.getSession();
+    const actor = session.user;
+    const normalizedCaseId = String(caseId);
+    const urls = [
+      `${sqlApiBaseUrl}/cases/${normalizedCaseId}/resolution`,
+      `${sqlApiBaseUrl}/monitoring/cases/${normalizedCaseId}/resolution`
+    ];
+
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...authService.getActorHeaders()
+          },
+          body: JSON.stringify({
+            fraudeConfirmado: request.fraudeConfirmado,
+            comment: request.comment?.trim() || null,
+            comentario: request.comment?.trim() || null,
+            usuario: actor?.name ?? 'Usuario frontend',
+            usuarioDecision: actor?.name ?? 'Usuario frontend',
             actorId: actor?.id ?? 'frontend-user',
             actorName: actor?.name ?? 'Usuario frontend',
             actorRole: actor?.role ?? 'Supervisor'
           })
         });
 
-        if (response.ok) {
-          const payload = (await response.json()) as {
-            status: 'ACCEPTED' | 'DENIED' | 'ESCALATED';
-            decidedAt: string;
-            decidedBy?: string | null;
-            decidedByRole?: string | null;
-            comment?: string | null;
-          };
-          return {
-            status: 'success',
-            data: {
-              status:
-                payload.status === 'ACCEPTED'
-                  ? 'Aceptado'
-                  : payload.status === 'DENIED'
-                    ? 'Denegado'
-                    : 'Escalado',
-              decidedAt: payload.decidedAt,
-              decidedBy: payload.decidedBy ?? actor?.name ?? 'Usuario frontend',
-              decidedByRole: payload.decidedByRole ?? actor?.role ?? 'Supervisor',
-              comment: payload.comment ?? request.comment
-            },
-            error: null
-          };
+        if (response.status === 404) {
+          continue;
         }
 
-        const errorPayload = (await response.json().catch(() => null)) as { detail?: string } | null;
-        return {
-          status: 'error',
-          data: null,
-          error: errorPayload?.detail ?? 'No se pudo resolver el caso en backend.'
-        };
-      } catch (_error) {
-        if (!runtimeFlags.allowMockDecisionFallback) {
+        if (!response.ok) {
+          const errorPayload = (await response.json().catch(() => null)) as { detail?: string; message?: string } | null;
           return {
             status: 'error',
             data: null,
-            error: 'No se pudo registrar la resolucion manual en el backend demo.'
+            error: errorPayload?.detail ?? errorPayload?.message ?? 'No se pudo registrar la resolucion final del caso.'
           };
         }
+
+        const payload = (await response.json().catch(() => null)) as
+          | {
+              decision?: string | null;
+              fechaDecision?: string | null;
+              decidedAt?: string | null;
+              usuarioDecision?: string | null;
+              decidedBy?: string | null;
+              decidedByRole?: string | null;
+              comentario?: string | null;
+              comment?: string | null;
+              fraudeConfirmado?: boolean | null;
+            }
+          | null;
+
+        return {
+          status: 'success',
+          data: {
+            ...mapDecisionValueToResolution(payload?.decision, {
+              decidedAt: payload?.decidedAt ?? payload?.fechaDecision ?? new Date().toISOString(),
+              decidedBy: payload?.decidedBy ?? payload?.usuarioDecision ?? actor?.name ?? 'Usuario frontend',
+              decidedByRole: payload?.decidedByRole ?? actor?.role ?? 'Supervisor',
+              comment: payload?.comment ?? payload?.comentario ?? request.comment ?? undefined,
+              fraudOutcome: payload?.fraudeConfirmado ?? request.fraudeConfirmado
+            }),
+            status: 'Cerrado',
+            fraudOutcome: (payload?.fraudeConfirmado ?? request.fraudeConfirmado) ? 'FRAUDE' : 'NO FRAUDE'
+          },
+          error: null
+        };
+      } catch (_error) {
+        continue;
       }
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 350));
-    const found = caseStore[caseId];
-
-    if (!found) {
-      return {
-        status: 'error',
-        data: null,
-        error: 'No se encontro el caso a resolver.'
-      };
-    }
-
-    const nextResolution: CaseResolution = {
-      status:
-        request.action === 'accept' ? 'Aceptado' : request.action === 'deny' ? 'Denegado' : 'Escalado',
-      decidedAt: new Date().toISOString(),
-      decidedBy: actor?.name ?? 'Supervisor mock',
-      decidedByRole: actor?.role ?? 'Supervisor',
-      comment: request.comment
-    };
-
-    caseStore[caseId] = {
-      ...found,
-      resolution: nextResolution
-    };
-
     return {
-      status: 'success',
-      data: nextResolution,
-      error: null
+      status: 'error',
+      data: null,
+      error: 'No se pudo registrar la resolucion final del caso en el backend.'
     };
   },
   getFeaturedCaseIds(): string[] {

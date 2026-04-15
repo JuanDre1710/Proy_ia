@@ -81,6 +81,38 @@ async function requestJson<T>(path: string, options?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+async function refreshRealSession(stored: StoredSession): Promise<SessionState> {
+  if (!stored.refreshToken) {
+    window.localStorage.removeItem(sessionKey);
+    window.sessionStorage.setItem(expiredKey, 'true');
+    return { authenticated: false, user: null };
+  }
+
+  const refreshed = await requestJson<BackendSessionResponse>('/auth/refresh', {
+    method: 'POST',
+    body: JSON.stringify({
+      refreshToken: stored.refreshToken
+    })
+  });
+
+  const nextSession: StoredSession = {
+    user: mapBackendUser(refreshed.user),
+    expiresAt: refreshed.expiresAt,
+    accessToken: refreshed.accessToken,
+    refreshToken: refreshed.refreshToken,
+    mode: 'real'
+  };
+
+  saveSession(nextSession);
+
+  return {
+    authenticated: true,
+    user: nextSession.user,
+    expiresAt: nextSession.expiresAt,
+    mode: nextSession.mode
+  };
+}
+
 export const authService = {
   async login(request: LoginRequest): Promise<User | null> {
     try {
@@ -166,51 +198,34 @@ export const authService = {
 
     try {
       if (stored.accessToken && new Date(stored.expiresAt).getTime() > Date.now()) {
-        const me = await requestJson<{ user: BackendSessionResponse['user']; expiresAt: string }>('/auth/me', {
-          headers: {
-            Authorization: `Bearer ${stored.accessToken}`
+        try {
+          const me = await requestJson<{ user: BackendSessionResponse['user']; expiresAt: string }>('/auth/me', {
+            headers: {
+              Authorization: `Bearer ${stored.accessToken}`
+            }
+          });
+          const nextSession: StoredSession = {
+            ...stored,
+            user: mapBackendUser(me.user),
+            expiresAt: me.expiresAt
+          };
+          saveSession(nextSession);
+          return {
+            authenticated: true,
+            user: nextSession.user,
+            expiresAt: nextSession.expiresAt,
+            mode: nextSession.mode
+          };
+        } catch (error) {
+          if (!(error instanceof Error) || error.message !== 'HTTP 401' || !stored.refreshToken) {
+            throw error;
           }
-        });
-        const nextSession: StoredSession = {
-          ...stored,
-          user: mapBackendUser(me.user),
-          expiresAt: me.expiresAt
-        };
-        saveSession(nextSession);
-        return {
-          authenticated: true,
-          user: nextSession.user,
-          expiresAt: nextSession.expiresAt,
-          mode: nextSession.mode
+
+          return await refreshRealSession(stored);
         };
       }
 
-      if (!stored.refreshToken) {
-        window.localStorage.removeItem(sessionKey);
-        window.sessionStorage.setItem(expiredKey, 'true');
-        return { authenticated: false, user: null };
-      }
-
-      const refreshed = await requestJson<BackendSessionResponse>('/auth/refresh', {
-        method: 'POST',
-        body: JSON.stringify({
-          refreshToken: stored.refreshToken
-        })
-      });
-      const nextSession: StoredSession = {
-        user: mapBackendUser(refreshed.user),
-        expiresAt: refreshed.expiresAt,
-        accessToken: refreshed.accessToken,
-        refreshToken: refreshed.refreshToken,
-        mode: 'real'
-      };
-      saveSession(nextSession);
-      return {
-        authenticated: true,
-        user: nextSession.user,
-        expiresAt: nextSession.expiresAt,
-        mode: nextSession.mode
-      };
+      return await refreshRealSession(stored);
     } catch (_error) {
       window.localStorage.removeItem(sessionKey);
       window.sessionStorage.setItem(expiredKey, 'true');

@@ -9,7 +9,8 @@ namespace Ers.SqlServerAdapter.Infrastructure.DataAccess.Providers;
 public sealed class SqlServerIdentityClaimProvider :
     IPersonSearchProvider,
     IClaimQueryProvider,
-    ICaseDataProvider
+    ICaseDataProvider,
+    IIncrementalClaimProvider
 {
     private readonly DevelopmentClaimsDbContext _dbContext;
 
@@ -133,6 +134,45 @@ public sealed class SqlServerIdentityClaimProvider :
             row.FkPolizaSiniestro.ToString(),
             row.FkPolizaVigencia?.ToString()
         );
+    }
+
+    public async Task<IReadOnlyList<IncrementalClaimRecord>> ListIncrementalClaimsAsync(
+        DateTime watermarkDate,
+        long watermarkClaimId,
+        DateTime readFromDate,
+        int batchSize,
+        CancellationToken cancellationToken = default)
+    {
+        var sql = """
+            SELECT TOP (@batchSize)
+                sin.SIN_ID AS ClaimId,
+                sin.SIN_FECAUD AS AuditDate,
+                sin.SIN_FEC_CARGA AS LoadDate
+            FROM SINIESTROS sin
+            WHERE sin.SIN_FECAUD >= @readFromDate
+              AND (
+                    sin.SIN_FECAUD > @watermarkDate
+                    OR (sin.SIN_FECAUD = @watermarkDate AND sin.SIN_ID > @watermarkClaimId)
+                  )
+            ORDER BY sin.SIN_FECAUD ASC, sin.SIN_ID ASC
+            """;
+
+        var rows = await _dbContext.IncrementalClaimRows
+            .FromSqlRaw(
+                sql,
+                new SqlParameter("@batchSize", batchSize),
+                new SqlParameter("@readFromDate", readFromDate),
+                new SqlParameter("@watermarkDate", watermarkDate),
+                new SqlParameter("@watermarkClaimId", watermarkClaimId))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return rows
+            .Select(row => new IncrementalClaimRecord(
+                row.ClaimId.ToString(),
+                row.AuditDate,
+                row.LoadDate))
+            .ToList();
     }
 
     private async Task<PersonIdentityRecord?> SearchPersonWithoutClaimsAsync(

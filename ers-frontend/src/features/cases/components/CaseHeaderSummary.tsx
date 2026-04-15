@@ -3,6 +3,10 @@ import FolderSharedRoundedIcon from '@mui/icons-material/FolderSharedRounded';
 import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
 import { CaseEvaluation } from '../../../models/cases';
 
+function getOperationalStatus(caseData: CaseEvaluation): string {
+  return caseData.resolution?.status ?? 'Pendiente';
+}
+
 export function CaseHeaderSummary({ caseData }: { caseData: CaseEvaluation }): JSX.Element {
   return (
     <Card>
@@ -33,15 +37,18 @@ export function CaseHeaderSummary({ caseData }: { caseData: CaseEvaluation }): J
           <Grid item xs={12} md={5}>
             <Grid container spacing={1.5}>
               <Grid item xs={6}>
-                <SummaryMetric label="Estado" value={caseData.generalStatus} />
+                <SummaryMetric label="Operacion" value={getOperationalStatus(caseData)} />
               </Grid>
               <Grid item xs={6}>
                 <SummaryMetric label="Categoria" value={caseData.riskScore.category} />
               </Grid>
               <Grid item xs={6}>
-                <SummaryMetric label="Siniestros" value={`${caseData.claimsHistory.length}`} />
+                <SummaryMetric label="Estado" value={caseData.generalStatus} />
               </Grid>
               <Grid item xs={6}>
+                <SummaryMetric label="Siniestros" value={`${caseData.claimsHistory.length}`} />
+              </Grid>
+              <Grid item xs={12}>
                 <SummaryMetric label="Deuda" value={`${caseData.financialInfo.debtRatio}%`} />
               </Grid>
             </Grid>

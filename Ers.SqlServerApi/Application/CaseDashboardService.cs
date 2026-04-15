@@ -1,23 +1,29 @@
+using Ers.SqlServerApi.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
 namespace Ers.SqlServerApi.Application;
 
 public sealed class CaseDashboardService
 {
     private readonly CaseAssemblyService _caseAssemblyService;
     private readonly OperationalRiskAnalysisService _riskAnalysisService;
+    private readonly AntifraudDbContext _antifraudDbContext;
 
     public CaseDashboardService(
         CaseAssemblyService caseAssemblyService,
-        OperationalRiskAnalysisService riskAnalysisService)
+        OperationalRiskAnalysisService riskAnalysisService,
+        AntifraudDbContext antifraudDbContext)
     {
         _caseAssemblyService = caseAssemblyService;
         _riskAnalysisService = riskAnalysisService;
+        _antifraudDbContext = antifraudDbContext;
     }
 
     public async Task<SqlCaseDashboardResponseDto?> GetCaseAsync(
         string caseId,
         CancellationToken cancellationToken = default)
     {
-        var claimId = ExtractClaimId(caseId);
+        var claimId = await ResolveClaimIdAsync(caseId, cancellationToken);
         if (string.IsNullOrWhiteSpace(claimId))
         {
             return null;
@@ -54,12 +60,34 @@ public sealed class CaseDashboardService
         return Task.FromResult(new SqlCaseGraphResponseDto(caseId, nodes, edges));
     }
 
-    private static string ExtractClaimId(string caseId)
+    private async Task<string?> ResolveClaimIdAsync(
+        string caseId,
+        CancellationToken cancellationToken)
     {
         var normalized = caseId.Trim();
-        return normalized.StartsWith("CASE-", StringComparison.OrdinalIgnoreCase)
-            ? normalized["CASE-".Length..]
-            : normalized;
+
+        if (normalized.StartsWith("CASE-", StringComparison.OrdinalIgnoreCase))
+        {
+            return normalized["CASE-".Length..];
+        }
+
+        if (long.TryParse(normalized, out _))
+        {
+            return normalized;
+        }
+
+        if (!Guid.TryParse(normalized, out var parsedGuid))
+        {
+            return null;
+        }
+
+        var monitoredCase = await _antifraudDbContext.MonitoredCases
+            .AsNoTracking()
+            .Where(item => item.CaseId == parsedGuid)
+            .Select(item => new { item.SinId })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return monitoredCase?.SinId.ToString();
     }
 
     private static SqlCaseDashboardResponseDto MapToDashboard(

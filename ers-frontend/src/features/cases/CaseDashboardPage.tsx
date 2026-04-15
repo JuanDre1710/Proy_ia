@@ -16,6 +16,7 @@ import { ClaimsHistoryCard } from './components/ClaimsHistoryCard';
 import { FinancialInfoCard } from './components/FinancialInfoCard';
 import { LaborFiscalCard } from './components/LaborFiscalCard';
 import { PersonalInfoCard } from './components/PersonalInfoCard';
+import { PolicyClaimInfoCard } from './components/PolicyClaimInfoCard';
 import { RiskScoreCard } from './components/RiskScoreCard';
 import { AlertsPanel } from './components/AlertsPanel';
 import { AIExplanationPanel } from './components/AIExplanationPanel';
@@ -74,7 +75,7 @@ export function CaseDashboardPage(): JSX.Element {
       throw new Error('Case not loaded');
     }
 
-    const result = await caseService.decideCase(caseId, {
+    const result = await caseService.decideCase(state.data.sinId ?? caseId, {
       action,
       comment
     });
@@ -93,6 +94,31 @@ export function CaseDashboardPage(): JSX.Element {
     });
   };
 
+  const handleFinalResolution = async (fraudeConfirmado: boolean, comment: string): Promise<void> => {
+    if (!caseId || state.status !== 'success' || !state.data) {
+      throw new Error('Case not loaded');
+    }
+
+    const result = await caseService.resolveCase(state.data.sinId ?? caseId, {
+      fraudeConfirmado,
+      comment
+    });
+
+    if (result.status !== 'success' || !result.data) {
+      throw new Error(result.error ?? 'No se pudo registrar la resolucion final del caso.');
+    }
+
+    setState({
+      status: 'success',
+      data: {
+        ...state.data,
+        operationalCaseStatus: 'cerrado',
+        resolution: result.data
+      },
+      error: null
+    });
+  };
+
   if (state.status === 'loading') {
     return <PageSkeleton sections={4} />;
   }
@@ -101,10 +127,10 @@ export function CaseDashboardPage(): JSX.Element {
     <Stack spacing={3}>
       <PageHeader
         title="Dashboard antifraude del caso"
-        subtitle="Vista consolidada del cliente, el score de fraude y el estado general del expediente."
+        subtitle="Vista consolidada del cliente, domicilio, poliza, siniestro, score, alertas y resumen del backend operativo."
         actions={
-          <Button variant="outlined" startIcon={<WestRoundedIcon />} onClick={() => navigate('/search')}>
-            Volver a busqueda
+          <Button variant="outlined" startIcon={<WestRoundedIcon />} onClick={() => navigate('/cases')}>
+            Volver a bandeja
           </Button>
         }
       />
@@ -120,30 +146,56 @@ export function CaseDashboardPage(): JSX.Element {
           <CaseStatusBanner caseData={state.data} />
           <CaseHeaderSummary caseData={state.data} />
           {isDecisionEnabled(state.data) ? (
-            <CaseDecisionCard caseData={state.data} onDecision={handleDecision} currentUser={session.user?.name} />
+            <CaseDecisionCard
+              caseData={state.data}
+              onDecision={handleDecision}
+              onFinalResolution={handleFinalResolution}
+              currentUser={session.user?.name}
+            />
           ) : null}
           <ExportActionsCard evaluation={state.data} />
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <PageHeader
+                title="Informacion"
+                subtitle="Datos del cliente, domicilio, poliza y siniestro reconstruidos desde el backend."
+              />
+            </Grid>
+            <Grid item xs={12} xl={6}>
+              <PersonalInfoCard personalInfo={state.data.personalInfo} />
+            </Grid>
+            <Grid item xs={12} xl={6}>
+              {state.data.operationalInfo ? <PolicyClaimInfoCard operationalInfo={state.data.operationalInfo} /> : null}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <PageHeader
+                title="Analisis"
+                subtitle="Score, resumen y senales del modelo operativo sobre el caso."
+              />
+            </Grid>
             <Grid item xs={12} xl={4}>
               <RiskScoreCard caseData={state.data} />
             </Grid>
             <Grid item xs={12} xl={8}>
-              <PersonalInfoCard personalInfo={state.data.personalInfo} />
+              <AIExplanationPanel explanation={state.data.aiExplanation} />
             </Grid>
           </Grid>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <PageHeader
+                title="Alertas"
+                subtitle="Alertas operativas y antecedentes visibles del expediente."
+              />
+            </Grid>
             <Grid item xs={12} xl={6}>
               <AlertsPanel alerts={state.data.alerts} />
             </Grid>
             <Grid item xs={12} xl={6}>
-              <AIExplanationPanel explanation={state.data.aiExplanation} />
+              <ClaimsHistoryCard claimsHistory={state.data.claimsHistory} />
             </Grid>
           </Grid>
-          <RiskHeatmapCard variables={state.data.riskHeatmap} />
-          <RelationshipGraphCard
-            nodes={state.data.relationshipGraph.nodes}
-            edges={state.data.relationshipGraph.edges}
-          />
           <Grid container spacing={2}>
             <Grid item xs={12} xl={6}>
               <FinancialInfoCard financialInfo={state.data.financialInfo} />
@@ -152,7 +204,13 @@ export function CaseDashboardPage(): JSX.Element {
               <LaborFiscalCard laborFiscalInfo={state.data.laborFiscalInfo} />
             </Grid>
           </Grid>
-          <ClaimsHistoryCard claimsHistory={state.data.claimsHistory} />
+          {state.data.riskHeatmap.length > 0 ? <RiskHeatmapCard variables={state.data.riskHeatmap} /> : null}
+          {state.data.relationshipGraph.nodes.length > 0 || state.data.relationshipGraph.edges.length > 0 ? (
+            <RelationshipGraphCard
+              nodes={state.data.relationshipGraph.nodes}
+              edges={state.data.relationshipGraph.edges}
+            />
+          ) : null}
         </>
       )}
     </Stack>

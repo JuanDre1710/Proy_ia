@@ -4,8 +4,10 @@ export type CaseStatus =
   | 'Fallecido'
   | 'No evaluable'
   | 'En revision prioritaria';
-export type CaseResolutionStatus = 'Pendiente' | 'Aceptado' | 'Denegado' | 'Escalado';
-export type CaseDecisionAction = 'accept' | 'deny' | 'escalate';
+export type CaseResolutionStatus = 'Pendiente' | 'En revision' | 'Cerrado';
+export type CaseDecisionAction = 'accept' | 'deny' | 'review';
+export type CaseDecisionLabel = 'Aceptado' | 'Denegado' | 'Revisar';
+export type FraudResolutionLabel = 'FRAUDE' | 'NO FRAUDE';
 export type AlertSeverity = 'success' | 'warning' | 'error' | 'info';
 export type AlertType =
   | 'RENAPER'
@@ -137,6 +139,8 @@ export interface ClaimRecord {
 
 export interface CaseResolution {
   status: CaseResolutionStatus;
+  decision?: CaseDecisionLabel;
+  fraudOutcome?: FraudResolutionLabel;
   decidedAt?: string;
   decidedBy?: string;
   decidedByRole?: string;
@@ -155,8 +159,43 @@ export interface FinalAssessment {
   hardRuleReasons: string[];
 }
 
+export interface CaseOperationalInfo {
+  policyNumber: string;
+  certificateNumber: string;
+  proposalNumber: string;
+  policyStatus: string;
+  linkStatus: string;
+  claimNumber: string;
+  claimDate: string;
+  claimType: string;
+  claimStatus: string;
+  claimedAmount: string;
+  paidAmount: string;
+  occurrenceAddress: string;
+}
+
+export interface MonitoredCaseListItem {
+  caseId: string;
+  sinId: number;
+  claimNumber: string;
+  customerName: string;
+  claimDate: string | null;
+  score: number;
+  riskLevel: 'CRITICO' | 'MEDIO' | 'LEVE' | 'NORMAL';
+  reviewBadge: 'Requiere revision' | 'Sospechoso' | 'Normal';
+  priority: string;
+  caseStatus: string;
+  summaryPreview: string;
+  topAlerts: string[];
+  allAlerts: string[];
+  suggestedAction: string;
+  isPersisted: boolean;
+  isPendingAnalysis: boolean;
+}
+
 export interface CaseEvaluation {
   caseId: string;
+  sinId?: number;
   requestedAt: string;
   analystSummary: string;
   generalStatus: CaseStatus;
@@ -168,10 +207,12 @@ export interface CaseEvaluation {
     nodes: GraphNode[];
     edges: GraphEdge[];
   };
+  operationalInfo?: CaseOperationalInfo;
   personalInfo: PersonalInfo;
   financialInfo: FinancialInfo;
   laborFiscalInfo: LaborFiscalInfo;
   claimsHistory: ClaimRecord[];
   resolution?: CaseResolution;
+  operationalCaseStatus?: string;
   finalAssessment?: FinalAssessment;
 }

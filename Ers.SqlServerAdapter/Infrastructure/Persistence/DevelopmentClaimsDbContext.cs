@@ -17,11 +17,13 @@ public sealed class DevelopmentClaimsDbContext : DbContext
     public DbSet<SiniestroEntity> Siniestros => Set<SiniestroEntity>();
     public DbSet<OfficialClaimSearchRow> OfficialClaimSearch => Set<OfficialClaimSearchRow>();
     public DbSet<PersonWithoutClaimsLookupRow> PersonWithoutClaimsLookup => Set<PersonWithoutClaimsLookupRow>();
+    public DbSet<IncrementalClaimRow> IncrementalClaimRows => Set<IncrementalClaimRow>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(DevelopmentClaimsDbContext).Assembly);
         modelBuilder.Entity<OfficialClaimSearchRow>().HasNoKey().ToView(null);
         modelBuilder.Entity<PersonWithoutClaimsLookupRow>().HasNoKey().ToView(null);
+        modelBuilder.Entity<IncrementalClaimRow>().HasNoKey().ToView(null);
     }
 }

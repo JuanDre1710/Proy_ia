@@ -72,6 +72,36 @@ npm.cmd install
 npm.cmd start
 ```
 
+## Levantar API SQL operativa
+
+```powershell
+cd Ers.SqlServerApi
+dotnet run
+```
+
+Swagger:
+
+- `http://localhost:5251/swagger`
+
+## Bandeja operativa SQL
+
+Flujo actual esperado para la bandeja del frontend:
+
+- `GET /cases` devuelve la cola operativa de siniestros pendientes de analisis o con seguimiento abierto.
+- si el siniestro todavia no existe en `AF_MONITORED_CASES`, igual aparece en la bandeja como `pendiente`.
+- las acciones `Aceptar`, `Denegar` y `Revisar` registran decision operativa por `SIN_ID`.
+- al decidir un siniestro que todavia no tenia fila en `AF_MONITORED_CASES`, la API crea el registro minimo operativo y guarda auditoria.
+- los casos `aceptado` o `denegado` quedan `cerrado` y salen de la cola operativa.
+- los casos enviados a revision quedan `en_revision` y permanecen visibles en la bandeja.
+
+Endpoints principales:
+
+- `GET /cases`
+- `POST /cases/{sinId}/decision`
+- `POST /cases/{sinId}/resolution`
+- `GET /monitoring/cases`
+- `GET /monitoring/cases/{sinId}`
+
 ## Validaciones recomendadas
 
 Smoke completo del pipeline:

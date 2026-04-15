@@ -84,6 +84,12 @@ public sealed record ClaimCaseRecord(
     string? PolicyValidityId
 );
 
+public sealed record IncrementalClaimRecord(
+    string ClaimId,
+    DateTime AuditDate,
+    DateTime? LoadDate
+);
+
 public interface IPersonSearchProvider
 {
     Task<PersonIdentityRecord?> SearchPersonAsync(IdentitySearchQuery query, CancellationToken cancellationToken = default);
@@ -97,4 +103,14 @@ public interface IClaimQueryProvider
 public interface ICaseDataProvider
 {
     Task<ClaimCaseRecord?> GetClaimCaseDataAsync(string claimId, CancellationToken cancellationToken = default);
+}
+
+public interface IIncrementalClaimProvider
+{
+    Task<IReadOnlyList<IncrementalClaimRecord>> ListIncrementalClaimsAsync(
+        DateTime watermarkDate,
+        long watermarkClaimId,
+        DateTime readFromDate,
+        int batchSize,
+        CancellationToken cancellationToken = default);
 }

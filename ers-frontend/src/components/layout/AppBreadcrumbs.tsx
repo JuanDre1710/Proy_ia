@@ -3,8 +3,14 @@ import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 function getCrumbs(pathname: string): Array<{ label: string; to?: string }> {
+  if (pathname === '/cases') {
+    return [{ label: 'Bandeja de casos' }];
+  }
   if (pathname === '/search') {
     return [{ label: 'Busqueda' }];
+  }
+  if (pathname === '/commercial-analytics') {
+    return [{ label: 'Analitica comercial' }];
   }
   if (pathname === '/cases/upload-json') {
     return [
@@ -15,7 +21,7 @@ function getCrumbs(pathname: string): Array<{ label: string; to?: string }> {
   if (pathname.startsWith('/cases/')) {
     const caseId = pathname.split('/')[2];
     return [
-      { label: 'Busqueda', to: '/search' },
+      { label: 'Bandeja de casos', to: '/cases' },
       { label: 'Caso' },
       { label: caseId }
     ];
@@ -33,8 +39,14 @@ function getCrumbs(pathname: string): Array<{ label: string; to?: string }> {
 }
 
 export function getRouteTitle(pathname: string): string {
+  if (pathname === '/cases') {
+    return 'ERS | Bandeja de casos';
+  }
   if (pathname === '/search') {
     return 'ERS | Busqueda';
+  }
+  if (pathname === '/commercial-analytics') {
+    return 'ERS | Analitica comercial';
   }
   if (pathname === '/cases/upload-json') {
     return 'ERS | Carga JSON';

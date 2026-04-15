@@ -22,6 +22,11 @@ public sealed class OperationalRiskAnalysisService
             return null;
         }
 
+        return Analyze(caseModel);
+    }
+
+    public OperationalRiskAnalysisResponseDto Analyze(CaseModel caseModel)
+    {
         var validationAlerts = ValidateCase(caseModel);
         if (validationAlerts.Any(alert => alert.Code == "CASE_NOT_EVALUABLE"))
         {

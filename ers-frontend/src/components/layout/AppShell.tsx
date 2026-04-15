@@ -21,6 +21,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TravelExploreRoundedIcon from '@mui/icons-material/TravelExploreRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../state/AuthContext';
 import { AppBreadcrumbs, getRouteTitle } from './AppBreadcrumbs';
@@ -35,11 +36,16 @@ export function AppShell(): JSX.Element {
   const location = useLocation();
   const canAccessAdmin = hasAnyRole(['Administrador']);
   const canAccessAudit = hasAnyRole(['Administrador', 'Supervisor']);
+  const canAccessCommercial = hasAnyRole(['Administrador', 'Supervisor']);
 
   const items = [
+    { to: '/cases', label: 'Bandeja casos', icon: <DashboardRoundedIcon /> },
     { to: '/search', label: 'Busqueda', icon: <SearchRoundedIcon /> },
+    ...(canAccessCommercial
+      ? [{ to: '/commercial-analytics', label: 'Analitica comercial', icon: <InsightsRoundedIcon /> }]
+      : []),
     { to: '/cases/upload-json', label: 'Carga JSON', icon: <UploadFileRoundedIcon /> },
-    { to: '/cases/30111222', label: 'Dashboard ejemplo', icon: <DashboardRoundedIcon /> },
+    { to: '/cases/30111222', label: 'Dashboard ejemplo', icon: <ReceiptLongRoundedIcon /> },
     ...(canAccessAudit ? [{ to: '/audit/logs', label: 'Auditoria', icon: <ReceiptLongRoundedIcon /> }] : []),
     ...(canAccessAdmin
       ? [{ to: '/admin', label: 'Panel admin', icon: <AdminPanelSettingsRoundedIcon /> }]
