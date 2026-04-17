@@ -9,6 +9,7 @@ namespace Ers.SqlServerApi.Application;
 public sealed class CaseInboxService
 {
     private const string PlaceholderSummary = "Caso pendiente de analisis automatico. Se registro decision operativa manual.";
+    private const int MaxRealtimeAnalysesPerRequest = 10;
 
     private readonly DevelopmentClaimsDbContext _claimsDbContext;
     private readonly AntifraudInfrastructureStatusService _infrastructureStatusService;
@@ -91,6 +92,8 @@ public sealed class CaseInboxService
         List<MonitoredCaseListItemDto> items,
         CancellationToken cancellationToken)
     {
+        var remainingRealtimeAnalyses = MaxRealtimeAnalysesPerRequest;
+
         for (var index = 0; index < items.Count; index++)
         {
             var item = items[index];
@@ -98,6 +101,11 @@ public sealed class CaseInboxService
             {
                 continue;
             }
+
+             if (remainingRealtimeAnalyses <= 0)
+             {
+                 continue;
+             }
 
             var caseModel = await _caseAssemblyService.BuildDomainModelAsync(
                 new BuildCaseFromClaimRequestDto(item.SinId.ToString()),
@@ -119,8 +127,11 @@ public sealed class CaseInboxService
                 Prioridad = prioridad,
                 PrincipalesAlertas = alertTitles.Count == 0 ? null : string.Join("; ", alertTitles),
                 ResumenPreview = analysis.SummaryForAnalyst,
-                FechaUltimaEvaluacion = item.FechaUltimaEvaluacion
+                FechaUltimaEvaluacion = item.FechaUltimaEvaluacion,
+                IsPendingAnalysis = false
             };
+
+            remainingRealtimeAnalyses--;
         }
     }
 

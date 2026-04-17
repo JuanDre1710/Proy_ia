@@ -20,6 +20,7 @@ import { SectionCard } from '../../components/shared/SectionCard';
 import { StatusState } from '../../components/shared/StatusState';
 import { ApiState } from '../../models/domain';
 import { MonitoredCaseListItem } from '../../models/cases';
+import { authService } from '../../services/authService';
 import { caseService } from '../../services/caseService';
 
 const priorityRank: Record<string, number> = {
@@ -78,11 +79,23 @@ function formatTime(value: string | null): string {
 
 function sortCases(items: MonitoredCaseListItem[]): MonitoredCaseListItem[] {
   return [...items].sort((left, right) => {
+    if (left.isPendingAnalysis !== right.isPendingAnalysis) {
+      return left.isPendingAnalysis ? 1 : -1;
+    }
+
+    if (left.isPersisted !== right.isPersisted) {
+      return left.isPersisted ? -1 : 1;
+    }
+
     const leftPriority = priorityRank[left.priority.trim().toLowerCase()] ?? Number.MAX_SAFE_INTEGER;
     const rightPriority = priorityRank[right.priority.trim().toLowerCase()] ?? Number.MAX_SAFE_INTEGER;
 
     if (leftPriority !== rightPriority) {
       return leftPriority - rightPriority;
+    }
+
+    if (left.score !== right.score) {
+      return right.score - left.score;
     }
 
     const leftDate = left.claimDate ? new Date(left.claimDate).getTime() : 0;
@@ -146,6 +159,7 @@ export function CaseInboxPage(): JSX.Element {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [activeActionKey, setActiveActionKey] = useState<string | null>(null);
+  const [activeReviewKey, setActiveReviewKey] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const latestRowsRef = useRef<MonitoredCaseListItem[]>([]);
 
@@ -305,10 +319,39 @@ export function CaseInboxPage(): JSX.Element {
     });
   };
 
+  const openCaseReview = async (row: MonitoredCaseListItem): Promise<void> => {
+    setActionError(null);
+
+    if (row.isPersisted) {
+      navigate(`/cases/${row.caseId}`);
+      return;
+    }
+
+    const reviewKey = buildCaseKey(row);
+    setActiveReviewKey(reviewKey);
+
+    const session = authService.getSession();
+    const requestedBy = session.user?.name ?? 'Usuario frontend';
+    const response = await caseService.createCaseFromClaim({
+      claimId: String(row.sinId),
+      requestedBy,
+      sourceChannel: 'case-inbox-review'
+    });
+
+    setActiveReviewKey(null);
+
+    if (response.status !== 'success' || !response.data?.caseId) {
+      setActionError(response.error ?? 'No se pudo preparar el caso para su revision ampliada.');
+      return;
+    }
+
+    navigate(`/cases/${response.data.caseId}`);
+  };
+
   const handleDecision = async (
     event: MouseEvent<HTMLButtonElement>,
     row: MonitoredCaseListItem,
-    action: 'accept' | 'deny' | 'review'
+    action: 'accept' | 'deny'
   ): Promise<void> => {
     event.stopPropagation();
     setActionError(null);
@@ -455,10 +498,13 @@ export function CaseInboxPage(): JSX.Element {
             size="small"
             variant="outlined"
             color="inherit"
-            disabled={activeActionKey !== null}
-            onClick={(event) => void handleDecision(event, row, 'review')}
+            disabled={activeReviewKey !== null}
+            onClick={(event) => {
+              event.stopPropagation();
+              void openCaseReview(row);
+            }}
           >
-            {activeActionKey === `${buildCaseKey(row)}-review` ? 'Enviando...' : 'Revisar'}
+            {activeReviewKey === buildCaseKey(row) ? 'Abriendo...' : 'Revisar'}
           </Button>
         </Stack>
       )
@@ -469,7 +515,7 @@ export function CaseInboxPage(): JSX.Element {
     <Stack spacing={3}>
       <PageHeader
         title="Bandeja de Casos Antifraude"
-        subtitle="Cola operativa de siniestros pendientes de analisis o con seguimiento abierto, con acciones directas de aceptar, denegar o revisar."
+        subtitle="Resumen inicial de casos analizados y pendientes, con acceso rapido a la revision ampliada del expediente."
       />
 
       {state.status !== 'success' || !state.data ? (
@@ -484,7 +530,7 @@ export function CaseInboxPage(): JSX.Element {
       ) : (
         <SectionCard
           title="Casos monitoreados"
-          subtitle="La bandeja combina siniestros pendientes de analisis con casos operativos aun no cerrados."
+          subtitle="La bandeja combina casos analizados, casos en revision y siniestros pendientes, manteniendo un resumen rapido por fila."
         >
           <Stack spacing={2}>
             {actionError ? <Alert severity="error">{actionError}</Alert> : null}
@@ -585,7 +631,7 @@ export function CaseInboxPage(): JSX.Element {
                   columns={columns}
                   rows={paginatedCases}
                   getRowKey={(row) => buildCaseKey(row)}
-                  isRowClickable={(row) => row.isPersisted}
+                  isRowClickable={() => true}
                   getRowStyle={(row) => {
                     const rowKey = buildCaseKey(row);
 
@@ -603,7 +649,7 @@ export function CaseInboxPage(): JSX.Element {
 
                     return undefined;
                   }}
-                  onRowClick={(row) => navigate(`/cases/${row.caseId}`)}
+                  onRowClick={(row) => void openCaseReview(row)}
                 />
 
                 <TablePagination

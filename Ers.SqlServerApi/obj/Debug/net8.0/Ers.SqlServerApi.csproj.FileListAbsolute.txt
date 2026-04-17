@@ -2,7 +2,6 @@ C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\appsett
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\appsettings.example.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\appsettings.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.staticwebassets.endpoints.json
-C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.exe
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.deps.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.runtimeconfig.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.dll
@@ -136,3 +135,4 @@ C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerApi.runtimeconfig.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerApi.dll
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerApi.pdb
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\Ers.SqlServerApi\bin\Debug\net8.0\Ers.SqlServerApi.exe

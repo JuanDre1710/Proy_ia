@@ -17,6 +17,10 @@ function isSqlCaseId(caseId: string): boolean {
   return /^CASE-/i.test(caseId);
 }
 
+function isNumericCaseReference(caseId: string): boolean {
+  return /^\d+$/.test(caseId.trim());
+}
+
 function mapIdentifierType(value?: string): IdentifierType {
   if (value === 'CUIL' || value === 'CUIT' || value === 'DNI') {
     return value;
@@ -1072,10 +1076,77 @@ function mapMonitoredCase(payload: MonitoredCaseApiResponse): MonitoredCaseListI
   };
 }
 
+const placeholderSummaries = new Set([
+  'Siniestro pendiente de analisis automatico.',
+  'Caso pendiente de analisis automatico. Se registro decision operativa manual.',
+  'Sin resumen disponible.'
+]);
+
+function hasMeaningfulSummary(item: MonitoredCaseListItem): boolean {
+  const summary = item.summaryPreview.trim();
+  return summary.length > 0 && !placeholderSummaries.has(summary);
+}
+
+function scoreCaseRichness(item: MonitoredCaseListItem): number {
+  let score = 0;
+
+  if (item.isPersisted) {
+    score += 2;
+  }
+
+  if (!item.isPendingAnalysis) {
+    score += 3;
+  }
+
+  if (item.score > 0) {
+    score += 2;
+  }
+
+  if (item.allAlerts.length > 0) {
+    score += 2;
+  }
+
+  if (hasMeaningfulSummary(item)) {
+    score += 3;
+  }
+
+  if (item.suggestedAction.trim().length > 0 && item.suggestedAction !== 'Sin accion sugerida') {
+    score += 1;
+  }
+
+  return score;
+}
+
+function mergeCaseItem(current: MonitoredCaseListItem | undefined, candidate: MonitoredCaseListItem): MonitoredCaseListItem {
+  if (!current) {
+    return candidate;
+  }
+
+  const currentRichness = scoreCaseRichness(current);
+  const candidateRichness = scoreCaseRichness(candidate);
+
+  if (candidateRichness > currentRichness) {
+    return candidate;
+  }
+
+  if (candidateRichness < currentRichness) {
+    return current;
+  }
+
+  if (candidate.isPersisted && !current.isPersisted) {
+    return candidate;
+  }
+
+  return current;
+}
+
 export const caseService = {
   async getMonitoredCases(): Promise<ApiState<MonitoredCaseListItem[]>> {
     const headers = authService.getActorHeaders();
-    const urls = [`${sqlApiBaseUrl}/cases`, `${sqlApiBaseUrl}/monitoring/cases`];
+    const take = 60;
+    const urls = [`${sqlApiBaseUrl}/monitoring/cases?take=${take}`, `${sqlApiBaseUrl}/cases?take=${take}`];
+    const merged = new Map<string, MonitoredCaseListItem>();
+    let hasSuccessfulResponse = false;
 
     for (const url of urls) {
       try {
@@ -1084,28 +1155,37 @@ export const caseService = {
           continue;
         }
 
+        hasSuccessfulResponse = true;
         const payload = (await response.json()) as MonitoredCaseApiResponse[];
-        const data = payload
-          .map(mapMonitoredCase)
-          .sort((left, right) => {
-            const priorityCompare = left.priority.localeCompare(right.priority, 'es', { sensitivity: 'base' });
-            if (priorityCompare !== 0) {
-              return priorityCompare;
-            }
 
-            const leftTime = left.claimDate ? new Date(left.claimDate).getTime() : 0;
-            const rightTime = right.claimDate ? new Date(right.claimDate).getTime() : 0;
-            return rightTime - leftTime;
-          });
-
-        return {
-          status: data.length === 0 ? 'empty' : 'success',
-          data,
-          error: null
-        };
+        for (const item of payload.map(mapMonitoredCase)) {
+          const key = item.sinId > 0 ? `sin-${item.sinId}` : `case-${item.caseId}`;
+          const current = merged.get(key);
+          merged.set(key, mergeCaseItem(current, item));
+        }
       } catch (_error) {
         continue;
       }
+    }
+
+    if (hasSuccessfulResponse) {
+      const data = Array.from(merged.values())
+        .sort((left, right) => {
+          const priorityCompare = left.priority.localeCompare(right.priority, 'es', { sensitivity: 'base' });
+          if (priorityCompare !== 0) {
+            return priorityCompare;
+          }
+
+          const leftTime = left.claimDate ? new Date(left.claimDate).getTime() : 0;
+          const rightTime = right.claimDate ? new Date(right.claimDate).getTime() : 0;
+          return rightTime - leftTime;
+        });
+
+      return {
+        status: data.length === 0 ? 'empty' : 'success',
+        data,
+        error: null
+      };
     }
 
     return {
@@ -1204,36 +1284,46 @@ export const caseService = {
     try {
       const headers = authService.getActorHeaders();
       const baseUrl = isSqlCaseId(caseId) ? sqlApiBaseUrl : sqlApiBaseUrl;
-      const response = await fetch(`${baseUrl}/cases/${caseId}`, {
-        headers
-      });
+      const urls = [`${baseUrl}/cases/${caseId}`];
 
-      if (response.status === 404) {
-        return {
-          status: 'empty',
-          data: null,
-          error: 'No se encontro un caso consolidado para el identificador solicitado.'
-        };
+      if (isNumericCaseReference(caseId)) {
+        urls.push(`${sqlApiBaseUrl}/monitoring/cases/${caseId}`);
       }
 
-      if (!response.ok) {
+      for (const url of urls) {
+        const response = await fetch(url, {
+          headers
+        });
+
+        if (response.status === 404) {
+          continue;
+        }
+
+        if (!response.ok) {
+          return {
+            status: 'error',
+            data: null,
+            error: 'No se pudo recuperar el detalle del caso desde el backend.'
+          };
+        }
+
+        const payload = (await response.json()) as Parameters<typeof mapBackendCase>[0] | MonitoredCaseDetailApiResponse;
+        const mapped =
+          'subject' in payload || 'score' in payload && 'metadata' in payload
+            ? mapBackendCase(payload as Parameters<typeof mapBackendCase>[0])
+            : mapMonitoredCaseDetail(payload as MonitoredCaseDetailApiResponse);
+
         return {
-          status: 'error',
-          data: null,
-          error: 'No se pudo recuperar el detalle del caso desde el backend.'
+          status: 'success',
+          data: mapped,
+          error: null
         };
       }
-
-      const payload = (await response.json()) as Parameters<typeof mapBackendCase>[0] | MonitoredCaseDetailApiResponse;
-      const mapped =
-        'subject' in payload || 'score' in payload && 'metadata' in payload
-          ? mapBackendCase(payload as Parameters<typeof mapBackendCase>[0])
-          : mapMonitoredCaseDetail(payload as MonitoredCaseDetailApiResponse);
 
       return {
-        status: 'success',
-        data: mapped,
-        error: null
+        status: 'empty',
+        data: null,
+        error: 'No se encontro un caso consolidado para el identificador solicitado.'
       };
     } catch (_error) {
       return {

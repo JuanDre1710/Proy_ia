@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type RefObject, type SetStateAction, useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Box,
@@ -21,6 +21,7 @@ import RuleRoundedIcon from '@mui/icons-material/RuleRounded';
 import SellRoundedIcon from '@mui/icons-material/SellRounded';
 import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import { DataColumn, DataTable } from '../../components/shared/DataTable';
 import { KpiCard } from '../../components/shared/KpiCard';
 import { PageHeader } from '../../components/shared/PageHeader';
@@ -75,7 +76,27 @@ function normalizeNumericInput(value: string): string {
   return value.replace(/\D/g, '');
 }
 
+type TableChartSeries = {
+  label: string;
+  value: number;
+};
+
+type TableChartType = 'bars-horizontal' | 'bars-vertical' | 'funnel';
+
+type TableChartConfig = {
+  title: string;
+  subtitle: string;
+  series: TableChartSeries[];
+  valueLabel: string;
+  type: TableChartType;
+  note?: string;
+};
+
 export function CommercialAnalyticsPage(): JSX.Element {
+  const topProductsSectionRef = useRef<HTMLDivElement | null>(null);
+  const policyStatusSectionRef = useRef<HTMLDivElement | null>(null);
+  const clientsSectionRef = useRef<HTMLDivElement | null>(null);
+  const quotesSectionRef = useRef<HTMLDivElement | null>(null);
   const [draftFilters, setDraftFilters] = useState<CommercialFilters>(DEFAULT_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState<CommercialFilters>(DEFAULT_FILTERS);
   const [summaryState, setSummaryState] = useState<ApiState<CommercialSummaryData>>({ status: 'loading', data: null, error: null });
@@ -89,18 +110,26 @@ export function CommercialAnalyticsPage(): JSX.Element {
   const [clientDetailState, setClientDetailState] = useState<ApiState<CommercialClientDetail>>({ status: 'idle', data: null, error: null });
   const [productDetailOpen, setProductDetailOpen] = useState(false);
   const [clientDetailOpen, setClientDetailOpen] = useState(false);
+  const [tableChartOpen, setTableChartOpen] = useState(false);
+  const [tableChartConfig, setTableChartConfig] = useState<TableChartConfig | null>(null);
   const [exportMessage, setExportMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [listsEnabled, setListsEnabled] = useState(false);
 
   useEffect(() => {
     let active = true;
 
     const load = async (): Promise<void> => {
+      setListsEnabled(false);
       setSummaryState({ status: 'loading', data: null, error: null });
+      setTopProductsState({ status: 'loading', data: null, error: null });
+      setClientsState({ status: 'loading', data: null, error: null });
+      setQuotesState({ status: 'loading', data: null, error: null });
       const summary = await commercialAnalyticsService.getSummary(appliedFilters);
       if (!active) {
         return;
       }
       setSummaryState(summary);
+      setListsEnabled(true);
     };
 
     void load();
@@ -111,6 +140,10 @@ export function CommercialAnalyticsPage(): JSX.Element {
   }, [appliedFilters]);
 
   useEffect(() => {
+    if (!listsEnabled) {
+      return;
+    }
+
     let active = true;
 
     const load = async (): Promise<void> => {
@@ -127,9 +160,13 @@ export function CommercialAnalyticsPage(): JSX.Element {
     return () => {
       active = false;
     };
-  }, [appliedFilters, topProductsQuery]);
+  }, [appliedFilters, topProductsQuery, listsEnabled]);
 
   useEffect(() => {
+    if (!listsEnabled) {
+      return;
+    }
+
     let active = true;
 
     const load = async (): Promise<void> => {
@@ -146,9 +183,13 @@ export function CommercialAnalyticsPage(): JSX.Element {
     return () => {
       active = false;
     };
-  }, [appliedFilters, clientsQuery]);
+  }, [appliedFilters, clientsQuery, listsEnabled]);
 
   useEffect(() => {
+    if (!listsEnabled) {
+      return;
+    }
+
     let active = true;
 
     const load = async (): Promise<void> => {
@@ -165,7 +206,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
     return () => {
       active = false;
     };
-  }, [appliedFilters, quotesQuery]);
+  }, [appliedFilters, quotesQuery, listsEnabled]);
 
   const handleFilterChange = (key: keyof CommercialFilters, value: string): void => {
     setDraftFilters((current) => ({ ...current, [key]: value }));
@@ -244,6 +285,15 @@ export function CommercialAnalyticsPage(): JSX.Element {
     );
   };
 
+  const scrollToSection = (sectionRef: RefObject<HTMLDivElement | null>): void => {
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const openTableChart = (config: TableChartConfig): void => {
+    setTableChartConfig(config);
+    setTableChartOpen(true);
+  };
+
   return (
     <Stack spacing={3}>
       <PageHeader
@@ -320,11 +370,31 @@ export function CommercialAnalyticsPage(): JSX.Element {
                 <PersonOffRoundedIcon key="without-policy" />,
                 <TrendingDownRoundedIcon key="quotes" />
               ];
-              const clickable = index === 1 && summary.topProduct;
+              const actions: Array<(() => void) | null> = [
+                () => scrollToSection(policyStatusSectionRef),
+                summary.topProduct ? () => void handleOpenProductDetail(summary.topProduct!) : () => scrollToSection(topProductsSectionRef),
+                () => scrollToSection(clientsSectionRef),
+                () => scrollToSection(quotesSectionRef)
+              ];
+              const onClick = actions[index];
 
               return (
                 <Grid key={card.label} item xs={12} sm={6} xl={3}>
-                  <Box onClick={clickable ? () => void handleOpenProductDetail(summary.topProduct!) : undefined} sx={clickable ? { cursor: 'pointer' } : undefined}>
+                  <Box
+                    onClick={onClick ?? undefined}
+                    sx={
+                      onClick
+                        ? {
+                            cursor: 'pointer',
+                            borderRadius: 5,
+                            transition: 'transform 120ms ease, box-shadow 120ms ease',
+                            '&:hover': {
+                              transform: 'translateY(-2px)'
+                            }
+                          }
+                        : undefined
+                    }
+                  >
                     <KpiCard label={card.label} value={card.value} detail={card.detail} icon={icons[index]} />
                   </Box>
                 </Grid>
@@ -334,6 +404,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
 
           <Grid container spacing={2}>
             <Grid item xs={12} xl={8}>
+              <Box ref={topProductsSectionRef}>
               <SectionCard title="Ranking de productos" subtitle="Click en una fila para ver desglose por plan, sucursal, canal y vendedor.">
                 <Stack spacing={2}>
                   <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} justifyContent="space-between">
@@ -341,6 +412,26 @@ export function CommercialAnalyticsPage(): JSX.Element {
                       Producto lider actual: <strong>{summary.topProduct?.name ?? 'No disponible'}</strong>
                     </Alert>
                     <Stack direction="row" gap={1}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<BarChartRoundedIcon />}
+                        disabled={!topProducts || topProducts.items.length === 0}
+                        onClick={() =>
+                          openTableChart({
+                            title: 'Grafico de ranking de productos',
+                            subtitle: 'Polizas emitidas por producto en la pagina actual.',
+                            valueLabel: 'polizas',
+                            type: 'bars-horizontal',
+                            series:
+                              topProducts?.items.slice(0, 8).map((item) => ({
+                                label: item.name,
+                                value: item.policiesSold
+                              })) ?? []
+                          })
+                        }
+                      >
+                        Ver grafico
+                      </Button>
                       <TextField select size="small" label="Orden" value={topProductsQuery.sortBy ?? 'policiesSold'} onChange={(event) => setTopProductsQuery((current) => ({ ...current, sortBy: event.target.value, offset: 0 }))} sx={{ minWidth: 160 }}>
                         <MenuItem value="policiesSold">Polizas</MenuItem>
                         <MenuItem value="name">Nombre</MenuItem>
@@ -362,9 +453,11 @@ export function CommercialAnalyticsPage(): JSX.Element {
                   )}
                 </Stack>
               </SectionCard>
+              </Box>
             </Grid>
 
             <Grid item xs={12} xl={4}>
+              <Box ref={policyStatusSectionRef}>
               <SectionCard title="Estados de poliza" subtitle="Distribucion operativa de `PZA_ESTADO` para el recorte actual.">
                 <Stack spacing={1.25}>
                   {summary.policyStatusBreakdown.length === 0 ? (
@@ -379,15 +472,44 @@ export function CommercialAnalyticsPage(): JSX.Element {
                   )}
                 </Stack>
               </SectionCard>
+              </Box>
             </Grid>
           </Grid>
 
           <Grid container spacing={2}>
             <Grid item xs={12}>
+              <Box ref={clientsSectionRef}>
               <SectionCard title="Clientes sin poliza" subtitle="Click en una fila para abrir el detalle resumido del cliente.">
                 <Stack spacing={2}>
                   <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} justifyContent="space-between">
                     <Stack direction="row" gap={1}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<BarChartRoundedIcon />}
+                        disabled={!clients || clients.items.length === 0}
+                        onClick={() =>
+                          openTableChart({
+                            title: 'Grafico de clientes sin poliza',
+                            subtitle: 'Distribucion de clientes con y sin cotizacion en la pagina actual.',
+                            valueLabel: 'clientes',
+                            type: 'bars-vertical',
+                            series: clients
+                              ? [
+                                  {
+                                    label: 'Cotizo',
+                                    value: clients.items.filter((item) => item.hasQuotes).length
+                                  },
+                                  {
+                                    label: 'Sin cotizacion',
+                                    value: clients.items.filter((item) => !item.hasQuotes).length
+                                  }
+                                ]
+                              : []
+                          })
+                        }
+                      >
+                        Ver grafico
+                      </Button>
                       <TextField select size="small" label="Orden" value={clientsQuery.sortBy ?? 'clientId'} onChange={(event) => setClientsQuery((current) => ({ ...current, sortBy: event.target.value, offset: 0 }))} sx={{ minWidth: 170 }}>
                         <MenuItem value="clientId">Id cliente</MenuItem>
                         <MenuItem value="displayName">Cliente</MenuItem>
@@ -411,13 +533,42 @@ export function CommercialAnalyticsPage(): JSX.Element {
                   )}
                 </Stack>
               </SectionCard>
+              </Box>
             </Grid>
 
             <Grid item xs={12}>
+              <Box ref={quotesSectionRef}>
               <SectionCard title="Cotizaron y no compraron" subtitle="Click en una fila para abrir el detalle resumido del cliente.">
                 <Stack spacing={2}>
                   <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} justifyContent="space-between">
                     <Stack direction="row" gap={1}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<BarChartRoundedIcon />}
+                        disabled={!quotes || quotes.items.length === 0}
+                        onClick={() =>
+                          openTableChart({
+                            title: 'Funnel de cotizaciones sin compra',
+                            subtitle: 'Embudo visual de concentracion de caidas por tipo de producto cotizado en la pagina actual.',
+                            valueLabel: 'cotizaciones',
+                            type: 'funnel',
+                            note: 'La API actual no expone etapas completas de conversion cotizacion -> emision. Este funnel muestra concentracion de caidas por tipo cotizado, no conversion punta a punta.',
+                            series: quotes
+                              ? Array.from(
+                                  quotes.items.reduce((acc, item) => {
+                                    acc.set(item.productTypeDescription, (acc.get(item.productTypeDescription) ?? 0) + 1);
+                                    return acc;
+                                  }, new Map<string, number>())
+                                )
+                                  .map(([label, value]) => ({ label, value }))
+                                  .sort((a, b) => b.value - a.value)
+                                  .slice(0, 8)
+                              : []
+                          })
+                        }
+                      >
+                        Ver grafico
+                      </Button>
                       <TextField select size="small" label="Orden" value={quotesQuery.sortBy ?? 'quoteDate'} onChange={(event) => setQuotesQuery((current) => ({ ...current, sortBy: event.target.value, offset: 0 }))} sx={{ minWidth: 170 }}>
                         <MenuItem value="quoteDate">Fecha</MenuItem>
                         <MenuItem value="displayName">Cliente</MenuItem>
@@ -440,6 +591,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
                   )}
                 </Stack>
               </SectionCard>
+              </Box>
             </Grid>
           </Grid>
 
@@ -482,6 +634,17 @@ export function CommercialAnalyticsPage(): JSX.Element {
             <StatusState status={clientDetailState.status} message={clientDetailState.error ?? 'No se pudo recuperar el detalle del cliente.'} />
           ) : (
             <ClientDetailContent detail={clientDetailState.data} />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={tableChartOpen} onClose={() => setTableChartOpen(false)} maxWidth="md" fullWidth>
+        <DialogTitle>{tableChartConfig?.title ?? 'Grafico'}</DialogTitle>
+        <DialogContent>
+          {!tableChartConfig ? (
+            <StatusState status="empty" message="No hay grafico disponible." />
+          ) : (
+            <TableChartContent config={tableChartConfig} />
           )}
         </DialogContent>
       </Dialog>
@@ -620,5 +783,154 @@ function MetricRow({ title, detail }: { title: string; detail: string }): JSX.El
       <Typography fontWeight={600}>{title}</Typography>
       <Typography color="text.secondary">{detail}</Typography>
     </Box>
+  );
+}
+
+function TableChartContent({ config }: { config: TableChartConfig }): JSX.Element {
+  const maxValue = Math.max(...config.series.map((item) => item.value), 1);
+
+  return (
+    <Stack spacing={2.5}>
+      <Alert severity="info">{config.subtitle}</Alert>
+      {config.note ? <Alert severity="warning">{config.note}</Alert> : null}
+      {config.series.length === 0 ? (
+        <Typography color="text.secondary">No hay datos suficientes para graficar.</Typography>
+      ) : config.type === 'bars-horizontal' ? (
+        <HorizontalBarChart series={config.series} maxValue={maxValue} valueLabel={config.valueLabel} />
+      ) : config.type === 'bars-vertical' ? (
+        <VerticalBarChart series={config.series} maxValue={maxValue} valueLabel={config.valueLabel} />
+      ) : (
+        <FunnelChart series={config.series} maxValue={maxValue} valueLabel={config.valueLabel} />
+      )}
+    </Stack>
+  );
+}
+
+function HorizontalBarChart({
+  series,
+  maxValue,
+  valueLabel
+}: {
+  series: TableChartSeries[];
+  maxValue: number;
+  valueLabel: string;
+}): JSX.Element {
+  return (
+    <Stack spacing={1.25}>
+      {series.map((item) => {
+        const width = `${Math.max((item.value / maxValue) * 100, 6)}%`;
+
+        return (
+          <Box key={item.label}>
+            <Stack direction="row" justifyContent="space-between" gap={2} sx={{ mb: 0.75 }}>
+              <Typography fontWeight={600}>{item.label}</Typography>
+              <Typography color="text.secondary">
+                {commercialAnalyticsService.formatInteger(item.value)} {valueLabel}
+              </Typography>
+            </Stack>
+            <Box sx={{ height: 14, borderRadius: 999, bgcolor: 'rgba(16, 36, 58, 0.08)', overflow: 'hidden' }}>
+              <Box
+                sx={{
+                  width,
+                  height: '100%',
+                  borderRadius: 999,
+                  background: 'linear-gradient(90deg, #0d3b66 0%, #0c7b93 100%)'
+                }}
+              />
+            </Box>
+          </Box>
+        );
+      })}
+    </Stack>
+  );
+}
+
+function VerticalBarChart({
+  series,
+  maxValue,
+  valueLabel
+}: {
+  series: TableChartSeries[];
+  maxValue: number;
+  valueLabel: string;
+}): JSX.Element {
+  return (
+    <Stack spacing={1.5}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 2, minHeight: 220, pt: 2 }}>
+        {series.map((item) => {
+          const height = `${Math.max((item.value / maxValue) * 100, 12)}%`;
+
+          return (
+            <Stack key={item.label} spacing={1} sx={{ flex: 1, alignItems: 'center' }}>
+              <Typography variant="body2" color="text.secondary">
+                {commercialAnalyticsService.formatInteger(item.value)}
+              </Typography>
+              <Box sx={{ width: '100%', height: 160, display: 'flex', alignItems: 'flex-end' }}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    height,
+                    borderRadius: '16px 16px 6px 6px',
+                    background: 'linear-gradient(180deg, #0c7b93 0%, #0d3b66 100%)'
+                  }}
+                />
+              </Box>
+              <Typography align="center" fontWeight={600}>
+                {item.label}
+              </Typography>
+            </Stack>
+          );
+        })}
+      </Box>
+      <Typography variant="body2" color="text.secondary">
+        Valores expresados en {valueLabel}.
+      </Typography>
+    </Stack>
+  );
+}
+
+function FunnelChart({
+  series,
+  maxValue,
+  valueLabel
+}: {
+  series: TableChartSeries[];
+  maxValue: number;
+  valueLabel: string;
+}): JSX.Element {
+  return (
+    <Stack spacing={1.5}>
+      {series.map((item, index) => {
+        const width = `${Math.max((item.value / maxValue) * 100, 24)}%`;
+        const opacity = Math.max(1 - index * 0.08, 0.45);
+
+        return (
+          <Stack key={item.label} spacing={0.75} sx={{ alignItems: 'center' }}>
+            <Box
+              sx={{
+                width,
+                minWidth: 160,
+                px: 2,
+                py: 1.25,
+                borderRadius: 3,
+                color: '#fff',
+                textAlign: 'center',
+                background: `linear-gradient(90deg, rgba(13,59,102,${opacity}) 0%, rgba(12,123,147,${opacity}) 100%)`
+              }}
+            >
+              <Typography fontWeight={700}>{item.label}</Typography>
+              <Typography variant="body2">
+                {commercialAnalyticsService.formatInteger(item.value)} {valueLabel}
+              </Typography>
+            </Box>
+            {index < series.length - 1 ? (
+              <Typography color="text.secondary" variant="body2">
+                ↓
+              </Typography>
+            ) : null}
+          </Stack>
+        );
+      })}
+    </Stack>
   );
 }

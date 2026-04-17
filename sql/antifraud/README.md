@@ -37,6 +37,14 @@ Una vez ejecutados los scripts:
 6. ejecutar `POST /monitoring/run` si se desea precargar casos ya analizados automaticamente
 7. validar persistencia en `AF_MONITORED_CASES`
 
+## Opcion desde la API
+
+Si la API SQL corre con un usuario que tiene permisos DDL sobre la base, se puede pedir la creacion desde:
+
+- `POST /monitoring/infrastructure/apply`
+
+La ruta ejecuta los scripts versionados de `sql/antifraud/` en orden y devuelve el diagnostico actualizado.
+
 ## Nota operativa
 
 Mientras esta infraestructura no exista, la API arranca en modo degradado:

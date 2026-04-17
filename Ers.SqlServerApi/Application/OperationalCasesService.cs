@@ -39,12 +39,56 @@ public sealed class OperationalCasesService
 
         var items = await _dbContext.MonitoredCases
             .AsNoTracking()
+            .Select(entity => new
+            {
+                entity.CaseId,
+                entity.SinId,
+                entity.NroSiniestro,
+                entity.ClientDisplayName,
+                entity.FechaSiniestro,
+                entity.Score,
+                entity.NivelRiesgo,
+                entity.Prioridad,
+                entity.EstadoCaso,
+                entity.Decision,
+                entity.FraudeConfirmado,
+                entity.Alertas,
+                entity.ResumenPreview,
+                entity.FechaUltimaEvaluacion,
+                entity.PrioridadOrden
+            })
             .OrderByDescending(item => item.PrioridadOrden)
             .ThenByDescending(item => item.FechaUltimaEvaluacion)
             .Take(take)
             .ToListAsync(cancellationToken);
 
-        return items.Select(MapListItem).ToList();
+        return items
+            .Select(item =>
+            {
+                var alerts = Deserialize<List<RiskAlertDto>>(item.Alertas) ?? new List<RiskAlertDto>();
+                var topAlerts = alerts.Count == 0
+                    ? null
+                    : string.Join("; ", alerts.Take(3).Select(alert => alert.Title));
+
+                return new MonitoredCaseListItemDto(
+                    item.CaseId.ToString(),
+                    item.SinId,
+                    item.NroSiniestro,
+                    item.ClientDisplayName,
+                    item.FechaSiniestro,
+                    item.Score,
+                    item.NivelRiesgo,
+                    item.Prioridad,
+                    item.EstadoCaso,
+                    item.Decision,
+                    item.FraudeConfirmado,
+                    topAlerts,
+                    item.ResumenPreview,
+                    item.FechaUltimaEvaluacion,
+                    true,
+                    false);
+            })
+            .ToList();
     }
 
     public async Task<MonitoredCaseDetailDto?> GetBySinIdAsync(
@@ -143,32 +187,6 @@ public sealed class OperationalCasesService
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         return await GetBySinIdAsync(sinId, cancellationToken);
-    }
-
-    private static MonitoredCaseListItemDto MapListItem(MonitoredCaseEntity entity)
-    {
-        var alerts = Deserialize<List<RiskAlertDto>>(entity.Alertas) ?? new List<RiskAlertDto>();
-        var topAlerts = alerts.Count == 0
-            ? null
-            : string.Join("; ", alerts.Take(3).Select(item => item.Title));
-
-        return new MonitoredCaseListItemDto(
-            entity.CaseId.ToString(),
-            entity.SinId,
-            entity.NroSiniestro,
-            entity.ClientDisplayName,
-            entity.FechaSiniestro,
-            entity.Score,
-            entity.NivelRiesgo,
-            entity.Prioridad,
-            entity.EstadoCaso,
-            entity.Decision,
-            entity.FraudeConfirmado,
-            topAlerts,
-            entity.ResumenPreview,
-            entity.FechaUltimaEvaluacion,
-            true,
-            false);
     }
 
     private static MonitoredCaseDetailDto MapDetail(MonitoredCaseEntity entity)

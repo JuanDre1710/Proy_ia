@@ -355,10 +355,10 @@ public sealed class CommercialAnalyticsService
             lastPolicyDate = ReadNullableDateTime(reader, 6);
         }
 
-        var plansTask = ReadProductPlanBreakdownAsync(connection, normalized, productId, cancellationToken);
-        var branchesTask = ReadProductDimensionBreakdownAsync(connection, normalized, productId, "branch", cancellationToken);
-        var channelsTask = ReadProductDimensionBreakdownAsync(connection, normalized, productId, "channel", cancellationToken);
-        var sellersTask = ReadProductDimensionBreakdownAsync(connection, normalized, productId, "seller", cancellationToken);
+        var plansTask = ReadProductPlanBreakdownSafeAsync(connection, normalized, productId, cancellationToken);
+        var branchesTask = ReadProductDimensionBreakdownSafeAsync(connection, normalized, productId, "branch", cancellationToken);
+        var channelsTask = ReadProductDimensionBreakdownSafeAsync(connection, normalized, productId, "channel", cancellationToken);
+        var sellersTask = ReadProductDimensionBreakdownSafeAsync(connection, normalized, productId, "seller", cancellationToken);
 
         await Task.WhenAll(plansTask, branchesTask, channelsTask, sellersTask);
 
@@ -1038,9 +1038,7 @@ public sealed class CommercialAnalyticsService
             SELECT TOP 10
                 pl.PLA_ID,
                 CONVERT(nvarchar(200), pl.PLA_DESCRIPCION) AS PLAN_NAME,
-                COUNT(*) AS POLICIES_SOLD,
-                COUNT(DISTINCT p.CLI_IDTITULAR) AS UNIQUE_CLIENTS,
-                SUM(COALESCE(p.PZA_PREMIOCALC, 0)) AS TOTAL_PREMIUM
+                COUNT(*) AS POLICIES_SOLD
             FROM POLIZAS p
             INNER JOIN PLANES pl
                 ON pl.PLA_ID = p.PLA_ID
@@ -1054,7 +1052,7 @@ public sealed class CommercialAnalyticsService
             """;
 
         var items = new List<CommercialPlanBreakdownDto>();
-        await using var command = CreateCommand(connection, sql, query);
+        await using var command = CreateCommand(connection, sql, query, commandTimeoutSeconds: HeavyCommercialQueryTimeoutSeconds);
         command.Parameters["@productId"].Value = productId;
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
 
@@ -1064,8 +1062,8 @@ public sealed class CommercialAnalyticsService
                 ReadInt32(reader, 0),
                 ReadString(reader, 1) ?? "Plan sin descripcion",
                 ReadInt32(reader, 2),
-                ReadInt32(reader, 3),
-                ReadDecimal(reader, 4)));
+                0,
+                0m));
         }
 
         return items;
@@ -1090,7 +1088,7 @@ public sealed class CommercialAnalyticsService
                 "COUNT(*) DESC, COALESCE(p.VDO_IDCANALVENTA, 0)"),
             _ => (
                 "COALESCE(NULLIF(LTRIM(RTRIM(CONCAT(CONVERT(nvarchar(100), v.VCV_APELLIDO), N' ', CONVERT(nvarchar(100), v.VCV_NOMBRE)))), N''), CONCAT(N'Vendedor ', CONVERT(nvarchar(50), COALESCE(v.VCV_ID, 0)))) AS LABEL, COALESCE(v.VCV_ID, 0) AS VALUE",
-                "COALESCE(NULLIF(LTRIM(RTRIM(CONCAT(CONVERT(nvarchar(100), v.VCV_APELLIDO), N' ', CONVERT(nvarchar(100), v.VCV_NOMBRE)))), N''), CONCAT(N'Vendedor ', CONVERT(nvarchar(50), COALESCE(v.VCV_ID, 0))), COALESCE(v.VCV_ID, 0)",
+                "COALESCE(NULLIF(LTRIM(RTRIM(CONCAT(CONVERT(nvarchar(100), v.VCV_APELLIDO), N' ', CONVERT(nvarchar(100), v.VCV_NOMBRE)))), N''), CONCAT(N'Vendedor ', CONVERT(nvarchar(50), COALESCE(v.VCV_ID, 0)))), COALESCE(v.VCV_ID, 0)",
                 "COUNT(*) DESC, COALESCE(v.VCV_ID, 0)")
         };
 
@@ -1112,9 +1110,7 @@ public sealed class CommercialAnalyticsService
         var sql = $"""
             SELECT TOP 10
                 {selectSql},
-                COUNT(*) AS POLICIES_SOLD,
-                COUNT(DISTINCT p.CLI_IDTITULAR) AS UNIQUE_CLIENTS,
-                SUM(COALESCE(p.PZA_PREMIOCALC, 0)) AS TOTAL_PREMIUM
+                COUNT(*) AS POLICIES_SOLD
             FROM POLIZAS p
             INNER JOIN PLANES pl
                 ON pl.PLA_ID = p.PLA_ID
@@ -1129,7 +1125,7 @@ public sealed class CommercialAnalyticsService
             """;
 
         var items = new List<CommercialDimensionBreakdownDto>();
-        await using var command = CreateCommand(connection, sql, query);
+        await using var command = CreateCommand(connection, sql, query, commandTimeoutSeconds: HeavyCommercialQueryTimeoutSeconds);
         command.Parameters["@productId"].Value = productId;
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
 
@@ -1139,11 +1135,44 @@ public sealed class CommercialAnalyticsService
                 ReadString(reader, 0) ?? "Sin dato",
                 ReadInt32(reader, 1),
                 ReadInt32(reader, 2),
-                ReadInt32(reader, 3),
-                ReadDecimal(reader, 4)));
+                0,
+                0m));
         }
 
         return items;
+    }
+
+    private async Task<IReadOnlyList<CommercialPlanBreakdownDto>> ReadProductPlanBreakdownSafeAsync(
+        SqlConnection connection,
+        CommercialAnalyticsQueryDto query,
+        int productId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await ReadProductPlanBreakdownAsync(connection, query, productId, cancellationToken);
+        }
+        catch (SqlException ex) when (IsSqlTimeout(ex))
+        {
+            return Array.Empty<CommercialPlanBreakdownDto>();
+        }
+    }
+
+    private async Task<IReadOnlyList<CommercialDimensionBreakdownDto>> ReadProductDimensionBreakdownSafeAsync(
+        SqlConnection connection,
+        CommercialAnalyticsQueryDto query,
+        int productId,
+        string dimension,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await ReadProductDimensionBreakdownAsync(connection, query, productId, dimension, cancellationToken);
+        }
+        catch (SqlException ex) when (IsSqlTimeout(ex))
+        {
+            return Array.Empty<CommercialDimensionBreakdownDto>();
+        }
     }
 
     private static async Task<IReadOnlyList<CommercialClientQuoteSummaryDto>> ReadClientRecentQuotesAsync(

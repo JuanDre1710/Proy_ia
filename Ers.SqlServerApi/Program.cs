@@ -5,7 +5,18 @@ using Ers.SqlServerApi.Application;
 using Ers.SqlServerApi.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
-var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Switch.Microsoft.Data.SqlClient.UseSystemDefaultSecureProtocols", true);
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = AppContext.BaseDirectory
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 var startupConnectionString =
     (builder.Configuration.GetConnectionString("DefaultConnection")
      ?? builder.Configuration["ConnectionStrings:DefaultConnection"]
@@ -18,7 +29,23 @@ builder.Services.AddCors(options =>
     options.AddPolicy("FrontendDev", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:4200")
+            .SetIsOriginAllowed(origin =>
+            {
+                if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri))
+                {
+                    return false;
+                }
+
+                var isLocalHost =
+                    string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase);
+
+                var isHttp =
+                    string.Equals(uri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase);
+
+                return isLocalHost && isHttp;
+            })
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -437,6 +464,28 @@ app.MapGet(
             return Results.Ok(response);
         })
     .WithName("GetMonitoringDiagnostics")
+    .WithTags("monitoring")
+    .WithOpenApi();
+
+app.MapPost(
+        "/monitoring/infrastructure/apply",
+        async (
+            AntifraudInfrastructureService infrastructureService,
+            AntifraudInfrastructureStatusService statusService,
+            CancellationToken cancellationToken) =>
+        {
+            await infrastructureService.EnsureInfrastructureAsync(cancellationToken);
+
+            var diagnostics = await statusService.GetDiagnosticsAsync(cancellationToken);
+            return Results.Ok(new
+            {
+                status = diagnostics.Status,
+                message = diagnostics.Message,
+                appliedScripts = infrastructureService.GetScriptPaths(),
+                diagnostics
+            });
+        })
+    .WithName("ApplyMonitoringInfrastructure")
     .WithTags("monitoring")
     .WithOpenApi();
 
