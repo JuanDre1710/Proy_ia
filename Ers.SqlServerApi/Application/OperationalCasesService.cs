@@ -358,9 +358,11 @@ public sealed class OperationalCasesService
                     DecisionHistoryTableExists: false,
                     SourceIndexExists: false,
                     PersistenceEnabled: false,
-                    Status: "pending_infrastructure",
+                    Status: "connection_not_configured",
                     Message: "La cadena de conexion DefaultConnection no esta configurada para el subsistema antifraude.",
-                    MissingObjects: new[] { "ConnectionStrings:DefaultConnection" }));
+                    MissingObjects: new[] { "ConnectionStrings:DefaultConnection" },
+                    ConnectionAvailable: false,
+                    FailureCode: "missing_connection_string"));
         }
 
         var diagnostics = await _infrastructureStatusService.GetDiagnosticsAsync(cancellationToken);

@@ -36,25 +36,6 @@ public sealed class CommercialAnalyticsService
         _claimsDbContext = claimsDbContext;
     }
 
-    public async Task<CommercialDashboardResponseDto> GetDashboardAsync(
-        CommercialAnalyticsQueryDto query,
-        CancellationToken cancellationToken = default)
-    {
-        var normalized = Normalize(query);
-        var summaryTask = GetSummaryAsync(normalized, cancellationToken);
-        var topProductsTask = GetTopProductsAsync(normalized, cancellationToken);
-        var clientsWithoutPoliciesTask = GetClientsWithoutPoliciesAsync(normalized, cancellationToken);
-        var quotedNotBoughtTask = GetQuotedNotBoughtAsync(normalized, cancellationToken);
-
-        await Task.WhenAll(summaryTask, topProductsTask, clientsWithoutPoliciesTask, quotedNotBoughtTask);
-
-        return new CommercialDashboardResponseDto(
-            await summaryTask,
-            await topProductsTask,
-            await clientsWithoutPoliciesTask,
-            await quotedNotBoughtTask);
-    }
-
     public async Task<CommercialSummaryResponseDto> GetSummaryAsync(
         CommercialAnalyticsQueryDto query,
         CancellationToken cancellationToken = default)
@@ -105,7 +86,7 @@ public sealed class CommercialAnalyticsService
 
         try
         {
-            quotedNotBoughtCount = await ReadQuotedNotBoughtCountAsync(normalized, cancellationToken);
+            quotedNotBoughtCount = (await ReadQuotedNotBoughtCountsAsync(normalized, cancellationToken)).TotalCount;
         }
         catch (SqlException ex) when (IsSqlTimeout(ex))
         {
@@ -189,10 +170,14 @@ public sealed class CommercialAnalyticsService
         {
             var items = await ReadClientsWithoutPoliciesItemsAsync(normalized, cancellationToken);
             int totalCount;
+            int withQuotesCount = 0;
+            int withoutQuotesCount = 0;
 
             try
             {
                 totalCount = await ReadClientsWithoutPoliciesCountAsync(cancellationToken);
+                withQuotesCount = await ReadClientsWithoutPoliciesWithQuotesCountAsync(cancellationToken);
+                withoutQuotesCount = Math.Max(0, totalCount - withQuotesCount);
             }
             catch (SqlException ex) when (IsSqlTimeout(ex))
             {
@@ -205,6 +190,8 @@ public sealed class CommercialAnalyticsService
                 NoPolicyClientFilterSupport,
                 unsupportedFilters,
                 totalCount,
+                withQuotesCount,
+                withoutQuotesCount,
                 normalized.Offset ?? 0,
                 normalized.Take ?? 50,
                 items);
@@ -217,6 +204,8 @@ public sealed class CommercialAnalyticsService
                 ToFilters(normalized),
                 NoPolicyClientFilterSupport,
                 unsupportedFilters,
+                0,
+                0,
                 0,
                 normalized.Offset ?? 0,
                 normalized.Take ?? 50,
@@ -241,10 +230,17 @@ public sealed class CommercialAnalyticsService
         {
             var items = await ReadQuotedNotBoughtItemsAsync(normalized, cancellationToken);
             int totalCount;
+            int boughtAfterQuoteCount = 0;
+            int neverHadPolicyCount = 0;
+            int unclassifiedCount = 0;
 
             try
             {
-                totalCount = await ReadQuotedNotBoughtCountAsync(normalized, cancellationToken);
+                var counts = await ReadQuotedNotBoughtCountsAsync(normalized, cancellationToken);
+                totalCount = counts.TotalCount;
+                boughtAfterQuoteCount = counts.BoughtAfterQuoteCount;
+                neverHadPolicyCount = counts.NeverHadPolicyCount;
+                unclassifiedCount = counts.UnclassifiedCount;
             }
             catch (SqlException ex) when (IsSqlTimeout(ex))
             {
@@ -257,6 +253,9 @@ public sealed class CommercialAnalyticsService
                 QuoteFilterSupport,
                 unsupportedFilters,
                 totalCount,
+                boughtAfterQuoteCount,
+                neverHadPolicyCount,
+                unclassifiedCount,
                 normalized.Offset ?? 0,
                 normalized.Take ?? 50,
                 items);
@@ -269,6 +268,9 @@ public sealed class CommercialAnalyticsService
                 ToFilters(normalized),
                 QuoteFilterSupport,
                 unsupportedFilters,
+                0,
+                0,
+                0,
                 0,
                 normalized.Offset ?? 0,
                 normalized.Take ?? 50,
@@ -797,6 +799,34 @@ public sealed class CommercialAnalyticsService
         return Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken) ?? 0);
     }
 
+    private async Task<int> ReadClientsWithoutPoliciesWithQuotesCountAsync(CancellationToken cancellationToken)
+    {
+        const string sql = """
+            WITH policy_holders AS (
+                SELECT DISTINCT p.CLI_IDTITULAR
+                FROM POLIZAS p
+                WHERE p.CLI_IDTITULAR IS NOT NULL
+            )
+            SELECT COUNT(*)
+            FROM (
+                SELECT DISTINCT q.CLI_ID
+                FROM COTIZACIONES q
+                INNER JOIN EXT_CLIENTES c
+                    ON c.CLI_ID = q.CLI_ID
+                LEFT JOIN policy_holders holders
+                    ON holders.CLI_IDTITULAR = c.CLI_ID
+                WHERE holders.CLI_IDTITULAR IS NULL
+            ) quoted_clients_without_policy;
+            """;
+
+        await using var connection = CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        command.CommandTimeout = HeavyCommercialQueryTimeoutSeconds;
+        return Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken) ?? 0);
+    }
+
     private async Task<IReadOnlyList<CommercialClientWithoutPolicyDto>> ReadClientsWithoutPoliciesItemsAsync(
         CommercialAnalyticsQueryDto query,
         CancellationToken cancellationToken)
@@ -908,7 +938,7 @@ public sealed class CommercialAnalyticsService
         return result;
     }
 
-    private async Task<int> ReadQuotedNotBoughtCountAsync(
+    private async Task<(int TotalCount, int BoughtAfterQuoteCount, int NeverHadPolicyCount, int UnclassifiedCount)> ReadQuotedNotBoughtCountsAsync(
         CommercialAnalyticsQueryDto query,
         CancellationToken cancellationToken)
     {
@@ -928,23 +958,53 @@ public sealed class CommercialAnalyticsService
                     c.CLI_ID IS NOT NULL AND
                     (@startDate IS NULL OR c.COT_FECHA >= @startDate) AND
                     (@endDateExclusive IS NULL OR c.COT_FECHA < @endDateExclusive)
+            ),
+            classified_quotes AS (
+                SELECT
+                    q.CLI_ID,
+                    CASE
+                        WHEN EXISTS (
+                            SELECT 1
+                            FROM POLIZAS p
+                            WHERE p.CLI_IDTITULAR = q.CLI_ID
+                              AND p.PZA_FECALTA >= q.COT_FECHA
+                        ) THEN 1
+                        ELSE 0
+                    END AS BOUGHT_AFTER_QUOTE,
+                    CASE
+                        WHEN NOT EXISTS (
+                            SELECT 1
+                            FROM POLIZAS p
+                            WHERE p.CLI_IDTITULAR = q.CLI_ID
+                        ) THEN 1
+                        ELSE 0
+                    END AS NEVER_HAD_POLICY
+                FROM latest_quotes q
+                WHERE q.RN = 1
             )
-            SELECT COUNT(*)
-            FROM latest_quotes q
-            WHERE
-                q.RN = 1 AND
-                NOT EXISTS (
-                    SELECT 1
-                    FROM POLIZAS p
-                    WHERE p.CLI_IDTITULAR = q.CLI_ID
-                      AND p.PZA_FECALTA >= q.COT_FECHA
-                );
+            SELECT
+                COUNT(*) AS TOTAL_COUNT,
+                SUM(CASE WHEN cq.BOUGHT_AFTER_QUOTE = 1 THEN 1 ELSE 0 END) AS BOUGHT_AFTER_QUOTE_COUNT,
+                SUM(CASE WHEN cq.NEVER_HAD_POLICY = 1 THEN 1 ELSE 0 END) AS NEVER_HAD_POLICY_COUNT,
+                SUM(CASE WHEN cq.BOUGHT_AFTER_QUOTE = 0 AND cq.NEVER_HAD_POLICY = 0 THEN 1 ELSE 0 END) AS UNCLASSIFIED_COUNT
+            FROM classified_quotes cq
+            WHERE cq.BOUGHT_AFTER_QUOTE = 1 OR cq.NEVER_HAD_POLICY = 1;
             """;
 
         await using var connection = CreateConnection();
         await connection.OpenAsync(cancellationToken);
         await using var command = CreateCommand(connection, sql, query, commandTimeoutSeconds: HeavyCommercialQueryTimeoutSeconds);
-        return Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken) ?? 0);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        if (!await reader.ReadAsync(cancellationToken))
+        {
+            return (0, 0, 0, 0);
+        }
+
+        return (
+            ReadInt32(reader, 0),
+            ReadInt32(reader, 1),
+            ReadInt32(reader, 2),
+            ReadInt32(reader, 3));
     }
 
     private async Task<IReadOnlyList<CommercialQuotedNotBoughtDto>> ReadQuotedNotBoughtItemsAsync(
@@ -987,7 +1047,24 @@ public sealed class CommercialAnalyticsService
                 q.COT_ID,
                 q.COT_FECHA,
                 q.TPR_ID,
-                CONVERT(nvarchar(200), tp.TPR_DESCRIPCION) AS PRODUCT_TYPE_DESCRIPTION
+                CONVERT(nvarchar(200), tp.TPR_DESCRIPCION) AS PRODUCT_TYPE_DESCRIPTION,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1
+                        FROM POLIZAS p
+                        WHERE p.CLI_IDTITULAR = q.CLI_ID
+                          AND p.PZA_FECALTA >= q.COT_FECHA
+                    ) THEN CAST(1 AS bit)
+                    ELSE CAST(0 AS bit)
+                END AS BOUGHT_POLICY_AFTER_QUOTE,
+                CASE
+                    WHEN NOT EXISTS (
+                        SELECT 1
+                        FROM POLIZAS p
+                        WHERE p.CLI_IDTITULAR = q.CLI_ID
+                    ) THEN CAST(1 AS bit)
+                    ELSE CAST(0 AS bit)
+                END AS NEVER_HAD_POLICY
             FROM latest_quotes q
             INNER JOIN EXT_CLIENTES c
                 ON c.CLI_ID = q.CLI_ID
@@ -995,11 +1072,18 @@ public sealed class CommercialAnalyticsService
                 ON tp.TPR_ID = q.TPR_ID
             WHERE
                 q.RN = 1 AND
-                NOT EXISTS (
-                    SELECT 1
-                    FROM POLIZAS p
-                    WHERE p.CLI_IDTITULAR = q.CLI_ID
-                      AND p.PZA_FECALTA >= q.COT_FECHA
+                (
+                    EXISTS (
+                        SELECT 1
+                        FROM POLIZAS p
+                        WHERE p.CLI_IDTITULAR = q.CLI_ID
+                          AND p.PZA_FECALTA >= q.COT_FECHA
+                    )
+                    OR NOT EXISTS (
+                        SELECT 1
+                        FROM POLIZAS p
+                        WHERE p.CLI_IDTITULAR = q.CLI_ID
+                    )
                 )
             ORDER BY {BuildQuotedNotBoughtOrderBy(query)}
             OFFSET @offset ROWS FETCH NEXT @take ROWS ONLY;
@@ -1022,7 +1106,9 @@ public sealed class CommercialAnalyticsService
                 ReadInt32(reader, 4),
                 ReadDateTime(reader, 5),
                 ReadInt32(reader, 6),
-                ReadString(reader, 7)));
+                ReadString(reader, 7),
+                ReadBoolean(reader, 8),
+                ReadBoolean(reader, 9)));
         }
 
         return items;
@@ -1360,6 +1446,7 @@ public sealed class CommercialAnalyticsService
         return query.SortBy?.Trim().ToLowerInvariant() switch
         {
             "displayname" => $"DISPLAY_NAME {(descending ? "DESC" : "ASC")}, q.COT_FECHA DESC",
+            "conversionstatus" => $"CASE WHEN NEVER_HAD_POLICY = 1 THEN 1 ELSE 0 END {(descending ? "DESC" : "ASC")}, q.COT_FECHA DESC",
             "producttype" => $"PRODUCT_TYPE_DESCRIPTION {(descending ? "DESC" : "ASC")}, q.COT_FECHA DESC",
             _ => $"q.COT_FECHA {(descending ? "DESC" : "ASC")}, q.COT_ID {(descending ? "DESC" : "ASC")}"
         };

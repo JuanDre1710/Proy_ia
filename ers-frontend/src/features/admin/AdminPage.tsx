@@ -112,7 +112,7 @@ export function AdminPage(): JSX.Element {
     <Stack spacing={3}>
       <PageHeader
         title="Panel administrativo"
-        subtitle="Configuracion central del sistema ERS con formularios tipados y persistencia mock."
+        subtitle="Configuracion central del sistema ERS con formularios tipados y reglas configurables persistidas."
         actions={<AdminPanelSettingsRoundedIcon color="primary" sx={{ fontSize: 36 }} />}
       />
       <Alert severity="info">Acceso exclusivo para usuarios con rol Administrador.</Alert>
@@ -153,7 +153,16 @@ export function AdminPage(): JSX.Element {
             feedback={feedback.rules}
             onSubmit={async (value) => {
               await withSaving('rules', async () => {
-                const activeRules = await adminService.addRule(value, session.user);
+                const activeRules = await adminService.addRule(
+                  {
+                    ...value,
+                    ruleType: value.ruleType,
+                    parameters: {
+                      amountThreshold: value.amountThreshold
+                    }
+                  },
+                  session.user
+                );
                 setData((current) => (current ? { ...current, activeRules } : current));
                 setFeedback((current) => ({
                   ...current,

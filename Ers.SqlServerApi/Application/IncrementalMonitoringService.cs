@@ -45,6 +45,27 @@ public sealed class IncrementalMonitoringService
         }
 
         var diagnostics = await _infrastructureStatusService.GetDiagnosticsAsync(cancellationToken);
+        if (!diagnostics.ConnectionAvailable)
+        {
+            _logger.LogWarning(
+                "Corrida incremental {Process} omitida. SQL no disponible. Status: {Status}. Mensaje: {Message}.",
+                request.Process,
+                diagnostics.Status,
+                diagnostics.Message);
+
+            return new MonitoringRunResponseDto(
+                request.Process,
+                diagnostics.Status,
+                0,
+                0,
+                0,
+                null,
+                null,
+                diagnostics.Message,
+                false,
+                true);
+        }
+
         var state = await _watermarkService.GetOrCreateAsync(request.Process, cancellationToken);
 
         if (diagnostics.PersistenceEnabled)
@@ -56,11 +77,23 @@ public sealed class IncrementalMonitoringService
         var persistedWatermarkId = state.UltimoIdProcesado;
         var readFromDate = persistedWatermarkDate.AddDays(-request.LookbackDays);
         var scanDate = readFromDate;
-        long scanId = 0;
+        var scanId = readFromDate == persistedWatermarkDate ? persistedWatermarkId : 0;
         var effectiveMaxBatches = diagnostics.PersistenceEnabled ? request.MaxBatches : Math.Min(request.MaxBatches, 1);
         var processed = 0;
+        var inserted = 0;
+        var updated = 0;
         string? lastClaimId = null;
         DateTime? lastAuditDate = null;
+
+        _logger.LogInformation(
+            "Corrida incremental iniciada. Process: {Process}. Watermark inicial: {WatermarkDate:o}/{WatermarkId}. ReadFrom: {ReadFromDate:o}. BatchSize: {BatchSize}. MaxBatches: {MaxBatches}. Persistencia: {PersistenceEnabled}.",
+            request.Process,
+            persistedWatermarkDate,
+            persistedWatermarkId,
+            readFromDate,
+            request.BatchSize,
+            effectiveMaxBatches,
+            diagnostics.PersistenceEnabled);
 
         try
         {
@@ -82,35 +115,59 @@ public sealed class IncrementalMonitoringService
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var domainModel = await _caseAssemblyService.BuildDomainModelAsync(
-                        new BuildCaseFromClaimRequestDto(item.ClaimId),
-                        cancellationToken);
-
-                    if (domainModel is null)
+                    try
                     {
-                        throw new InvalidOperationException($"No se pudo reconstruir el caso para SIN_ID {item.ClaimId}.");
-                    }
-
-                    var caseSnapshot = await _caseAssemblyService.BuildFromClaimAsync(
-                        new BuildCaseFromClaimRequestDto(item.ClaimId),
-                        cancellationToken);
-
-                    if (caseSnapshot is null)
-                    {
-                        throw new InvalidOperationException($"No se pudo generar snapshot DTO para SIN_ID {item.ClaimId}.");
-                    }
-
-                    var analysis = _riskAnalysisService.Analyze(domainModel);
-
-                    if (diagnostics.PersistenceEnabled)
-                    {
-                        await _upsertService.UpsertAsync(
-                            domainModel,
-                            caseSnapshot,
-                            analysis,
-                            item.AuditDate,
-                            item.LoadDate,
+                        var domainModel = await _caseAssemblyService.BuildDomainModelAsync(
+                            new BuildCaseFromClaimRequestDto(item.ClaimId),
                             cancellationToken);
+
+                        if (domainModel is null)
+                        {
+                            throw new InvalidOperationException($"No se pudo reconstruir el caso para SIN_ID {item.ClaimId}.");
+                        }
+
+                        var caseSnapshot = await _caseAssemblyService.BuildFromClaimAsync(
+                            new BuildCaseFromClaimRequestDto(item.ClaimId),
+                            cancellationToken);
+
+                        if (caseSnapshot is null)
+                        {
+                            throw new InvalidOperationException($"No se pudo generar snapshot DTO para SIN_ID {item.ClaimId}.");
+                        }
+
+                        var analysis = _riskAnalysisService.Analyze(domainModel);
+
+                        if (diagnostics.PersistenceEnabled)
+                        {
+                            var upsert = await _upsertService.UpsertAsync(
+                                domainModel,
+                                caseSnapshot,
+                                analysis,
+                                item.AuditDate,
+                                item.LoadDate,
+                                cancellationToken);
+
+                            if (upsert.WasInserted)
+                            {
+                                inserted++;
+                            }
+                            else
+                            {
+                                updated++;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(
+                            ex,
+                            "Error parcial en corrida incremental. Process: {Process}. SIN_ID: {ClaimId}. SIN_FECAUD: {AuditDate:o}. Batch: {BatchNumber}. Procesados previos: {ProcessedCount}.",
+                            request.Process,
+                            item.ClaimId,
+                            item.AuditDate,
+                            batchNumber + 1,
+                            processed);
+                        throw;
                     }
 
                     processed++;
@@ -128,17 +185,46 @@ public sealed class IncrementalMonitoringService
 
             if (diagnostics.PersistenceEnabled)
             {
+                var (completedWatermarkDate, completedWatermarkId) = ResolveCompletedWatermark(
+                    persistedWatermarkDate,
+                    persistedWatermarkId,
+                    lastAuditDate,
+                    lastClaimId);
+
                 await _watermarkService.MarkCompletedAsync(
                     request.Process,
-                    processed == 0 ? persistedWatermarkDate : lastAuditDate ?? persistedWatermarkDate,
-                    processed == 0 ? persistedWatermarkId : long.Parse(lastClaimId!),
+                    completedWatermarkDate,
+                    completedWatermarkId,
                     cancellationToken);
             }
+
+            var finalWatermarkDate = persistedWatermarkDate;
+            var finalWatermarkId = persistedWatermarkId;
+            if (diagnostics.PersistenceEnabled)
+            {
+                (finalWatermarkDate, finalWatermarkId) = ResolveCompletedWatermark(
+                    persistedWatermarkDate,
+                    persistedWatermarkId,
+                    lastAuditDate,
+                    lastClaimId);
+            }
+
+            _logger.LogInformation(
+                "Corrida incremental terminada. Process: {Process}. Status: {Status}. Procesados: {ProcessedCount}. Insertados: {InsertedCount}. Actualizados: {UpdatedCount}. Watermark final: {WatermarkDate:o}/{WatermarkId}.",
+                request.Process,
+                diagnostics.PersistenceEnabled ? "completed" : "pending_infrastructure",
+                processed,
+                inserted,
+                updated,
+                finalWatermarkDate,
+                finalWatermarkId);
 
             return new MonitoringRunResponseDto(
                 request.Process,
                 diagnostics.PersistenceEnabled ? "completed" : "pending_infrastructure",
                 processed,
+                inserted,
+                updated,
                 lastClaimId,
                 lastAuditDate,
                 diagnostics.PersistenceEnabled
@@ -164,11 +250,48 @@ public sealed class IncrementalMonitoringService
                 request.Process,
                 "failed",
                 processed,
+                inserted,
+                updated,
                 lastClaimId,
                 lastAuditDate,
                 ex.Message,
                 diagnostics.PersistenceEnabled,
                 !diagnostics.PersistenceEnabled);
         }
+    }
+
+    private static (DateTime WatermarkDate, long WatermarkClaimId) ResolveCompletedWatermark(
+        DateTime persistedWatermarkDate,
+        long persistedWatermarkId,
+        DateTime? lastAuditDate,
+        string? lastClaimId)
+    {
+        if (!lastAuditDate.HasValue || string.IsNullOrWhiteSpace(lastClaimId))
+        {
+            return (persistedWatermarkDate, persistedWatermarkId);
+        }
+
+        var parsedLastClaimId = long.Parse(lastClaimId);
+        return IsAfterPersistedWatermark(
+            lastAuditDate.Value,
+            parsedLastClaimId,
+            persistedWatermarkDate,
+            persistedWatermarkId)
+            ? (lastAuditDate.Value, parsedLastClaimId)
+            : (persistedWatermarkDate, persistedWatermarkId);
+    }
+
+    private static bool IsAfterPersistedWatermark(
+        DateTime candidateDate,
+        long candidateClaimId,
+        DateTime persistedWatermarkDate,
+        long persistedWatermarkId)
+    {
+        if (candidateDate > persistedWatermarkDate)
+        {
+            return true;
+        }
+
+        return candidateDate == persistedWatermarkDate && candidateClaimId > persistedWatermarkId;
     }
 }

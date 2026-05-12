@@ -79,6 +79,21 @@ function mapBackendIntegration(item: any): IntegrationStatus {
   };
 }
 
+function mapBackendRule(item: any): ActiveRule {
+  return {
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    severity: item.severity,
+    status: item.status,
+    description: item.description,
+    lastUpdatedAt: item.updatedAt ?? item.createdAt ?? new Date().toISOString(),
+    source: item.source ?? undefined,
+    ruleType: item.ruleType,
+    parameters: item.parameters ?? {}
+  };
+}
+
 async function tryFetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...options,
@@ -105,10 +120,14 @@ export const adminService = {
     await new Promise((resolve) => setTimeout(resolve, 250));
 
     try {
-      const integrations = await tryFetchJson<any[]>(`${apiBaseUrl}/admin/integrations`);
+      const [integrations, rules] = await Promise.all([
+        tryFetchJson<any[]>(`${apiBaseUrl}/admin/integrations`),
+        tryFetchJson<any[]>(`${apiBaseUrl}/admin/rules`)
+      ]);
       adminState = {
         ...adminState,
-        integrations: integrations.map(mapBackendIntegration)
+        integrations: integrations.map(mapBackendIntegration),
+        activeRules: rules.map(mapBackendRule)
       };
     } catch (_error) {
       // Keep mock fallback during migration.
@@ -152,24 +171,49 @@ export const adminService = {
     payload: Omit<ActiveRule, 'id' | 'lastUpdatedAt'>,
     actor: User | null
   ): Promise<ActiveRule[]> {
-    await new Promise((resolve) => setTimeout(resolve, 450));
-    const rule: ActiveRule = {
-      ...payload,
-      id: `RULE-${String(adminState.activeRules.length + 1).padStart(2, '0')}`,
-      lastUpdatedAt: new Date().toISOString(),
-      source: payload.source || actor?.name || 'Administrador'
-    };
-    adminState = {
-      ...adminState,
-      activeRules: [rule, ...adminState.activeRules]
-    };
-    await auditService.recordAdminChange({
-      action: 'rule_created',
-      entityType: 'Rule',
-      entityId: rule.id,
-      detail: `Rule ${rule.name} created from admin panel.`
-    });
-    return clone(adminState.activeRules);
+    try {
+      const created = await tryFetchJson<any>(`${apiBaseUrl}/admin/rules`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name: payload.name,
+          category: payload.category,
+          severity: payload.severity,
+          status: payload.status,
+          source: payload.source || actor?.name || 'Administrador',
+          description: payload.description,
+          ruleType: payload.ruleType ?? 'json_high_amount_suspicious_images',
+          parameters: {
+            amountThreshold: Number(payload.parameters?.amountThreshold ?? 0)
+          }
+        })
+      });
+
+      const rule = mapBackendRule(created);
+      adminState = {
+        ...adminState,
+        activeRules: [rule, ...adminState.activeRules.filter((item) => item.id !== rule.id)]
+      };
+      return clone(adminState.activeRules);
+    } catch (_error) {
+      await new Promise((resolve) => setTimeout(resolve, 450));
+      const rule: ActiveRule = {
+        ...payload,
+        id: `RULE-${String(adminState.activeRules.length + 1).padStart(2, '0')}`,
+        lastUpdatedAt: new Date().toISOString(),
+        source: payload.source || actor?.name || 'Administrador'
+      };
+      adminState = {
+        ...adminState,
+        activeRules: [rule, ...adminState.activeRules]
+      };
+      await auditService.recordAdminChange({
+        action: 'rule_created',
+        entityType: 'Rule',
+        entityId: rule.id,
+        detail: `Rule ${rule.name} created from admin panel.`
+      });
+      return clone(adminState.activeRules);
+    }
   },
   async addIntegration(
     payload: Omit<IntegrationStatus, 'id' | 'lastSyncAt' | 'latencyMs'>,

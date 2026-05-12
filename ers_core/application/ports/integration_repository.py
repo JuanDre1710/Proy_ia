@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from ers_core.domain.models import AuditLog, IntegrationConfig
+from ers_core.domain.models import AuditLog, ConfiguredRule, IntegrationConfig
 
 
 class IntegrationConfigRepository(Protocol):
@@ -39,3 +39,14 @@ class AuditLogRepository(Protocol):
         sort_direction: str = "desc",
     ) -> tuple[list[AuditLog], int]:
         """Return paginated audit logs."""
+
+
+class RuleConfigRepository(Protocol):
+    def list_all(self) -> list[ConfiguredRule]:
+        """Return all configured rules."""
+
+    def get_by_id(self, rule_id: str) -> ConfiguredRule | None:
+        """Return a single configured rule if it exists."""
+
+    def save(self, rule: ConfiguredRule) -> ConfiguredRule:
+        """Create or update a configured rule."""

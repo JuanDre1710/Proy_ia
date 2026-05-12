@@ -45,7 +45,6 @@ export function AppShell(): JSX.Element {
       ? [{ to: '/commercial-analytics', label: 'Analitica comercial', icon: <InsightsRoundedIcon /> }]
       : []),
     { to: '/cases/upload-json', label: 'Carga JSON', icon: <UploadFileRoundedIcon /> },
-    { to: '/cases/30111222', label: 'Dashboard ejemplo', icon: <ReceiptLongRoundedIcon /> },
     ...(canAccessAudit ? [{ to: '/audit/logs', label: 'Auditoria', icon: <ReceiptLongRoundedIcon /> }] : []),
     ...(canAccessAdmin
       ? [{ to: '/admin', label: 'Panel admin', icon: <AdminPanelSettingsRoundedIcon /> }]

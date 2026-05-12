@@ -22,8 +22,6 @@ export function RouterProvider(): JSX.Element {
           <Route path="/cases" element={<CaseInboxPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/cases/upload-json" element={<InternalCaseUploadPage />} />
-          <Route path="/dashboard" element={<Navigate to="/search" replace />} />
-          <Route path="/dashboard/:identifier" element={<LegacyCaseRedirect />} />
           <Route path="/cases/:caseId" element={<CaseDashboardPage />} />
           <Route element={<ProtectedRoute roles={['Administrador', 'Supervisor']} />}>
             <Route path="/commercial-analytics" element={<CommercialAnalyticsPage />} />
@@ -42,8 +40,4 @@ export function RouterProvider(): JSX.Element {
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
-}
-
-function LegacyCaseRedirect(): JSX.Element {
-  return <Navigate to="/search" replace />;
 }

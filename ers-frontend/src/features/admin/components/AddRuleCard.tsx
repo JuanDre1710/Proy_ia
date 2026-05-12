@@ -11,7 +11,9 @@ const addRuleSchema = z.object({
   severity: z.enum(['Alta', 'Media', 'Baja']),
   status: z.enum(['Activa', 'Monitoreada']),
   source: z.string().min(2, 'Ingresa el origen o fuente.'),
-  description: z.string().min(10, 'Describe brevemente la regla.')
+  description: z.string().min(10, 'Describe brevemente la regla.'),
+  ruleType: z.enum(['json_high_amount_suspicious_images']),
+  amountThreshold: z.coerce.number().positive('Ingresa un umbral mayor a cero.')
 });
 
 type AddRuleFormValues = z.infer<typeof addRuleSchema>;
@@ -36,14 +38,16 @@ export function AddRuleCard({ loading, feedback, onSubmit }: AddRuleCardProps): 
       severity: 'Media',
       status: 'Activa',
       source: '',
-      description: ''
+      description: '',
+      ruleType: 'json_high_amount_suspicious_images',
+      amountThreshold: 250000
     }
   });
 
   return (
     <SectionCard
       title="Alta de reglas"
-      subtitle="Permite agregar nuevas reglas de negocio o fraude al resumen operativo."
+      subtitle="Permite agregar reglas configurables que el motor hard-rule evalua sobre casos cargados desde JSON."
     >
       <Stack
         spacing={2}
@@ -77,6 +81,33 @@ export function AddRuleCard({ loading, feedback, onSubmit }: AddRuleCardProps): 
           </Grid>
           <Grid item xs={12} md={4}>
             <TextField fullWidth label="Fuente" error={!!errors.source} helperText={errors.source?.message} disabled={loading} {...register('source')} />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              select
+              label="Tipo tecnico"
+              error={!!errors.ruleType}
+              helperText={errors.ruleType?.message ?? 'Regla aplicada sobre casos cargados desde JSON interno.'}
+              disabled={loading}
+              {...register('ruleType')}
+            >
+              <MenuItem value="json_high_amount_suspicious_images">
+                Monto alto + imagenes sospechosas
+              </MenuItem>
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label="Umbral de monto reclamado"
+              error={!!errors.amountThreshold}
+              helperText={errors.amountThreshold?.message ?? 'Se dispara cuando el JSON tenga suspiciousImages=true y el monto supere este valor.'}
+              disabled={loading}
+              inputProps={{ min: 1, step: 1000 }}
+              {...register('amountThreshold')}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField

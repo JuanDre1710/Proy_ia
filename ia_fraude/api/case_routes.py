@@ -8,6 +8,7 @@ from ers_core.adapters.factories.integration_adapter_factory import IntegrationA
 from ers_core.adapters.repositories.file_audit_log_repository import FileAuditLogRepository
 from ers_core.adapters.repositories.file_case_repository import FileCaseRepository
 from ers_core.adapters.repositories.file_integration_repository import FileIntegrationConfigRepository
+from ers_core.adapters.repositories.file_rule_repository import FileRuleConfigRepository
 from ers_core.config.app_settings import get_settings
 from ers_core.application.services.case_decision_service import CaseDecisionError, CaseDecisionService
 from ers_core.application.services.case_ingestion_service import CaseIngestionService
@@ -47,9 +48,10 @@ settings = get_settings()
 _case_repository = FileCaseRepository(settings.data_dir / "cases.json")
 _audit_repository = FileAuditLogRepository(settings.data_dir / "audit_logs.jsonl")
 _integration_repository = FileIntegrationConfigRepository(settings.data_dir / "integration_configs.json")
+_rule_repository = FileRuleConfigRepository(settings.data_dir / "configured_rules.json")
 _integration_manager = IntegrationManager(_integration_repository, _audit_repository, IntegrationAdapterFactory())
 _case_service = CaseIngestionService(_case_repository, _audit_repository, _integration_manager)
-_case_pipeline_service = CasePipelineService(_case_repository, _audit_repository, _integration_manager)
+_case_pipeline_service = CasePipelineService(_case_repository, _audit_repository, _integration_manager, _rule_repository)
 _internal_case_analysis_service = InternalCaseAnalysisService(_case_repository, _audit_repository, _case_pipeline_service)
 _case_decision_service = CaseDecisionService(_case_repository, _audit_repository)
 

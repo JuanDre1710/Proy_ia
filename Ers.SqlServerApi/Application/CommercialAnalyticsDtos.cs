@@ -100,6 +100,8 @@ public sealed record CommercialClientsWithoutPoliciesResponseDto(
     CommercialFilterSupportDto SupportedFilters,
     IReadOnlyList<string> UnsupportedFilters,
     int TotalCount,
+    int WithQuotesCount,
+    int WithoutQuotesCount,
     int Offset,
     int Take,
     IReadOnlyList<CommercialClientWithoutPolicyDto> Items
@@ -113,7 +115,9 @@ public sealed record CommercialQuotedNotBoughtDto(
     int QuoteId,
     DateTime QuoteDate,
     int ProductTypeId,
-    string? ProductTypeDescription
+    string? ProductTypeDescription,
+    bool BoughtPolicyAfterQuote,
+    bool NeverHadPolicy
 );
 
 public sealed record CommercialQuotedNotBoughtResponseDto(
@@ -121,16 +125,12 @@ public sealed record CommercialQuotedNotBoughtResponseDto(
     CommercialFilterSupportDto SupportedFilters,
     IReadOnlyList<string> UnsupportedFilters,
     int TotalCount,
+    int BoughtAfterQuoteCount,
+    int NeverHadPolicyCount,
+    int UnclassifiedCount,
     int Offset,
     int Take,
     IReadOnlyList<CommercialQuotedNotBoughtDto> Items
-);
-
-public sealed record CommercialDashboardResponseDto(
-    CommercialSummaryResponseDto Summary,
-    CommercialTopProductsResponseDto TopProducts,
-    CommercialClientsWithoutPoliciesResponseDto ClientsWithoutPolicies,
-    CommercialQuotedNotBoughtResponseDto QuotedNotBought
 );
 
 public sealed record CommercialPlanBreakdownDto(

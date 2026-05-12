@@ -21,6 +21,9 @@ var startupConnectionString =
     (builder.Configuration.GetConnectionString("DefaultConnection")
      ?? builder.Configuration["ConnectionStrings:DefaultConnection"]
      ?? string.Empty).Trim();
+var antifraudInfrastructureOptions =
+    builder.Configuration.GetSection("AntifraudInfrastructure").Get<AntifraudInfrastructureOptions>()
+    ?? new AntifraudInfrastructureOptions();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -71,6 +74,8 @@ builder.Services.AddScoped<CaseInboxService>();
 builder.Services.AddScoped<CommercialAnalyticsService>();
 
 var app = builder.Build();
+
+await TryApplyAntifraudInfrastructureOnStartupAsync(app, antifraudInfrastructureOptions);
 
 app.Logger.LogInformation(
     "DefaultConnection configurada al arrancar API: {IsConfigured}. Longitud: {Length}.",
@@ -181,26 +186,6 @@ app.MapPost(
         })
     .WithName("AnalyzeCase")
     .WithTags("analysis")
-    .WithOpenApi();
-
-app.MapGet(
-        "/commercial/dashboard",
-        async (
-            HttpContext httpContext,
-            [AsParameters] CommercialAnalyticsQueryDto query,
-            CommercialAnalyticsService service,
-            CancellationToken cancellationToken) =>
-        {
-            if (!HasCommercialAccess(httpContext))
-            {
-                return CommercialAccessForbidden();
-            }
-
-            var response = await service.GetDashboardAsync(query, cancellationToken);
-            return Results.Ok(response);
-        })
-    .WithName("GetCommercialDashboard")
-    .WithTags("commercial")
     .WithOpenApi();
 
 app.MapGet(
@@ -716,6 +701,40 @@ app.MapPost(
     .WithOpenApi();
 
 app.Run();
+
+static async Task TryApplyAntifraudInfrastructureOnStartupAsync(
+    WebApplication app,
+    AntifraudInfrastructureOptions options)
+{
+    if (!options.AutoApplyOnStartup)
+    {
+        return;
+    }
+
+    await using var scope = app.Services.CreateAsyncScope();
+    var infrastructureService = scope.ServiceProvider.GetRequiredService<AntifraudInfrastructureService>();
+    var statusService = scope.ServiceProvider.GetRequiredService<AntifraudInfrastructureStatusService>();
+
+    try
+    {
+        await infrastructureService.EnsureInfrastructureAsync();
+
+        var diagnostics = await statusService.GetDiagnosticsAsync();
+        app.Logger.LogInformation(
+            "Bootstrap antifraude ejecutado al arrancar. Status: {Status}. Persistencia habilitada: {PersistenceEnabled}.",
+            diagnostics.Status,
+            diagnostics.PersistenceEnabled);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "Fallo la autoaplicacion de infraestructura antifraude al arrancar la API.");
+
+        if (options.FailStartupIfApplyFails)
+        {
+            throw;
+        }
+    }
+}
 
 static IResult PendingInfrastructure(AntifraudInfrastructureMissingException ex)
 {

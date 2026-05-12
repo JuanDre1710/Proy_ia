@@ -49,6 +49,8 @@ export interface CommercialQuotedNotBoughtClient {
   quoteDate: string;
   productTypeId: number;
   productTypeDescription: string;
+  boughtPolicyAfterQuote: boolean;
+  neverHadPolicy: boolean;
 }
 
 export interface CommercialAppliedFilterInfo {
@@ -84,6 +86,7 @@ export interface CommercialSummaryData {
 export interface CommercialPagedResult<T> {
   items: T[];
   totalCount: number;
+  aggregateCounts?: Record<string, number>;
   offset: number;
   take: number;
 }

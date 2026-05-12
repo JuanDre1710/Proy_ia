@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from ers_core.adapters.factories.identity_claim_provider_factory import IdentityClaimProviderFactory
 from ers_core.adapters.repositories.file_audit_log_repository import FileAuditLogRepository
 from ers_core.adapters.repositories.file_case_repository import FileCaseRepository
+from ers_core.adapters.repositories.file_rule_repository import FileRuleConfigRepository
 from ers_core.config.app_settings import get_settings
 from ers_core.application.services.case_pipeline_service import CasePipelineService
 from ers_core.application.services.case_ingestion_service import detect_identifier_type
@@ -25,8 +26,9 @@ settings = get_settings()
 
 _case_repository = FileCaseRepository(settings.data_dir / "cases.json")
 _audit_repository = FileAuditLogRepository(settings.data_dir / "audit_logs.jsonl")
+_rule_repository = FileRuleConfigRepository(settings.data_dir / "configured_rules.json")
 _provider = IdentityClaimProviderFactory.create(settings)
-_pipeline_service = CasePipelineService(_case_repository, _audit_repository, integration_manager=None)
+_pipeline_service = CasePipelineService(_case_repository, _audit_repository, integration_manager=None, rules_repository=_rule_repository)
 _internal_case_analysis_service = InternalCaseAnalysisService(
     _case_repository,
     _audit_repository,
@@ -134,4 +136,3 @@ def create_case_from_claim(payload: CaseFromClaimRequestDto) -> CaseFromClaimRes
         canOpenDashboard=True,
         requestedAt=case.created_at.isoformat(),
     )
-

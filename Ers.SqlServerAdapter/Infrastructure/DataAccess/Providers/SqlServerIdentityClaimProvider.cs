@@ -137,22 +137,22 @@ public sealed class SqlServerIdentityClaimProvider :
     }
 
     public async Task<IReadOnlyList<IncrementalClaimRecord>> ListIncrementalClaimsAsync(
-        DateTime watermarkDate,
-        long watermarkClaimId,
+        DateTime cursorDate,
+        long cursorClaimId,
         DateTime readFromDate,
         int batchSize,
         CancellationToken cancellationToken = default)
     {
         var sql = """
             SELECT TOP (@batchSize)
-                sin.SIN_ID AS ClaimId,
+                CAST(sin.SIN_ID AS bigint) AS ClaimId,
                 sin.SIN_FECAUD AS AuditDate,
                 sin.SIN_FEC_CARGA AS LoadDate
             FROM SINIESTROS sin
             WHERE sin.SIN_FECAUD >= @readFromDate
               AND (
-                    sin.SIN_FECAUD > @watermarkDate
-                    OR (sin.SIN_FECAUD = @watermarkDate AND sin.SIN_ID > @watermarkClaimId)
+                    sin.SIN_FECAUD > @cursorDate
+                    OR (sin.SIN_FECAUD = @cursorDate AND sin.SIN_ID > @cursorClaimId)
                   )
             ORDER BY sin.SIN_FECAUD ASC, sin.SIN_ID ASC
             """;
@@ -162,8 +162,8 @@ public sealed class SqlServerIdentityClaimProvider :
                 sql,
                 new SqlParameter("@batchSize", batchSize),
                 new SqlParameter("@readFromDate", readFromDate),
-                new SqlParameter("@watermarkDate", watermarkDate),
-                new SqlParameter("@watermarkClaimId", watermarkClaimId))
+                new SqlParameter("@cursorDate", cursorDate),
+                new SqlParameter("@cursorClaimId", cursorClaimId))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 

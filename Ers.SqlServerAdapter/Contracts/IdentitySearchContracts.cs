@@ -108,8 +108,8 @@ public interface ICaseDataProvider
 public interface IIncrementalClaimProvider
 {
     Task<IReadOnlyList<IncrementalClaimRecord>> ListIncrementalClaimsAsync(
-        DateTime watermarkDate,
-        long watermarkClaimId,
+        DateTime cursorDate,
+        long cursorClaimId,
         DateTime readFromDate,
         int batchSize,
         CancellationToken cancellationToken = default);

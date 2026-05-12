@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ers.SqlServerAdapter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68cc0a518a6841db495c5cf157b5313100756a74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36103859841cf521c4ca2a3560cddd01d54d48d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ers.SqlServerAdapter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ers.SqlServerAdapter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

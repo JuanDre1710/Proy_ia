@@ -92,6 +92,20 @@ type TableChartConfig = {
   note?: string;
 };
 
+type QuotedClientOutcome = 'boughtAfterQuote' | 'neverHadPolicy' | 'unclassified';
+
+function getQuotedClientOutcome(row: CommercialQuotedNotBoughtClient): QuotedClientOutcome {
+  if (row.boughtPolicyAfterQuote) {
+    return 'boughtAfterQuote';
+  }
+
+  if (row.neverHadPolicy) {
+    return 'neverHadPolicy';
+  }
+
+  return 'unclassified';
+}
+
 export function CommercialAnalyticsPage(): JSX.Element {
   const topProductsSectionRef = useRef<HTMLDivElement | null>(null);
   const policyStatusSectionRef = useRef<HTMLDivElement | null>(null);
@@ -256,6 +270,27 @@ export function CommercialAnalyticsPage(): JSX.Element {
     { key: 'displayName', label: 'Cliente' },
     { key: 'documentNumber', label: 'Documento' },
     { key: 'email', label: 'Email' },
+    {
+      key: 'conversionStatus',
+      label: 'Resultado',
+      render: (row) => {
+        const outcome = getQuotedClientOutcome(row);
+        return (
+          <Chip
+            size="small"
+            color={outcome === 'boughtAfterQuote' ? 'success' : outcome === 'neverHadPolicy' ? 'default' : 'warning'}
+            variant={outcome === 'neverHadPolicy' ? 'outlined' : 'filled'}
+            label={
+              outcome === 'boughtAfterQuote'
+                ? 'Compro luego de cotizar'
+                : outcome === 'neverHadPolicy'
+                  ? 'Nunca tuvo poliza'
+                  : 'Sin clasificar'
+            }
+          />
+        );
+      }
+    },
     { key: 'quoteId', label: 'Cotizacion', render: (row) => `#${row.quoteId}` },
     { key: 'quoteDate', label: 'Fecha cotizacion' },
     { key: 'productTypeDescription', label: 'Tipo cotizado' }
@@ -490,18 +525,18 @@ export function CommercialAnalyticsPage(): JSX.Element {
                         onClick={() =>
                           openTableChart({
                             title: 'Grafico de clientes sin poliza',
-                            subtitle: 'Distribucion de clientes con y sin cotizacion en la pagina actual.',
+                            subtitle: 'Distribucion de clientes con y sin cotizacion para todo el recorte filtrado.',
                             valueLabel: 'clientes',
                             type: 'bars-vertical',
                             series: clients
                               ? [
                                   {
                                     label: 'Cotizo',
-                                    value: clients.items.filter((item) => item.hasQuotes).length
+                                    value: clients.aggregateCounts?.withQuotes ?? clients.items.filter((item) => item.hasQuotes).length
                                   },
                                   {
                                     label: 'Sin cotizacion',
-                                    value: clients.items.filter((item) => !item.hasQuotes).length
+                                    value: clients.aggregateCounts?.withoutQuotes ?? clients.items.filter((item) => !item.hasQuotes).length
                                   }
                                 ]
                               : []
@@ -538,7 +573,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
 
             <Grid item xs={12}>
               <Box ref={quotesSectionRef}>
-              <SectionCard title="Cotizaron y no compraron" subtitle="Click en una fila para abrir el detalle resumido del cliente.">
+              <SectionCard title="Clientes cotizados" subtitle="Separados entre quienes compraron luego de cotizar y quienes nunca tuvieron poliza.">
                 <Stack spacing={2}>
                   <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} justifyContent="space-between">
                     <Stack direction="row" gap={1}>
@@ -548,21 +583,30 @@ export function CommercialAnalyticsPage(): JSX.Element {
                         disabled={!quotes || quotes.items.length === 0}
                         onClick={() =>
                           openTableChart({
-                            title: 'Funnel de cotizaciones sin compra',
-                            subtitle: 'Embudo visual de concentracion de caidas por tipo de producto cotizado en la pagina actual.',
-                            valueLabel: 'cotizaciones',
-                            type: 'funnel',
-                            note: 'La API actual no expone etapas completas de conversion cotizacion -> emision. Este funnel muestra concentracion de caidas por tipo cotizado, no conversion punta a punta.',
+                            title: 'Resultado de clientes cotizados',
+                            subtitle: 'Separacion entre conversion posterior a la cotizacion y clientes sin polizas historicas para todo el recorte filtrado.',
+                            valueLabel: 'clientes',
+                            type: 'bars-vertical',
+                            note:
+                              (quotes?.aggregateCounts?.unclassified ?? 0) > 0 ||
+                              (quotes?.items.some((item) => getQuotedClientOutcome(item) === 'unclassified') ?? false)
+                                ? 'Hay filas sin clasificar porque el backend en ejecucion no esta enviando aun los flags de resultado para todo el recorte.'
+                                : undefined,
                             series: quotes
-                              ? Array.from(
-                                  quotes.items.reduce((acc, item) => {
-                                    acc.set(item.productTypeDescription, (acc.get(item.productTypeDescription) ?? 0) + 1);
-                                    return acc;
-                                  }, new Map<string, number>())
-                                )
-                                  .map(([label, value]) => ({ label, value }))
-                                  .sort((a, b) => b.value - a.value)
-                                  .slice(0, 8)
+                              ? [
+                                  {
+                                    label: 'Compro despues',
+                                    value: quotes.aggregateCounts?.boughtAfterQuote ?? quotes.items.filter((item) => getQuotedClientOutcome(item) === 'boughtAfterQuote').length
+                                  },
+                                  {
+                                    label: 'Nunca tuvo poliza',
+                                    value: quotes.aggregateCounts?.neverHadPolicy ?? quotes.items.filter((item) => getQuotedClientOutcome(item) === 'neverHadPolicy').length
+                                  },
+                                  {
+                                    label: 'Sin clasificar',
+                                    value: quotes.aggregateCounts?.unclassified ?? quotes.items.filter((item) => getQuotedClientOutcome(item) === 'unclassified').length
+                                  }
+                                ].filter((item) => item.value > 0)
                               : []
                           })
                         }
@@ -572,6 +616,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
                       <TextField select size="small" label="Orden" value={quotesQuery.sortBy ?? 'quoteDate'} onChange={(event) => setQuotesQuery((current) => ({ ...current, sortBy: event.target.value, offset: 0 }))} sx={{ minWidth: 170 }}>
                         <MenuItem value="quoteDate">Fecha</MenuItem>
                         <MenuItem value="displayName">Cliente</MenuItem>
+                        <MenuItem value="conversionStatus">Resultado</MenuItem>
                         <MenuItem value="productType">Tipo cotizado</MenuItem>
                       </TextField>
                       <TextField select size="small" label="Direccion" value={quotesQuery.sortDirection ?? 'desc'} onChange={(event) => setQuotesQuery((current) => ({ ...current, sortDirection: event.target.value as 'asc' | 'desc', offset: 0 }))} sx={{ minWidth: 120 }}>
@@ -582,7 +627,7 @@ export function CommercialAnalyticsPage(): JSX.Element {
                   </Stack>
 
                   {quotesState.status !== 'success' || !quotes ? (
-                    <StatusState status={quotesState.status} title="Sin oportunidades" message={quotesState.error ?? 'No hay cotizaciones sin compra para mostrar.'} />
+                    <StatusState status={quotesState.status} title="Sin oportunidades" message={quotesState.error ?? 'No hay clientes cotizados para mostrar.'} />
                   ) : (
                     <>
                       <DataTable columns={quotesColumns} rows={quotes.items} getRowKey={(row) => `${row.clientId}-${row.quoteId}`} onRowClick={(row) => void handleOpenClientDetail(row.clientId)} />

@@ -19,6 +19,7 @@ from .api.case_routes import router as case_router
 from .api.export_routes import router as export_router
 from .api.identity_routes import router as identity_router
 from .api.integration_routes import router as integration_router
+from .api.rule_routes import router as rule_router
 from .api.scoring_routes import router as scoring_router
 from .utils.schema import EvaluacionInput
 from .observability import RequestContextMiddleware, RateLimitMiddleware, configure_logging
@@ -51,6 +52,10 @@ OPENAPI_TAGS = [
     {
         "name": "admin-integrations",
         "description": "Configuracion de providers demo y futura capa de integraciones reales.",
+    },
+    {
+        "name": "admin-rules",
+        "description": "Reglas configurables cargadas desde frontend para el motor hard-rule demo.",
     },
     {
         "name": "scoring",
@@ -132,6 +137,7 @@ def create_app() -> FastAPI:
         return _error_payload("Internal server error.", "internal_error", request, 500)
 
     app.include_router(integration_router)
+    app.include_router(rule_router)
     app.include_router(auth_router)
     app.include_router(audit_router)
     app.include_router(identity_router)

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ers.SqlServerApi.Application;
 
+public sealed record MonitoredCaseUpsertResult(MonitoredCaseEntity Entity, bool WasInserted);
+
 public sealed class MonitoredCaseUpsertService
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -22,7 +24,7 @@ public sealed class MonitoredCaseUpsertService
         _infrastructureStatusService = infrastructureStatusService;
     }
 
-    public async Task<MonitoredCaseEntity> UpsertAsync(
+    public async Task<MonitoredCaseUpsertResult> UpsertAsync(
         CaseModel caseModel,
         CaseModelDto caseSnapshot,
         OperationalRiskAnalysisResponseDto analysis,
@@ -37,6 +39,7 @@ public sealed class MonitoredCaseUpsertService
             .FirstOrDefaultAsync(item => item.SinId == sinId, cancellationToken);
 
         var now = DateTime.UtcNow;
+        var wasInserted = existing is null;
         var entity = existing ?? new MonitoredCaseEntity
         {
             CaseId = Guid.NewGuid(),
@@ -82,7 +85,7 @@ public sealed class MonitoredCaseUpsertService
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return entity;
+        return new MonitoredCaseUpsertResult(entity, wasInserted);
     }
 
     private static string ComputeHash(CaseModel caseModel, OperationalRiskAnalysisResponseDto analysis)

@@ -11,6 +11,8 @@ public sealed record MonitoringRunResponseDto(
     string Process,
     string Status,
     int ProcessedCount,
+    int InsertedCount,
+    int UpdatedCount,
     string? LastProcessedClaimId,
     DateTime? LastProcessedAuditDate,
     string? Message,
@@ -36,7 +38,9 @@ public sealed record AntifraudInfrastructureDiagnosticsDto(
     bool PersistenceEnabled,
     string Status,
     string Message,
-    IReadOnlyList<string> MissingObjects
+    IReadOnlyList<string> MissingObjects,
+    bool ConnectionAvailable = true,
+    string? FailureCode = null
 );
 
 public sealed record MonitoredCaseListItemDto(

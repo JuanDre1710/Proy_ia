@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from ers_core.application.ports.integration_repository import RuleConfigRepository
 from ers_core.domain.enums import CaseProcessingState
 from ers_core.domain.models import Case, HardRuleEvaluation, HardRuleFinding
 
 
 class RuleEngine:
+    def __init__(self, rules_repository: RuleConfigRepository | None = None) -> None:
+        self._rules_repository = rules_repository
+
     def evaluate(self, case: Case) -> HardRuleEvaluation:
         findings: list[HardRuleFinding] = []
 
@@ -86,6 +90,8 @@ class RuleEngine:
                 )
             )
 
+        findings.extend(self._evaluate_configured_rules(case))
+
         final_effect = self._resolve_final_effect(findings)
         return HardRuleEvaluation(
             evaluation_id=f"HRE-{case.case_id}",
@@ -111,6 +117,43 @@ class RuleEngine:
         if "mark_not_evaluable" in effects:
             return "mark_not_evaluable"
         return "continue_to_reasoning"
+
+    def _evaluate_configured_rules(self, case: Case) -> list[HardRuleFinding]:
+        if self._rules_repository is None:
+            return []
+
+        findings: list[HardRuleFinding] = []
+        for rule in self._rules_repository.list_all():
+            if rule.status.strip().lower() not in {"activa", "monitoreada"}:
+                continue
+
+            if rule.rule_type == "json_high_amount_suspicious_images":
+                amount_threshold = float(rule.parameters.get("amountThreshold", 0.0) or 0.0)
+                claimed_amount = float(case.metadata.get("claimAmount", 0.0) or 0.0)
+                suspicious_images = bool(case.metadata.get("suspiciousImages", False))
+                if suspicious_images and claimed_amount >= amount_threshold:
+                    findings.append(
+                        HardRuleFinding(
+                            code=f"CFG_{rule.rule_id}",
+                            severity="CRITICAL" if rule.severity.strip().lower() == "alta" else "WARNING",
+                            message=rule.name,
+                            justification=(
+                                f"{rule.description} Se detectaron imagenes sospechosas "
+                                f"con monto reclamado {claimed_amount:.2f} sobre umbral {amount_threshold:.2f}."
+                            ).strip(),
+                            evidence_refs=[item.evidence_id for item in case.evidences],
+                            effect_on_pipeline="alert_only",
+                            metadata={
+                                "ruleId": rule.rule_id,
+                                "ruleType": rule.rule_type,
+                                "amountThreshold": amount_threshold,
+                                "claimedAmount": claimed_amount,
+                                "suspiciousImages": suspicious_images,
+                            },
+                        )
+                    )
+
+        return findings
 
     def _has_critical_cross_source_inconsistency(self, case: Case) -> bool:
         provider_statuses = case.consolidated_evidence.provider_statuses if case.consolidated_evidence else {}

@@ -17,6 +17,10 @@ export interface ActiveRule {
   description: string;
   lastUpdatedAt: string;
   source?: string;
+  ruleType?: 'json_high_amount_suspicious_images';
+  parameters?: {
+    amountThreshold?: number;
+  };
 }
 
 export interface IntegrationStatus {

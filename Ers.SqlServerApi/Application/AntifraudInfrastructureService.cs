@@ -10,6 +10,7 @@ public sealed class AntifraudInfrastructureService
         "001_create_af_monitored_cases.sql",
         "002_create_af_incremental_control.sql",
         "003_create_af_case_decision_history.sql",
+        "007_align_af_incremental_control_schema.sql",
         "004_seed_af_incremental_control.sql",
         "005_create_ix_af_monitored_cases_priority_date.sql",
         "006_create_ix_siniestros_sin_fecaud_sin_id.sql"

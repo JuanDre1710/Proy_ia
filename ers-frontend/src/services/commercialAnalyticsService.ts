@@ -190,6 +190,8 @@ interface TopProductsResponse {
 
 interface ClientsWithoutPoliciesResponse {
   totalCount?: number;
+  withQuotesCount?: number;
+  withoutQuotesCount?: number;
   offset?: number;
   take?: number;
   items?: Array<{
@@ -204,6 +206,9 @@ interface ClientsWithoutPoliciesResponse {
 
 interface QuotedNotBoughtResponse {
   totalCount?: number;
+  boughtAfterQuoteCount?: number;
+  neverHadPolicyCount?: number;
+  unclassifiedCount?: number;
   offset?: number;
   take?: number;
   items?: Array<{
@@ -215,6 +220,8 @@ interface QuotedNotBoughtResponse {
     quoteDate?: string;
     productTypeId?: number;
     productTypeDescription?: string | null;
+    boughtPolicyAfterQuote?: boolean;
+    neverHadPolicy?: boolean;
   }>;
 }
 
@@ -316,7 +323,9 @@ function mapQuotedNotBought(item: NonNullable<QuotedNotBoughtResponse['items']>[
     quoteId: item.quoteId ?? 0,
     quoteDate: formatDate(item.quoteDate) ?? 'Sin fecha',
     productTypeId: item.productTypeId ?? 0,
-    productTypeDescription: item.productTypeDescription?.trim() || `Tipo ${item.productTypeId ?? 0}`
+    productTypeDescription: item.productTypeDescription?.trim() || `Tipo ${item.productTypeId ?? 0}`,
+    boughtPolicyAfterQuote: Boolean(item.boughtPolicyAfterQuote),
+    neverHadPolicy: Boolean(item.neverHadPolicy)
   };
 }
 
@@ -452,6 +461,12 @@ export const commercialAnalyticsService = {
 
       const payload = await parseJson<ClientsWithoutPoliciesResponse>(response);
       const data = mapPagedResult(payload ?? {}, mapClientWithoutPolicy);
+      if (payload && (payload.withQuotesCount !== undefined || payload.withoutQuotesCount !== undefined)) {
+        data.aggregateCounts = {
+          withQuotes: payload.withQuotesCount ?? 0,
+          withoutQuotes: payload.withoutQuotesCount ?? 0
+        };
+      }
       return {
         status: data.items.length > 0 ? 'success' : 'empty',
         data: data.items.length > 0 ? data : null,
@@ -476,22 +491,36 @@ export const commercialAnalyticsService = {
         return {
           status: response.status === 404 ? 'empty' : 'error',
           data: null,
-          error: await readErrorMessage(response, 'No se pudo recuperar el listado de cotizaciones sin compra.')
+          error: await readErrorMessage(response, 'No se pudo recuperar el listado de clientes cotizados.')
         };
       }
 
       const payload = await parseJson<QuotedNotBoughtResponse>(response);
       const data = mapPagedResult(payload ?? {}, mapQuotedNotBought);
+      if (
+        payload &&
+        (
+          payload.boughtAfterQuoteCount !== undefined ||
+          payload.neverHadPolicyCount !== undefined ||
+          payload.unclassifiedCount !== undefined
+        )
+      ) {
+        data.aggregateCounts = {
+          boughtAfterQuote: payload.boughtAfterQuoteCount ?? 0,
+          neverHadPolicy: payload.neverHadPolicyCount ?? 0,
+          unclassified: payload.unclassifiedCount ?? 0
+        };
+      }
       return {
         status: data.items.length > 0 ? 'success' : 'empty',
         data: data.items.length > 0 ? data : null,
-        error: data.items.length > 0 ? null : 'No hay cotizaciones sin compra para este recorte.'
+        error: data.items.length > 0 ? null : 'No hay clientes cotizados para este recorte.'
       };
     } catch (error) {
       return {
         status: 'error',
         data: null,
-        error: readConnectionError(error, 'No se pudo recuperar el listado de cotizaciones sin compra.')
+        error: readConnectionError(error, 'No se pudo recuperar el listado de clientes cotizados.')
       };
     }
   },

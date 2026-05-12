@@ -29,3 +29,9 @@ C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-performance-fix\Ers.
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerAdapter.deps.json
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerAdapter.dll
 C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\commercial-fast-timeout-fix\Ers.SqlServerAdapter.pdb
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-lookback-validation\Ers.SqlServerAdapter.deps.json
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-lookback-validation\Ers.SqlServerAdapter.dll
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-lookback-validation\Ers.SqlServerAdapter.pdb
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-real-validation\Ers.SqlServerAdapter.deps.json
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-real-validation\Ers.SqlServerAdapter.dll
+C:\Users\Jdre\source\IA_FRAUDE\Proy_ia\artifacts\incremental-real-validation\Ers.SqlServerAdapter.pdb

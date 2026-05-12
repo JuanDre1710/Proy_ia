@@ -11,7 +11,7 @@ from ers_core.adapters.anti_corruption.identity_normalizer import IdentityPayloa
 from ers_core.adapters.anti_corruption.labor_demo_normalizer import LaborDemoPayloadNormalizer
 from ers_core.adapters.providers.errors import ProviderIntegrationError
 from ers_core.application.ports.case_repository import CaseRepository
-from ers_core.application.ports.integration_repository import AuditLogRepository
+from ers_core.application.ports.integration_repository import AuditLogRepository, RuleConfigRepository
 from ers_core.application.ports.provider_ports import ProviderRequest
 from ers_core.application.services.reasoning_service import ReasoningService
 from ers_core.application.services.final_assessment_builder import FinalAssessmentBuilder
@@ -42,6 +42,7 @@ class CasePipelineService:
         case_repository: CaseRepository,
         audit_repository: AuditLogRepository,
         integration_manager: Any,
+        rules_repository: RuleConfigRepository | None = None,
     ) -> None:
         self._case_repository = case_repository
         self._audit_repository = audit_repository
@@ -49,7 +50,7 @@ class CasePipelineService:
         self._identity_normalizer = IdentityPayloadNormalizer()
         self._financial_normalizer = FinancialDemoPayloadNormalizer()
         self._labor_normalizer = LaborDemoPayloadNormalizer()
-        self._rule_engine = RuleEngine()
+        self._rule_engine = RuleEngine(rules_repository)
         self._reasoning_service = ReasoningService()
         self._scoring_service = TabularScoringService()
         self._relationship_service = RelationshipService()

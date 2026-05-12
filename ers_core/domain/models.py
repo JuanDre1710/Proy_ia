@@ -302,6 +302,22 @@ class IntegrationConfig:
 
 
 @dataclass(slots=True)
+class ConfiguredRule:
+    rule_id: str
+    name: str
+    category: str
+    severity: str
+    status: str
+    source: str | None = None
+    description: str = ""
+    rule_type: str = ""
+    parameters: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    updated_at: datetime = field(default_factory=datetime.utcnow)
+    updated_by: str | None = None
+
+
+@dataclass(slots=True)
 class Case:
     case_id: str
     created_at: datetime
