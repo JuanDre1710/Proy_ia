@@ -1,0 +1,218 @@
+export type RiskCategory = 'Normal' | 'Requiere revision' | 'Sospechoso de fraude';
+export type CaseStatus =
+  | 'Evaluable'
+  | 'Fallecido'
+  | 'No evaluable'
+  | 'En revision prioritaria';
+export type CaseResolutionStatus = 'Pendiente' | 'En revision' | 'Cerrado';
+export type CaseDecisionAction = 'accept' | 'deny' | 'review';
+export type CaseDecisionLabel = 'Aceptado' | 'Denegado' | 'Revisar';
+export type FraudResolutionLabel = 'FRAUDE' | 'NO FRAUDE';
+export type AlertSeverity = 'success' | 'warning' | 'error' | 'info';
+export type AlertType =
+  | 'RENAPER'
+  | 'Financiera'
+  | 'Fiscal'
+  | 'Siniestros'
+  | 'Conductual'
+  | 'Integridad';
+export type NodeType =
+  | 'Persona'
+  | 'Empresa'
+  | 'Siniestro'
+  | 'Taller'
+  | 'Abogado'
+  | 'Medico'
+  | 'Testigo'
+  | 'Familiar'
+  | 'Cuenta';
+export type RelationshipSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export interface RiskScore {
+  score: number;
+  category: RiskCategory;
+  explanation: string;
+}
+
+export interface FraudAlert {
+  id: string;
+  type: AlertType;
+  severity: AlertSeverity;
+  title: string;
+  shortDescription: string;
+  detail: string;
+  source: string;
+  relatedVariable: string;
+  recommendation?: string;
+}
+
+export interface ExplanationVariable {
+  id: string;
+  name: string;
+  impact: 'Positivo' | 'Negativo' | 'Neutro';
+  weight: number;
+  description: string;
+}
+
+export interface AIExplanation {
+  totalScore: number;
+  textualClassification: RiskCategory;
+  executiveSummary: string;
+  variables: ExplanationVariable[];
+  evidenceForReview?: string[];
+  evidenceAgainstFraud?: string[];
+  inconsistencies?: string[];
+  missingEvidence?: string[];
+  suggestedPriority?: 'HIGH' | 'MEDIUM' | 'LOW';
+  suggestedNextChecks?: string[];
+  evaluatorRecommendation: string;
+}
+
+export interface RiskVariableImpact {
+  key: string;
+  label: string;
+  value?: string | number;
+  impactLevel: 'low' | 'medium' | 'high' | 'critical';
+  impactScore?: number;
+  description?: string;
+}
+
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: NodeType;
+  riskLevel: RelationshipSeverity;
+  metadata: Record<string, string | number | boolean | undefined>;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  relationshipType: string;
+  severity: RelationshipSeverity;
+}
+
+export interface PersonalInfo {
+  fullName: string;
+  document: string;
+  documentType: 'DNI' | 'CUIL' | 'CUIT';
+  birthDate: string;
+  age: number;
+  verified: boolean;
+  deceased: boolean;
+  address: string;
+  locality: string;
+  province: string;
+  phone: string;
+  email: string;
+}
+
+export interface FinancialInfo {
+  creditScore: number;
+  debtRatio: number;
+  bancarizationLevel: 'Alta' | 'Media' | 'Baja';
+  activeLoans: number;
+  bouncedChecks: number;
+  monthlyIncomeEstimate: string;
+  observation: string;
+}
+
+export interface LaborFiscalInfo {
+  taxStatus: string;
+  mainActivity: string;
+  employerOrCompany: string;
+  incomeBracket: string;
+  registeredEmployees?: number;
+  fiscalObservation: string;
+}
+
+export interface ClaimRecord {
+  id: string;
+  date: string;
+  type: string;
+  amount: number;
+  status: 'Aprobado' | 'Observado' | 'Rechazado';
+  counterpart: string;
+  notes: string;
+}
+
+export interface CaseResolution {
+  status: CaseResolutionStatus;
+  decision?: CaseDecisionLabel;
+  fraudOutcome?: FraudResolutionLabel;
+  decidedAt?: string;
+  decidedBy?: string;
+  decidedByRole?: string;
+  comment?: string;
+}
+
+export interface FinalAssessment {
+  finalStatus: string;
+  finalPriority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  recommendedAction: string;
+  confidence: number;
+  summaryForAnalyst: string;
+  evidenceQuality?: string;
+  requiresManualReview: boolean;
+  blockedByHardRules: boolean;
+  hardRuleReasons: string[];
+}
+
+export interface CaseOperationalInfo {
+  policyNumber: string;
+  certificateNumber: string;
+  proposalNumber: string;
+  policyStatus: string;
+  linkStatus: string;
+  claimNumber: string;
+  claimDate: string;
+  claimType: string;
+  claimStatus: string;
+  claimedAmount: string;
+  paidAmount: string;
+  occurrenceAddress: string;
+}
+
+export interface MonitoredCaseListItem {
+  caseId: string;
+  sinId: number;
+  claimNumber: string;
+  customerName: string;
+  claimDate: string | null;
+  score: number;
+  riskLevel: 'CRITICO' | 'MEDIO' | 'LEVE' | 'NORMAL';
+  reviewBadge: 'Requiere revision' | 'Sospechoso' | 'Normal';
+  priority: string;
+  caseStatus: string;
+  summaryPreview: string;
+  topAlerts: string[];
+  allAlerts: string[];
+  suggestedAction: string;
+  isPersisted: boolean;
+  isPendingAnalysis: boolean;
+}
+
+export interface CaseEvaluation {
+  caseId: string;
+  sinId?: number;
+  requestedAt: string;
+  analystSummary: string;
+  generalStatus: CaseStatus;
+  riskScore: RiskScore;
+  alerts: FraudAlert[];
+  aiExplanation: AIExplanation;
+  riskHeatmap: RiskVariableImpact[];
+  relationshipGraph: {
+    nodes: GraphNode[];
+    edges: GraphEdge[];
+  };
+  operationalInfo?: CaseOperationalInfo;
+  personalInfo: PersonalInfo;
+  financialInfo: FinancialInfo;
+  laborFiscalInfo: LaborFiscalInfo;
+  claimsHistory: ClaimRecord[];
+  resolution?: CaseResolution;
+  operationalCaseStatus?: string;
+  finalAssessment?: FinalAssessment;
+}

@@ -1,0 +1,29 @@
+:root {
+  color: #10243a;
+  background:
+    radial-gradient(circle at top left, rgba(12, 123, 147, 0.1), transparent 28%),
+    linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+  font-family: "Segoe UI Variable", "Bahnschrift", "IBM Plex Sans", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

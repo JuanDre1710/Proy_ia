@@ -1,0 +1,83 @@
+[
+  {
+    "integration_id": "INT-28646723",
+    "provider_type": "IDENTITY",
+    "provider_code": "DEMO_IDENTITY",
+    "display_name": "DEMO_IDENTITY",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/identity",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "providerMode": "demo_internal",
+      "stubMode": "success"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T12:41:41.465159",
+    "updated_by": "dbg"
+  },
+  {
+    "integration_id": "INT-CBF1D1BD",
+    "provider_type": "FINANCIAL",
+    "provider_code": "DEMO_FINANCIAL",
+    "display_name": "DEMO_FINANCIAL",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/financial",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "providerMode": "demo_internal",
+      "stubMode": "partial"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T12:41:41.473915",
+    "updated_by": "dbg"
+  },
+  {
+    "integration_id": "INT-6291CBB3",
+    "provider_type": "LABOR_FISCAL",
+    "provider_code": "DEMO_LABOR",
+    "display_name": "DEMO_LABOR",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/labor",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "providerMode": "demo_internal",
+      "stubMode": "success"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T12:41:41.471886",
+    "updated_by": "dbg"
+  }
+]

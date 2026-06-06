@@ -1,0 +1,32 @@
+[
+  {
+    "user_id": "usr-admin",
+    "username": "admin",
+    "password_hash": "dcc0c48d93e72ad6ab4da6f98fcb6a52$c4edad5b380ca1ee56135d8b73106501e30fe094df4c467d8932ec46f40fe7ea",
+    "name": "Laura Mendez",
+    "email": "laura.mendez@ers.local",
+    "role": "Admin",
+    "last_login": "2026-03-13T08:15:00",
+    "enabled": true
+  },
+  {
+    "user_id": "usr-eval",
+    "username": "evaluador",
+    "password_hash": "642381f8469fe45b0461a69d07b31e9e$16165c85c5fa47693087f18ef44f3e1ef33751eecacea9761a547c5a38283def",
+    "name": "Julian Acosta",
+    "email": "julian.acosta@ers.local",
+    "role": "Evaluador",
+    "last_login": "2026-03-13T07:55:00",
+    "enabled": true
+  },
+  {
+    "user_id": "usr-supervisor",
+    "username": "supervisor",
+    "password_hash": "a60943691d5638ce8a0ddbf6fee2aa3e$858bd2314266bcdf179c9f8e7cdc01fc326295df4d2f55eea92e656246f01f31",
+    "name": "Carla Sosa",
+    "email": "carla.sosa@ers.local",
+    "role": "Supervisor",
+    "last_login": "2026-03-12T18:40:00",
+    "enabled": true
+  }
+]

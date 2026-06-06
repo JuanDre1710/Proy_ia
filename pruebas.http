@@ -1,0 +1,59 @@
+@PORT = 8000
+
+POST  http://localhost:8000/evaluar
+content-type: application/json
+
+{
+  "cliente_id": 1205401,
+  "dias_entre_siniestro_y_denuncia": 155,
+  "dias_desde_inicio_poliza": 2,
+  "dias_hasta_fin_poliza": 150,
+  "monto_reclamado": 50000,
+  "monto_pagado": 50000,
+  "valor_asegurado": 40000,
+  "valor_comercial": 38000,
+  "valor_factura": 39000,
+  "tipo_bien": 1,
+  "estado_bien": 1,
+  "uso_bien": 2,
+  "antiguedad_bien_en_anios": 9,
+  "tipo_siniestro": 1,
+  "estado_siniestro": 1,
+  "provincia_id": 3,
+  "cantidad_siniestros_previos": 7,
+  "cantidad_siniestros_mismo_tipo": 4,
+  "dias_desde_ultimo_siniestro": 15,
+  "cantidad_cambios_aseguradora": 5,
+  "tipo_cliente": 0,
+  "antiguedad_como_cliente_meses": 3,
+  "es_madrugada_finde": true,
+  "es_siniestro_total": true,
+  "zona_de_riesgo": true,
+  "evento_climatico_registrado": false,
+  "ubicacion_inconsistente_con_destino": true,
+  "peritaje_realizado": true,
+  "peritaje_congruente": false,
+  "presencia_acelerantes": true,
+  "imagenes_adjuntas": true,
+  "imagenes_sospechosas": true,
+  "gps_desactivado": true,
+  "denuncia_policial": false,
+  "hay_testigos": false,
+  "certificado_medico": true,
+  "factura_valida": true,
+  "proveedor_repetido": false,
+  "numero_factura_correlativa": false,
+  "direccion_repetida_con_otro_cliente": false,
+  "telefono_repetido_con_otro_cliente": false,
+  "testigo_repetido": false,
+  "perito_repetido": false,
+  "historial_fraude_confirmado": true,
+  "ocupacion_riesgo_alto": false,
+  "actividad_comercial_declarante": false,
+  "equipaje_reportado_perdido": false,
+  "coincide_con_checkin": false
+}
+
+
+
+

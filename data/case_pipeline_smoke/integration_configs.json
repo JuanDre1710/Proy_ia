@@ -1,0 +1,81 @@
+[
+  {
+    "integration_id": "INT-59EDB915",
+    "provider_type": "IDENTITY",
+    "provider_code": "DEMO_IDENTITY",
+    "display_name": "Identity demo provider",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/identity",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "providerMode": "demo_internal"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T13:45:13.086103",
+    "updated_by": "smoke"
+  },
+  {
+    "integration_id": "INT-000B45A3",
+    "provider_type": "FINANCIAL",
+    "provider_code": "DEMO_FINANCIAL",
+    "display_name": "Financial demo provider",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/financial",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "stubMode": "success"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T13:45:14.274075",
+    "updated_by": "smoke"
+  },
+  {
+    "integration_id": "INT-B0C307AD",
+    "provider_type": "LABOR_FISCAL",
+    "provider_code": "DEMO_LABOR",
+    "display_name": "Labor demo provider",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://demo.local/labor",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "providerMode": "demo_internal",
+      "stubMode": "success"
+    },
+    "metadata": {
+      "mode": "demo_internal"
+    },
+    "updated_at": "2026-03-27T13:45:13.091204",
+    "updated_by": "smoke"
+  }
+]

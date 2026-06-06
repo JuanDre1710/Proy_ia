@@ -1,0 +1,49 @@
+[
+  {
+    "integration_id": "INT-DF7048B5",
+    "provider_type": "IDENTITY",
+    "provider_code": "RENAPER_LOCAL",
+    "display_name": "RENAPER",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://example.com",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST"
+    },
+    "metadata": {},
+    "updated_at": "2026-03-26T13:07:31.308358",
+    "updated_by": "dbg"
+  },
+  {
+    "integration_id": "INT-8EAD9D8A",
+    "provider_type": "FINANCIAL",
+    "provider_code": "NOSIS",
+    "display_name": "Nosis",
+    "status": "ACTIVE",
+    "enabled": true,
+    "base_url": "https://example.com",
+    "auth_type": "None",
+    "secret_ref": null,
+    "timeout_ms": 3000,
+    "retries": 0,
+    "retry_policy": {
+      "maxAttempts": 0
+    },
+    "mapping_profile": null,
+    "settings": {
+      "integrationKind": "API REST",
+      "stubMode": "success"
+    },
+    "metadata": {},
+    "updated_at": "2026-03-26T13:07:31.309243",
+    "updated_by": "dbg"
+  }
+]

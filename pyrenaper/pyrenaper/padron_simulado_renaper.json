@@ -1,0 +1,376 @@
+[
+  {
+    "nombre": "MIRKO",
+    "apellido": "ABAD DÍAZ",
+    "dni": "93252229",
+    "sexo": "M",
+    "fecha_nacimiento": "1948-11-19",
+    "edad": 76,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Octavio Pinto 3054 dpto 3",
+      "numero": "187",
+      "barrio": "Tejas del Sur",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "YAMILA NEREA",
+    "apellido": "ABDON",
+    "dni": "34188134",
+    "sexo": "F",
+    "fecha_nacimiento": "1949-05-26",
+    "edad": 76,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Ingeniero López 935",
+      "numero": "985",
+      "barrio": "Alto Alberdi",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "ACEBEY NAARA ELIANA",
+    "apellido": "",
+    "dni": "35365135",
+    "sexo": "M",
+    "fecha_nacimiento": "1983-08-16",
+    "edad": 41,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Cortada 9 de Julio 268",
+      "numero": "790",
+      "barrio": "9 de Julio",
+      "localidad": "Capilla del Monte",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "ACEVEDO GASTÓN MANUEL",
+    "apellido": "",
+    "dni": "28980950",
+    "sexo": "M",
+    "fecha_nacimiento": "1975-11-09",
+    "edad": 49,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "ALUMINE 546",
+      "numero": "1344",
+      "barrio": "LOS OLMOS",
+      "localidad": "VILLA MARÍA",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "ACOSTA AYELÉN GUADALUPE",
+    "apellido": "",
+    "dni": "32495299",
+    "sexo": "F",
+    "fecha_nacimiento": "1973-01-07",
+    "edad": 52,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "ALEJANDRO DUMAS 1521",
+      "numero": "1076",
+      "barrio": "OLIVOS",
+      "localidad": "CÓRDOBA",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "ACOSTA CORDOBA RAUL MARTIN",
+    "apellido": "",
+    "dni": "24385998",
+    "sexo": "F",
+    "fecha_nacimiento": "1999-05-27",
+    "edad": 25,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Aguirre Camara 1043",
+      "numero": "308",
+      "barrio": "Parque el Virrey",
+      "localidad": "Alta Gracia",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "ALEJANDRA PAMELA",
+    "apellido": "ACOSTA",
+    "dni": "30656764",
+    "sexo": "F",
+    "fecha_nacimiento": "2001-03-30",
+    "edad": 24,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Ramírez de Arellano 51 piso\n1",
+      "numero": "293",
+      "barrio": "Alta Córdoba",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "JESSICA JOHANA",
+    "apellido": "ACOSTA",
+    "dni": "37322030",
+    "sexo": "F",
+    "fecha_nacimiento": "1947-09-17",
+    "edad": 77,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Rondeau 407",
+      "numero": "443",
+      "barrio": "Nueva Córdoba",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "NILSA BERNARDA",
+    "apellido": "ACOSTA",
+    "dni": "18854272",
+    "sexo": "F",
+    "fecha_nacimiento": "1998-06-29",
+    "edad": 26,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Padre Lozano 1151",
+      "numero": "1491",
+      "barrio": "San Rafael",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "LEONARDO DAVID",
+    "apellido": "ACOTTO",
+    "dni": "27757218",
+    "sexo": "M",
+    "fecha_nacimiento": "1970-03-30",
+    "edad": 55,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Ameghino 53",
+      "numero": "1547",
+      "barrio": "S/D",
+      "localidad": "Adelia María",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "AGAZZI FEDERICO MARTIN",
+    "apellido": "",
+    "dni": "32477142",
+    "sexo": "M",
+    "fecha_nacimiento": "1968-03-03",
+    "edad": 57,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "9 DE JULIO 380 2 E",
+      "numero": "1957",
+      "barrio": "CENTRO",
+      "localidad": "RÍO CUARTO",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "GISELE",
+    "apellido": "AGOSTINELLO",
+    "dni": "30472030",
+    "sexo": "M",
+    "fecha_nacimiento": "1945-07-07",
+    "edad": 79,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Antonio del Viso 680",
+      "numero": "1542",
+      "barrio": "Alta Córdoba",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "YOHANA",
+    "apellido": "AGOSTINELLO",
+    "dni": "36125868",
+    "sexo": "F",
+    "fecha_nacimiento": "1946-10-29",
+    "edad": 78,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Argensola 1290",
+      "numero": "642",
+      "barrio": "Los Paraísos",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "AGÜERO DEBORA",
+    "apellido": "",
+    "dni": "42401713",
+    "sexo": "M",
+    "fecha_nacimiento": "1979-11-22",
+    "edad": 45,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Urquiza 3531",
+      "numero": "662",
+      "barrio": "Hipolito Yrigoyen",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "AGUIRRE SOTO MARÍA VICTORIA",
+    "apellido": "",
+    "dni": "31844433",
+    "sexo": "M",
+    "fecha_nacimiento": "1996-03-19",
+    "edad": 29,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "24 DE SEPTIEMBRE 946",
+      "numero": "1934",
+      "barrio": "LA VILLA",
+      "localidad": "Arroyito",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "LILIANA VICTORIA",
+    "apellido": "AGUIRRE",
+    "dni": "13536141",
+    "sexo": "F",
+    "fecha_nacimiento": "1945-03-23",
+    "edad": 80,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "General Roca 258",
+      "numero": "1833",
+      "barrio": "Santa Fe",
+      "localidad": "Río Ceballos",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "LUCÍA BELÉN",
+    "apellido": "AGUIRRE",
+    "dni": "32682037",
+    "sexo": "F",
+    "fecha_nacimiento": "1983-05-11",
+    "edad": 42,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Granadero Díaz 3152",
+      "numero": "1034",
+      "barrio": "Ana M. Zumarán",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "AHUMADA BETIANA SOLEDAD",
+    "apellido": "",
+    "dni": "32115234",
+    "sexo": "F",
+    "fecha_nacimiento": "1981-01-12",
+    "edad": 44,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Lomas 784",
+      "numero": "1531",
+      "barrio": "Santa Rosa",
+      "localidad": "La Falda",
+      "provincia": "Córdoba"
+    },
+    "estado": "EN MORA"
+  },
+  {
+    "nombre": "ANDREA DE LOS ÁNGELES",
+    "apellido": "AIRASCA",
+    "dni": "30123033",
+    "sexo": "F",
+    "fecha_nacimiento": "1988-09-22",
+    "edad": 36,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Trafalgar 338 pb",
+      "numero": "63",
+      "barrio": "Alta Córdoba",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "EUGENIA MARIEL",
+    "apellido": "ALABART",
+    "dni": "34802022",
+    "sexo": "F",
+    "fecha_nacimiento": "1953-06-15",
+    "edad": 71,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Presidente Perón 1111",
+      "numero": "186",
+      "barrio": "Centro",
+      "localidad": "Cosquín",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "MARCELO ALEJANDRO",
+    "apellido": "ALARCÓN",
+    "dni": "17625289",
+    "sexo": "M",
+    "fecha_nacimiento": "1971-11-19",
+    "edad": 53,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Francisco Laprida 2526",
+      "numero": "380",
+      "barrio": "Alto Alberdi",
+      "localidad": "Córdoba",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  },
+  {
+    "nombre": "LOURDES JUDITH",
+    "apellido": "ALBERT",
+    "dni": "33670812",
+    "sexo": "M",
+    "fecha_nacimiento": "1974-01-22",
+    "edad": 51,
+    "fallecido": false,
+    "domicilio": {
+      "calle": "Guemes 642",
+      "numero": "608",
+      "barrio": "Belgrano",
+      "localidad": "Río Segundo",
+      "provincia": "Córdoba"
+    },
+    "estado": "HABILITADO"
+  }
+]

@@ -1,0 +1,37 @@
+chroma_db/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend React / Vite
+ers-frontend/node_modules/
+ers-frontend/dist/
+ers-frontend/.vite/
+ers-frontend/coverage/
+ers-frontend/.env
+ers-frontend/.env.*
+!ers-frontend/.env.example
+
+# TypeScript
+*.tsbuildinfo
